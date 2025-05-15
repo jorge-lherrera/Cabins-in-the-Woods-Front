@@ -1,8 +1,36 @@
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+const Account = lazy(() => import("./pages/Account"));
+const Booking = lazy(() => import("./pages/Booking"));
+const Cabins = lazy(() => import("./pages/Cabins"));
+const Checkin = lazy(() => import("./pages/Checkin"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Guest = lazy(() => import("./pages/Guest"));
+const Login = lazy(() => import("./pages/Login"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Workers = lazy(() => import("./pages/Workers"));
+
 function App() {
   return (
-    <div>
-      <h1>My React App</h1>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route index element={<Navigate replace to="/dashboard" />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/checkin" element={<Checkin />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/cabins" element={<Cabins />} />
+          <Route path="/guest" element={<Guest />} />
+          <Route path="/workers" element={<Workers />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
