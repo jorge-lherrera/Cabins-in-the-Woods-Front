@@ -1,75 +1,41 @@
-import supabase, { supabaseUrl } from "./supabase";
+import { api } from "./ApiUrl";
 
 export async function signup({ fullName, email, password }) {
-  const { data, error } = await supabase.auth.signUp({
+  const { data } = await api.post("/login/signup", {
+    fullName,
     email,
     password,
-    options: {
-      data: {
-        fullName,
-        avatar: "",
-      },
-    },
   });
-
-  if (error) throw new Error(error.message);
-
   return data;
 }
 
 export async function login({ email, password }) {
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data } = await api.post("/login/signin", {
     email,
     password,
   });
-
-  if (error) throw new Error(error.message);
-
+  if (data.token) localStorage.setItem("token", data.token);
   return data;
 }
 
 export async function getCurrentUser() {
-  const { data: session } = await supabase.auth.getSession();
-  if (!session.session) return null;
-
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error) throw new Error(error.message);
-  return data?.user;
+  const { data } = await api.get("/login/me");
+  return data.user;
 }
 
 export async function logout() {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw new Error(error.message);
+  localStorage.removeItem("token");
 }
 
 export async function updateCurrentUser({ password, fullName, avatar }) {
-  // 1. Update password OR fullName
-  let updateData;
-  if (password) updateData = { password };
-  if (fullName) updateData = { data: { fullName } };
+  const formData = new FormData();
+  if (password) formData.append("password", password);
+  if (fullName) formData.append("fullName", fullName);
+  if (avatar) formData.append("avatar", avatar);
 
-  const { data, error } = await supabase.auth.updateUser(updateData);
-
-  if (error) throw new Error(error.message);
-  if (!avatar) return data;
-
-  // 2. Upload the avatar image
-  const fileName = `avatar-${data.user.id}-${Math.random()}`;
-
-  const { error: storageError } = await supabase.storage
-    .from("avatars")
-    .upload(fileName, avatar);
-
-  if (storageError) throw new Error(storageError.message);
-
-  // 3. Update avatar in the user
-  const { data: updatedUser, error: error2 } = await supabase.auth.updateUser({
-    data: {
-      avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
-    },
+  const { data } = await api.put("/login/update", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
 
-  if (error2) throw new Error(error2.message);
-  return updatedUser;
+  return data.user;
 }
