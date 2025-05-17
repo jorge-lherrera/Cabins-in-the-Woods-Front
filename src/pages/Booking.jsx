@@ -1,9 +1,7 @@
+import BookingDetail from "../features/bookings/BookingDetail";
+
 function Booking() {
-  return (
-    <div>
-      <h1>Booking</h1>
-    </div>
-  );
+  return <BookingDetail />;
 }
 
 export default Booking;

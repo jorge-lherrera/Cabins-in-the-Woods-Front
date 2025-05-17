@@ -1,11 +1,18 @@
+import DashboardLayout from "../features/dashboard/DashboardLayout";
+import DashboardFilter from "../features/dashboard/DashboardFilter";
+import Heading from "../ui/Heading";
+import Row from "../ui/Row";
+
 function Dashboard() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">Dashboard</h1>
-      <p className="text-lg text-gray-600">
-        Bienvenido al panel de administración.
-      </p>
-    </div>
+    <>
+      <Row type="horizontal">
+        <Heading as="h1">Dashboard</Heading>
+        <DashboardFilter />
+      </Row>
+
+      <DashboardLayout />
+    </>
   );
 }
 
