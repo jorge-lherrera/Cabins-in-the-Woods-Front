@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import ToasterComponent from "./utils/ToasterComponent";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 
@@ -31,7 +33,13 @@ function App() {
         <BrowserRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route element={<AppLayout />}>
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
                 <Route index element={<Navigate replace to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/account" element={<Account />} />
@@ -47,6 +55,7 @@ function App() {
             </Routes>
           </Suspense>
         </BrowserRouter>
+        <ToasterComponent />
       </QueryClientProvider>
     </DarkModeProvider>
   );

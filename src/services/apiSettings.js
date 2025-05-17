@@ -1,27 +1,29 @@
-import supabase from "./supabase";
+import toast from "react-hot-toast";
+import { api } from "./ApiUrl";
 
 export async function getSettings() {
-  const { data, error } = await supabase.from("settings").select("*").single();
-
-  if (error) {
-    console.error(error);
-    throw new Error("Settings could not be loaded");
+  try {
+    const { data } = await api.get("/settings");
+    return data;
+  } catch (error) {
+    toast.error("Erro carregando as configurações");
   }
-  return data;
 }
 
-// We expect a newSetting object that looks like {setting: newValue}
-export async function updateSetting(newSetting) {
-  const { data, error } = await supabase
-    .from("settings")
-    .update(newSetting)
-    // There is only ONE row of settings, and it has the ID=1, and so this is the updated one
-    .eq("id", 1)
-    .single();
-
-  if (error) {
-    console.error(error);
-    throw new Error("Settings could not be updated");
+export async function createSettings(newSetting) {
+  try {
+    const { data } = await api.post("/settings", newSetting);
+    return data;
+  } catch (error) {
+    toast.error("Erro ao criar configurações");
   }
-  return data;
+}
+
+export async function updateSetting(newSetting) {
+  try {
+    const { data } = await api.put("/settings", newSetting);
+    return data;
+  } catch (error) {
+    toast.error("Erro ao atualizar configurações");
+  }
 }
