@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { HiOutlineUser } from "react-icons/hi2";
 import ButtonIcon from "./ButtonIcon";
+import DarkModeToggle from "./DarkModeToggle";
+import Logout from "../features/authentication/Logout";
 
 function HeaderMenu() {
   const navigate = useNavigate();
@@ -11,7 +13,12 @@ function HeaderMenu() {
           <HiOutlineUser />
         </ButtonIcon>
       </li>
-      <li></li>
+      <li>
+        <DarkModeToggle />
+      </li>
+      <li>
+        <Logout />
+      </li>
     </ul>
   );
 }

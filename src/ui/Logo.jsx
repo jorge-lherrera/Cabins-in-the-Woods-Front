@@ -1,7 +1,12 @@
+import { useDarkMode } from "../context/DarkModeContext";
+
 function Logo() {
+  const { isDarkMode } = useDarkMode();
+
+  const src = isDarkMode ? "/logo-dark.png" : "/logo-light.png";
   return (
-    <div>
-      <h1>logo</h1>
+    <div className="text-center">
+      <img src={src} alt="Logo" />
     </div>
   );
 }
