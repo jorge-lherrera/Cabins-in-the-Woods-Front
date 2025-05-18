@@ -1,6 +1,6 @@
-import yup from "yup";
+import * as yup from "yup";
 
-export const loginSchema = yup.object().shape({
+const loginSchema = yup.object().shape({
   email: yup
     .string()
     .email("O email fornecido não é válido.")
@@ -11,3 +11,5 @@ export const loginSchema = yup.object().shape({
     .max(100, "O campo senha não pode ter mais de 100 caracteres")
     .required("O campo senha é obrigatório"),
 });
+
+export default loginSchema;

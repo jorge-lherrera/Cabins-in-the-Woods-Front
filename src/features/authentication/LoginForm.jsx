@@ -1,16 +1,19 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
-import Button from "../../../ui/Button";
-import Form from "../../../ui/Form";
-import Input from "../../../ui/Input";
-import FormRowVertical from "../../../ui/FormRowVertical";
-import SpinnerMini from "../../../ui/SpinnerMini";
-import { loginSchema } from "../../../validations/loginValidations";
-import { loginApi } from "./loginApi";
+import Button from "../../ui/Button";
+import Form from "../../ui/Form";
+import Input from "../../ui/Input";
+import FormRowVertical from "../../ui/FormRowVertical";
+import SpinnerMini from "../../ui/SpinnerMini";
+import loginSchema from "../../validations/loginValidations";
+import { login } from "../../services/apiAuth";
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -21,7 +24,10 @@ function LoginForm() {
   });
 
   const mutation = useMutation({
-    mutationFn: loginApi,
+    mutationFn: login,
+    onSuccess: () => {
+      navigate("/dashboard");
+    },
     onSettled: () => reset(),
   });
 
