@@ -1,16 +1,15 @@
-import { useUser } from "../features/authentication/useUser";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useSession } from "../services/useSession";
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
-
-  const { isLoading, isAuthenticated } = useUser();
+  const { data, isLoading } = useSession();
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) navigate("/login");
-  }, [isAuthenticated, isLoading, navigate]);
+    if (!isLoading && !data?.loggedIn) navigate("/login");
+  }, [isLoading, data, navigate]);
 
   if (isLoading)
     return (
@@ -19,7 +18,7 @@ function ProtectedRoute({ children }) {
       </div>
     );
 
-  if (isAuthenticated) return children;
+  if (data?.loggedIn) return children;
 
   return null;
 }

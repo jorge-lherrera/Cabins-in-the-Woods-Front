@@ -1,4 +1,4 @@
-import { api } from "./ApiUrl";
+import { api } from "./apiUrl";
 import toast from "react-hot-toast";
 
 export async function signup({ fullName, email, password }) {
