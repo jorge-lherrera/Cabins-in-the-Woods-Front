@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useLogin } from "../../hooks/auth/useLogin";
+
+import loginSchema from "../../validations/loginValidations";
 
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
-import loginSchema from "../../validations/loginValidations";
-import { useLogin } from "../../hooks/auth/useLogin";
 
 function LoginForm() {
   const {

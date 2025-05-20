@@ -1,8 +1,9 @@
-import { useRecentStays } from "./useRecentStays";
-import { useRecentBookings } from "./useRecentBookings";
+import { useRecentStays } from "../../hooks/useRecentStays";
+import { useRecentBookings } from "../../hooks/bookings/useRecentBookings";
+import { useCabins } from "../../hooks/cabins/useCabins";
+
 import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
-import { useCabins } from "../cabins/useCabins";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
 import TodayActivity from "../check-in-out/TodayActivity";
