@@ -29,3 +29,13 @@ export async function getSession() {
     return { loggedIn: false, user: null };
   }
 }
+
+export async function logout() {
+  try {
+    await api.post("/logout");
+    toast.success("Logout realizado com sucesso!");
+  } catch (error) {
+    toast.error(error.response?.data?.erro || "Erro ao fazer logout.");
+    throw error;
+  }
+}

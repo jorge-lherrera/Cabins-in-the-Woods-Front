@@ -1,6 +1,7 @@
+import { useTodayActivity } from "../../hooks/useTodayActivity";
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
-import { useTodayActivity } from "./useTodayActivity";
+
 import Spinner from "../../ui/Spinner";
 import TodayItem from "./TodayItem";
 
