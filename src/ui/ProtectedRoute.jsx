@@ -1,7 +1,7 @@
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useSession } from "../services/useSession";
+import { useSession } from "../hooks/auth/useSession";
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();

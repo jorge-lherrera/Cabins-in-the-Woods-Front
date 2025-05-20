@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { login } from "../../services/apiAuth";
+import { getSession } from "../../services/apiAuth";
 
 export function useUser() {
-  const { isLoading, data: user } = useQuery({
-    queryKey: ["login"],
-    queryFn: login,
+  const { isLoading, data } = useQuery({
+    queryKey: ["user"],
+    queryFn: getSession,
   });
 
-  return { isLoading, user, isAuthenticated: user?.role === "authenticated" };
+  return { isLoading, user: data?.user, isAuthenticated: data?.loggedIn };
 }
