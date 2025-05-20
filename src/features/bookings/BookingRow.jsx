@@ -15,8 +15,8 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "./useDeleteBooking";
+import { useCheckout } from "../../hooks/cabins/useCheckout";
+import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
 function BookingRow({
   booking: {

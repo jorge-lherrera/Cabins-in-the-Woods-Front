@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { api } from "./ApiUrl";
+import { api } from "./apiUrl";
 
 export async function login({ email, password }) {
   try {

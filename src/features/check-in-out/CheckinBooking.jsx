@@ -6,12 +6,14 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useBooking } from "../bookings/useBooking";
+
 import { useEffect, useState } from "react";
 import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
-import { useCheckin } from "./useCheckin";
+
 import { useSettings } from "../settings/useSettings";
+import { useBooking } from "../../hooks/bookings/useBooking";
+import { useCheckin } from "../../hooks/cabins/useCheckin";
 
 function CheckinBooking() {
   const [confirmPaid, setConfirmPaid] = useState(false);

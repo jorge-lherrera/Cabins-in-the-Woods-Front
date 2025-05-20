@@ -6,15 +6,18 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useBooking } from "./useBooking";
+
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import { HiArrowUpOnSquare } from "react-icons/hi2";
-import { useCheckout } from "../check-in-out/useCheckout";
+
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { useDeleteBooking } from "./useDeleteBooking";
+
 import Empty from "../../ui/Empty";
+import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
+import { useBooking } from "../../hooks/bookings/useBooking";
+import { useCheckout } from "../../hooks/cabins/useCheckout";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
