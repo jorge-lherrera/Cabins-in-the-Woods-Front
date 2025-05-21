@@ -2,26 +2,31 @@ import toast from "react-hot-toast";
 import { api } from "./ApiUrl";
 import { PAGE_SIZE } from "../utils/constants";
 
-export async function getBookings({ page = 1 }) {
-  try {
-    const { data } = await api.get("/bookings", {
-      params: {
-        page,
-        pageSize: PAGE_SIZE,
-      },
-    });
-    return data;
-  } catch (error) {
-    toast.error("Erro ao carregar reservas");
-  }
-}
-
 export async function getBooking(id) {
   try {
     const { data } = await api.get(`/bookings/${id}`);
     return data;
   } catch (error) {
     toast.error("Reserva não encontrada");
+  }
+}
+
+export async function getBookings({ page = 1, filter = null, sortBy = null }) {
+  // MODIFICADO: recibe filter y sortBy
+  try {
+    const params = {
+      page,
+      limit: PAGE_SIZE, // MODIFICADO: asegurado que sea 'limit'
+    };
+    if (filter) params.filter = JSON.stringify(filter); // MODIFICADO: envía filter como string
+    if (sortBy) params.sortBy = JSON.stringify(sortBy); // MODIFICADO: envía sortBy como string
+
+    const { data } = await api.get("/bookings", {
+      params,
+    });
+    return data;
+  } catch (error) {
+    toast.error("Erro ao carregar reservas");
   }
 }
 
