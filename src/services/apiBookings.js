@@ -25,6 +25,40 @@ export async function getBooking(id) {
   }
 }
 
+export async function getStaysAfterDate(date) {
+  try {
+    const { data } = await api.get("/bookings/stays-after-date", {
+      params: { date },
+    });
+    return data;
+  } catch (error) {
+    toast.error("Erro ao carregar estadas recentes");
+    throw error;
+  }
+}
+
+export async function getBookingsAfterDate(date) {
+  try {
+    const { data } = await api.get("/bookings/bookings-after-date", {
+      params: { date },
+    });
+    return data;
+  } catch (error) {
+    toast.error("Erro ao carregar reservas recentes");
+    throw error;
+  }
+}
+
+export async function getStaysTodayActivity() {
+  try {
+    const { data } = await api.get("/bookings/stays-today-activity");
+    return data;
+  } catch (error) {
+    toast.error("Erro ao carregar atividades de hoje");
+    throw error;
+  }
+}
+
 export async function createBooking(newBooking) {
   try {
     const { data } = await api.post("/bookings", newBooking);

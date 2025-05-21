@@ -4,11 +4,11 @@ import Sidebar from "./Sidebar";
 
 function AppLayout() {
   return (
-    <div className="grid grid-cols-[26rem_1fr] grid-rows-[auto_1fr] h-screen">
+    <div className="grid h-screen grid-cols-[26rem_1fr] grid-rows-[auto_1fr]">
       <Header />
       <Sidebar />
-      <main className="bg-grey-50 p-16 pr-20 pb-28 overflow-auto">
-        <div className="max-w-[120rem] mx-auto flex flex-col gap-[3.2rem]">
+      <main className="bg-grey-50 overflow-auto p-16 pr-20 pb-28">
+        <div className="mx-auto flex max-w-[120rem] flex-col gap-[3.2rem]">
           <Outlet />
         </div>
       </main>

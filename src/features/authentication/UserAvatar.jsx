@@ -2,16 +2,18 @@ import { useUser } from "../../hooks/auth/useUser";
 
 function UserAvatar() {
   const { user } = useUser();
-  const { fullName, avatar } = user.user_metadata;
+
+  const name = user?.name || user?.worker?.name || "Usuário";
+  const avatar = user?.avatar || "default-user.jpg";
 
   return (
-    <div className="flex gap-5 items-center font-medium text-[1.4rem] text-gray-600">
+    <div className="flex items-center gap-5 text-[1.4rem] font-medium text-gray-600">
       <img
-        className="block w-9 aspect-square object-cover object-center rounded-full outline outline-gray-100"
-        src={avatar || "default-user.jpg"}
-        alt={`Avatar of ${fullName}`}
+        className="block aspect-square w-9 rounded-full object-cover object-center outline outline-gray-100"
+        src={avatar}
+        alt={`Avatar of ${name}`}
       />
-      <span>{fullName}</span>
+      <span>{name}</span>
     </div>
   );
 }
