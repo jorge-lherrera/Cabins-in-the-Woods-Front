@@ -1,4 +1,4 @@
-import { api } from "../../services/ApiUrl";
+import { api } from "../../services/apiUrl";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSession = () => {

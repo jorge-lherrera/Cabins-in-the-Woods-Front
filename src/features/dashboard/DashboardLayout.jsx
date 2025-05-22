@@ -1,4 +1,3 @@
-import { useRecentStays } from "../../hooks/useRecentStays";
 import { useRecentBookings } from "../../hooks/bookings/useRecentBookings";
 import { useCabins } from "../../hooks/cabins/useCabins";
 
@@ -7,6 +6,7 @@ import Stats from "./Stats";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
 import TodayActivity from "../check-in-out/TodayActivity";
+import { useRecentStays } from "../../hooks/bookings/useRecentStays";
 
 function DashboardLayout() {
   const { bookings, isLoading: isLoading1 } = useRecentBookings();

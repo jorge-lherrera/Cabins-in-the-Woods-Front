@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { api } from "./ApiUrl";
+import { api } from "./apiUrl";
 import { PAGE_SIZE } from "../utils/constants";
 
 export async function getBooking(id) {

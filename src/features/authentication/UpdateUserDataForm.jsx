@@ -6,7 +6,7 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { useUser } from "./useUser";
+import { useUser } from "../../hooks/auth/useUser";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 
 function UpdateUserDataForm() {
@@ -33,7 +33,7 @@ function UpdateUserDataForm() {
           setAvatar(null);
           e.target.reset();
         },
-      }
+      },
     );
   }
 

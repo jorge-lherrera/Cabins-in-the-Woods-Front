@@ -17,7 +17,7 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import Empty from "../../ui/Empty";
 import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 import { useBooking } from "../../hooks/bookings/useBooking";
-import { useCheckout } from "../../hooks/cabins/useCheckout";
+import { useCheckout } from "../../hooks/bookings/useCheckout";
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
@@ -41,7 +41,7 @@ function BookingDetail() {
   return (
     <>
       <Row type="horizontal">
-        <div className="flex gap-6 items-center">
+        <div className="flex items-center gap-6">
           <Heading as="h1">{`Booking #${bookingId}`}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </div>

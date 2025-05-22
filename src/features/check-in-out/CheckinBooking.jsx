@@ -11,9 +11,9 @@ import { useEffect, useState } from "react";
 import Checkbox from "../../ui/Checkbox";
 import { formatCurrency } from "../../utils/helpers";
 
-import { useSettings } from "../settings/useSettings";
 import { useBooking } from "../../hooks/bookings/useBooking";
-import { useCheckin } from "../../hooks/cabins/useCheckin";
+import { useCheckin } from "../../hooks/bookings/useCheckin";
+import { useSettings } from "../../hooks/settings/useSettings";
 
 function CheckinBooking() {
   const [confirmPaid, setConfirmPaid] = useState(false);
@@ -67,7 +67,7 @@ function CheckinBooking() {
       <BookingDataBox booking={booking} />
 
       {!hasBreakfast && (
-        <div className="bg-grey-0 border border-grey-100 rounded-md p-6 md:p-10 mb-4">
+        <div className="bg-grey-0 border-grey-100 mb-4 rounded-md border p-6 md:p-10">
           <Checkbox
             checked={addBreakfast}
             onChange={() => {
@@ -81,7 +81,7 @@ function CheckinBooking() {
         </div>
       )}
 
-      <div className="bg-grey-0 border border-grey-100 rounded-md p-6 md:p-10 mb-4">
+      <div className="bg-grey-0 border-grey-100 mb-4 rounded-md border p-6 md:p-10">
         <Checkbox
           checked={confirmPaid}
           onChange={() => setConfirmPaid((confirm) => !confirm)}
@@ -92,9 +92,9 @@ function CheckinBooking() {
           {!addBreakfast
             ? formatCurrency(totalPrice)
             : `${formatCurrency(
-                totalPrice + optionalBreakfastPrice
+                totalPrice + optionalBreakfastPrice,
               )} (${formatCurrency(totalPrice)} + ${formatCurrency(
-                optionalBreakfastPrice
+                optionalBreakfastPrice,
               )})`}
         </Checkbox>
       </div>

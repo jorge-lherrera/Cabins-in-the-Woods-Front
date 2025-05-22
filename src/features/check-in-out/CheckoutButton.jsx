@@ -1,4 +1,4 @@
-import { useCheckout } from "../../hooks/cabins/useCheckout";
+import { useCheckout } from "../../hooks/bookings/useCheckout";
 import Button from "../../ui/Button";
 
 function CheckoutButton({ bookingId }) {

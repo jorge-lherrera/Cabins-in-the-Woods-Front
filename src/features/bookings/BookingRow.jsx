@@ -15,7 +15,7 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { useCheckout } from "../../hooks/cabins/useCheckout";
+import { useCheckout } from "../../hooks/bookings/useCheckout";
 import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
 function BookingRow({
@@ -44,7 +44,7 @@ function BookingRow({
 
   return (
     <Table.Row>
-      <div className="text-base font-semibold text-grey-600 font-mono">
+      <div className="text-grey-600 font-mono text-base font-semibold">
         {cabinName}
       </div>
 
