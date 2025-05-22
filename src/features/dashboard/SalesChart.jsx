@@ -1,5 +1,5 @@
-import DashboardBox from "./DashboardBox";
-import Heading from "../../ui/Heading";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 import {
   Area,
   AreaChart,
@@ -9,8 +9,22 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useDarkMode } from "../../context/DarkModeContext";
 import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+
+import { useDarkMode } from "../../context/DarkModeContext";
+
+import DashboardBox from "./DashboardBox";
+import Heading from "../../ui/Heading";
+
+const StyledSalesChart = styled(DashboardBox)`
+  grid-column: 1 / -1;
+
+  /* Hack to change grid line colors */
+  & .recharts-cartesian-grid-horizontal line,
+  & .recharts-cartesian-grid-vertical line {
+    stroke: var(--color-grey-300);
+  }
+`;
 
 function SalesChart({ bookings, numDays }) {
   const { isDarkMode } = useDarkMode();
@@ -47,7 +61,7 @@ function SalesChart({ bookings, numDays }) {
       };
 
   return (
-    <DashboardBox className="col-span-4 [&_.recharts-cartesian-grid-horizontal_line]:stroke-grey-300 [&_.recharts-cartesian-grid-vertical_line]:stroke-grey-300">
+    <StyledSalesChart>
       <Heading as="h2">
         Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
         {format(allDates.at(-1), "MMM dd yyyy")}{" "}
@@ -87,8 +101,19 @@ function SalesChart({ bookings, numDays }) {
           />
         </AreaChart>
       </ResponsiveContainer>
-    </DashboardBox>
+    </StyledSalesChart>
   );
 }
+
+SalesChart.propTypes = {
+  bookings: PropTypes.arrayOf(
+    PropTypes.shape({
+      created_at: PropTypes.string.isRequired,
+      totalPrice: PropTypes.number.isRequired,
+      extrasPrice: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  numDays: PropTypes.number.isRequired,
+};
 
 export default SalesChart;

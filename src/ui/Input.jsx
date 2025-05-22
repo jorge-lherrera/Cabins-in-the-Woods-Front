@@ -1,16 +1,11 @@
-import React from "react";
+import styled from "styled-components";
 
-const Input = React.forwardRef(function Input(
-  { className = "", ...props },
-  ref
-) {
-  return (
-    <input
-      ref={ref}
-      className={`border border-grey-300 bg-grey-0 rounded-sm px-3 py-2 shadow-sm ${className}`}
-      {...props}
-    />
-  );
-});
+const Input = styled.input`
+  border: 1px solid var(--color-grey-300);
+  background-color: var(--color-grey-0);
+  border-radius: var(--border-radius-sm);
+  padding: 0.8rem 1.2rem;
+  box-shadow: var(--shadow-sm);
+`;
 
 export default Input;

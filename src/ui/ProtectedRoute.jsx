@@ -1,7 +1,18 @@
-import Spinner from "./Spinner";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import PropTypes from "prop-types";
+
 import { useSession } from "../hooks/auth/useSession";
+import Spinner from "./Spinner";
+
+const FullPage = styled.div`
+  height: 100vh;
+  background-color: var(--color-grey-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -13,14 +24,18 @@ function ProtectedRoute({ children }) {
 
   if (isLoading)
     return (
-      <div className="h-screen bg-grey-50 flex items-center justify-center">
+      <FullPage>
         <Spinner />
-      </div>
+      </FullPage>
     );
 
   if (data?.loggedIn) return children;
 
   return null;
 }
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default ProtectedRoute;

@@ -1,63 +1,117 @@
 import { createContext, useContext } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+
+const StyledTable = styled.div`
+  border: 1px solid var(--color-grey-200);
+
+  font-size: 1.4rem;
+  background-color: var(--color-grey-0);
+  border-radius: 7px;
+  overflow: hidden;
+`;
+
+const CommonRow = styled.div`
+  display: grid;
+  grid-template-columns: ${(props) => props.columns};
+  column-gap: 2.4rem;
+  align-items: center;
+  transition: none;
+`;
+
+const StyledHeader = styled(CommonRow)`
+  padding: 1.6rem 2.4rem;
+
+  background-color: var(--color-grey-50);
+  border-bottom: 1px solid var(--color-grey-100);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-weight: 600;
+  color: var(--color-grey-600);
+`;
+
+const StyledRow = styled(CommonRow)`
+  padding: 1.2rem 2.4rem;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
+
+const StyledBody = styled.section`
+  margin: 0.4rem 0;
+`;
+
+const Footer = styled.footer`
+  background-color: var(--color-grey-50);
+  display: flex;
+  justify-content: center;
+  padding: 1.2rem;
+
+  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
+  &:not(:has(*)) {
+    display: none;
+  }
+`;
+
+const Empty = styled.p`
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-align: center;
+  margin: 2.4rem;
+`;
 
 const TableContext = createContext();
 
 function Table({ columns, children }) {
   return (
     <TableContext.Provider value={{ columns }}>
-      <div
-        role="table"
-        className="border border-grey-200 text-sm bg-grey-0 rounded-[7px] overflow-hidden"
-      >
-        {children}
-      </div>
+      <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
 }
 
+Table.propTypes = {
+  columns: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
 function Header({ children }) {
   const { columns } = useContext(TableContext);
   return (
-    <header
-      role="row"
-      className={`grid items-center transition-none px-6 py-4 bg-grey-50 border-b border-grey-100 uppercase tracking-wide font-semibold text-grey-600`}
-      style={{ gridTemplateColumns: columns }}
-    >
+    <StyledHeader role="row" columns={columns} as="header">
       {children}
-    </header>
+    </StyledHeader>
   );
 }
+
+Header.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function Row({ children }) {
   const { columns } = useContext(TableContext);
   return (
-    <div
-      role="row"
-      className="grid items-center transition-none px-6 py-3 border-b border-grey-100 last:border-b-0"
-      style={{ gridTemplateColumns: columns }}
-    >
+    <StyledRow role="row" columns={columns}>
       {children}
-    </div>
+    </StyledRow>
   );
 }
+
+Row.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function Body({ data, render }) {
-  if (!data.length)
-    return (
-      <p className="text-center text-base font-semibold my-6">
-        No data to show at the moment
-      </p>
-    );
+  if (!data.length) return <Empty>No data to show at the moment</Empty>;
 
-  return <section className="my-1">{data.map(render)}</section>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
-function Footer({ children }) {
-  if (!children) return null;
-  return (
-    <footer className="bg-grey-50 flex justify-center py-3">{children}</footer>
-  );
-}
+Body.propTypes = {
+  data: PropTypes.array.isRequired,
+  render: PropTypes.func.isRequired,
+};
 
 Table.Header = Header;
 Table.Body = Body;

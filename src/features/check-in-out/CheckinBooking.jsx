@@ -1,3 +1,12 @@
+import styled from "styled-components";
+import { useEffect, useState } from "react";
+
+import { formatCurrency } from "../../utils/helpers";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "../../hooks/bookings/useBooking";
+import { useCheckin } from "../../hooks/bookings/useCheckin";
+import { useSettings } from "../../hooks/settings/useSettings";
+
 import BookingDataBox from "../../features/bookings/BookingDataBox";
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
@@ -5,15 +14,15 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
-import { useMoveBack } from "../../hooks/useMoveBack";
-
-import { useEffect, useState } from "react";
 import Checkbox from "../../ui/Checkbox";
-import { formatCurrency } from "../../utils/helpers";
 
-import { useBooking } from "../../hooks/bookings/useBooking";
-import { useCheckin } from "../../hooks/bookings/useCheckin";
-import { useSettings } from "../../hooks/settings/useSettings";
+const Box = styled.div`
+  /* Box */
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+  padding: 2.4rem 4rem;
+`;
 
 function CheckinBooking() {
   const [confirmPaid, setConfirmPaid] = useState(false);
@@ -67,7 +76,7 @@ function CheckinBooking() {
       <BookingDataBox booking={booking} />
 
       {!hasBreakfast && (
-        <div className="bg-grey-0 border-grey-100 mb-4 rounded-md border p-6 md:p-10">
+        <Box>
           <Checkbox
             checked={addBreakfast}
             onChange={() => {
@@ -78,10 +87,10 @@ function CheckinBooking() {
           >
             Want to add breakfast for {formatCurrency(optionalBreakfastPrice)}?
           </Checkbox>
-        </div>
+        </Box>
       )}
 
-      <div className="bg-grey-0 border-grey-100 mb-4 rounded-md border p-6 md:p-10">
+      <Box>
         <Checkbox
           checked={confirmPaid}
           onChange={() => setConfirmPaid((confirm) => !confirm)}
@@ -97,7 +106,7 @@ function CheckinBooking() {
                 optionalBreakfastPrice,
               )})`}
         </Checkbox>
-      </div>
+      </Box>
 
       <ButtonGroup>
         <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>

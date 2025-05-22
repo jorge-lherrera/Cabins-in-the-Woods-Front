@@ -1,6 +1,65 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+
 import { PAGE_SIZE } from "../utils/constants";
+
+const StyledPagination = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const P = styled.p`
+  font-size: 1.4rem;
+  margin-left: 0.8rem;
+
+  & span {
+    font-weight: 600;
+  }
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 0.6rem;
+`;
+
+const PaginationButton = styled.button`
+  background-color: ${(props) =>
+    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
+  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 1.4rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s;
+
+  &:has(span:last-child) {
+    padding-left: 0.4rem;
+  }
+
+  &:has(span:first-child) {
+    padding-right: 0.4rem;
+  }
+
+  & svg {
+    height: 1.8rem;
+    width: 1.8rem;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-brand-600);
+    color: var(--color-brand-50);
+  }
+`;
 
 function Pagination({ count }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,12 +71,14 @@ function Pagination({ count }) {
 
   function nextPage() {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;
+
     searchParams.set("page", next);
     setSearchParams(searchParams);
   }
 
   function prevPage() {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
+
     searchParams.set("page", prev);
     setSearchParams(searchParams);
   }
@@ -25,45 +86,34 @@ function Pagination({ count }) {
   if (pageCount <= 1) return null;
 
   return (
-    <div className="w-full flex items-center justify-between">
-      <p className="text-sm ml-2">
-        Showing{" "}
-        <span className="font-semibold">
-          {(currentPage - 1) * PAGE_SIZE + 1}
-        </span>{" "}
-        to{" "}
-        <span className="font-semibold">
+    <StyledPagination>
+      <P>
+        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{" "}
+        <span>
           {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
         </span>{" "}
-        of <span className="font-semibold">{count}</span> results
-      </p>
+        of <span>{count}</span> results
+      </P>
 
-      <div className="flex gap-2">
-        <button
-          onClick={prevPage}
-          disabled={currentPage === 1}
-          className={`bg-grey-50 text-inherit border-none rounded-sm font-medium text-sm flex items-center justify-center gap-1 px-3 py-1.5 transition-all
-            hover:bg-brand-600 hover:text-brand-50
-            ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}
-          `}
-        >
-          <HiChevronLeft className="w-5 h-5" /> <span>Previous</span>
-        </button>
+      <Buttons>
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          <HiChevronLeft /> <span>Previous</span>
+        </PaginationButton>
 
-        <button
+        <PaginationButton
           onClick={nextPage}
           disabled={currentPage === pageCount}
-          className={`bg-grey-50 text-inherit border-none rounded-sm font-medium text-sm flex items-center justify-center gap-1 px-3 py-1.5 transition-all
-            hover:bg-brand-600 hover:text-brand-50
-            ${currentPage === pageCount ? "opacity-50 cursor-not-allowed" : ""}
-          `}
         >
           <span>Next</span>
-          <HiChevronRight className="w-5 h-5" />
-        </button>
-      </div>
-    </div>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
   );
 }
+
+Pagination.propTypes = {
+  count: PropTypes.number.isRequired,
+};
 
 export default Pagination;

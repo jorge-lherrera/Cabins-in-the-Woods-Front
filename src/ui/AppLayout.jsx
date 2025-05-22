@@ -1,18 +1,41 @@
+import styled from "styled-components";
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+
 import Sidebar from "./Sidebar";
+import Header from "./Header";
+
+const StyledAppLayout = styled.div`
+  display: grid;
+  grid-template-columns: 26rem 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+`;
+
+const Main = styled.main`
+  background-color: var(--color-grey-50);
+  padding: 4rem 4.8rem 6.4rem;
+  overflow: scroll;
+`;
+
+const Container = styled.div`
+  max-width: 120rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
 
 function AppLayout() {
   return (
-    <div className="grid h-screen grid-cols-[26rem_1fr] grid-rows-[auto_1fr]">
+    <StyledAppLayout>
       <Header />
       <Sidebar />
-      <main className="bg-grey-50 overflow-auto p-16 pr-20 pb-28">
-        <div className="mx-auto flex max-w-[120rem] flex-col gap-[3.2rem]">
+      <Main>
+        <Container>
           <Outlet />
-        </div>
-      </main>
-    </div>
+        </Container>
+      </Main>
+    </StyledAppLayout>
   );
 }
 

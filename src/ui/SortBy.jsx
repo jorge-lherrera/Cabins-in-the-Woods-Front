@@ -1,4 +1,6 @@
 import { useSearchParams } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import Select from "./Select";
 
 function SortBy({ options }) {
@@ -19,5 +21,15 @@ function SortBy({ options }) {
     />
   );
 }
+
+SortBy.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
 export default SortBy;

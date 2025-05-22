@@ -1,27 +1,48 @@
-function FormRow({ label, error, children, className = "" }) {
-  const isButtonRow = Array.isArray(children)
-    ? children.some(
-        (child) =>
-          child?.type === "button" || child?.type?.displayName === "Button"
-      )
-    : children?.type === "button" || children?.type?.displayName === "Button";
+import styled from "styled-components";
 
+const StyledFormRow = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24rem 1fr 1.2fr;
+  gap: 2.4rem;
+
+  padding: 1.2rem 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+
+  &:has(button) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+  }
+`;
+
+const Label = styled.label`
+  font-weight: 500;
+`;
+
+const Error = styled.span`
+  font-size: 1.4rem;
+  color: var(--color-red-700);
+`;
+
+function FormRow({ label, error, children }) {
   return (
-    <div
-      className={
-        isButtonRow
-          ? `flex justify-end gap-3 py-3 border-b border-grey-100 last:border-b-0 last:pb-0 first:pt-0 ${className}`
-          : `grid items-center grid-cols-[24rem_1fr_1.2fr] gap-6 py-3 border-b border-grey-100 last:border-b-0 last:pb-0 first:pt-0 ${className}`
-      }
-    >
-      {label && (
-        <label htmlFor={children.props?.id} className="font-medium">
-          {label}
-        </label>
-      )}
+    <StyledFormRow>
+      {label && <Label htmlFor={children.props.id}>{label}</Label>}
       {children}
-      {error && <span className="text-red-700 text-sm">{error}</span>}
-    </div>
+      {error && <Error>{error}</Error>}
+    </StyledFormRow>
   );
 }
 

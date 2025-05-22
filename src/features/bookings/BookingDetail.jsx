@@ -1,23 +1,28 @@
-import BookingDataBox from "./BookingDataBox";
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import Tag from "../../ui/Tag";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
-import { useMoveBack } from "../../hooks/useMoveBack";
-
-import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router-dom";
 import { HiArrowUpOnSquare } from "react-icons/hi2";
+import styled from "styled-components";
 
-import Modal from "../../ui/Modal";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useBooking } from "./useBooking";
+import { useCheckout } from "../check-in-out/useCheckout";
+import { useDeleteBooking } from "./useDeleteBooking";
+import BookingDataBox from "./BookingDataBox";
+import Button from "../../ui/Button";
+import ButtonGroup from "../../ui/ButtonGroup";
+import ButtonText from "../../ui/ButtonText";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-
 import Empty from "../../ui/Empty";
-import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
-import { useBooking } from "../../hooks/bookings/useBooking";
-import { useCheckout } from "../../hooks/bookings/useCheckout";
+import Heading from "../../ui/Heading";
+import Modal from "../../ui/Modal";
+import Row from "../../ui/Row";
+import Spinner from "../../ui/Spinner";
+import Tag from "../../ui/Tag";
+
+const HeadingGroup = styled.div`
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+`;
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
@@ -41,10 +46,10 @@ function BookingDetail() {
   return (
     <>
       <Row type="horizontal">
-        <div className="flex items-center gap-6">
-          <Heading as="h1">{`Booking #${bookingId}`}</Heading>
+        <HeadingGroup>
+          <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-        </div>
+        </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 

@@ -1,36 +1,70 @@
-import { useTodayActivity } from "../../hooks/bookings/useTodayActivity";
-import Heading from "../../ui/Heading";
-import Row from "../../ui/Row";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import Spinner from "../../ui/Spinner";
-import TodayItem from "./TodayItem";
+import { Flag } from "../../ui/Flag";
 
-function TodayActivity() {
-  const { activities, isLoading } = useTodayActivity();
+import Tag from "../../ui/Tag";
+import Button from "../../ui/Button";
+import CheckoutButton from "./CheckoutButton";
+
+const StyledTodayItem = styled.li`
+  display: grid;
+  grid-template-columns: 9rem 2rem 1fr 7rem 9rem;
+  gap: 1.2rem;
+  align-items: center;
+
+  font-size: 1.4rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--color-grey-100);
+
+  &:first-child {
+    border-top: 1px solid var(--color-grey-100);
+  }
+`;
+
+const Guest = styled.div`
+  font-weight: 500;
+`;
+
+function TodayItem({ activity }) {
+  const { id, status, guests, numNights } = activity;
 
   return (
-    <div className="bg-grey-0 border-grey-100 col-span-2 flex flex-col gap-6 rounded-md border p-8 pt-6">
-      <Row type="horizontal">
-        <Heading as="h2">Today</Heading>
-      </Row>
+    <StyledTodayItem>
+      {status === "unconfirmed" && <Tag type="green">Arriving</Tag>}
+      {status === "checked-in" && <Tag type="blue">Departing</Tag>}
 
-      {!isLoading ? (
-        activities?.length > 0 ? (
-          <ul className="scrollbar-hide overflow-scroll overflow-x-hidden">
-            {activities.map((activity) => (
-              <TodayItem activity={activity} key={activity.id} />
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-2 text-center text-lg font-semibold">
-            No activity today...
-          </p>
-        )
-      ) : (
-        <Spinner />
+      <Flag src={guests.countryFlag} alt={`Flag of ${guests.country}`} />
+      <Guest>{guests.fullName}</Guest>
+      <div>{numNights} nights</div>
+
+      {status === "unconfirmed" && (
+        <Button
+          size="small"
+          variation="primary"
+          as={Link}
+          to={`/checkin/${id}`}
+        >
+          Check in
+        </Button>
       )}
-    </div>
+      {status === "checked-in" && <CheckoutButton bookingId={id} />}
+    </StyledTodayItem>
   );
 }
 
-export default TodayActivity;
+TodayItem.propTypes = {
+  activity: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    numNights: PropTypes.number.isRequired,
+    guests: PropTypes.shape({
+      fullName: PropTypes.string.isRequired,
+      country: PropTypes.string.isRequired,
+      countryFlag: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+export default TodayItem;

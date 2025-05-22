@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import ToasterComponent from "./utils/ToasterComponent";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import GlobalStyles from "./styles/GlobalStyles";
 
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 
@@ -30,6 +31,7 @@ function App() {
   return (
     <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
         <BrowserRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>

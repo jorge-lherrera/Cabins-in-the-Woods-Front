@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+import styled from "styled-components";
 import { format, isToday } from "date-fns";
 import {
   HiArrowDownOnSquare,
@@ -7,16 +9,43 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 
+import { formatCurrency } from "../../utils/helpers";
+import { formatDistanceFromNow } from "../../utils/helpers";
+import { useCheckout } from "../check-in-out/useCheckout";
+import { useDeleteBooking } from "./useDeleteBooking";
+
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
-import { useCheckout } from "../../hooks/bookings/useCheckout";
-import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
+const Cabin = styled.div`
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-grey-600);
+  font-family: "Sono";
+`;
+
+const Stacked = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  & span:first-child {
+    font-weight: 500;
+  }
+
+  & span:last-child {
+    color: var(--color-grey-500);
+    font-size: 1.2rem;
+  }
+`;
+
+const Amount = styled.div`
+  font-family: "Sono";
+  font-weight: 500;
+`;
 
 function BookingRow({
   booking: {
@@ -44,31 +73,29 @@ function BookingRow({
 
   return (
     <Table.Row>
-      <div className="text-grey-600 font-mono text-base font-semibold">
-        {cabinName}
-      </div>
+      <Cabin>{cabinName}</Cabin>
 
-      <div className="flex flex-col gap-0.5">
-        <span className="font-medium">{guestName}</span>
-        <span className="text-grey-500 text-xs">{email}</span>
-      </div>
+      <Stacked>
+        <span>{guestName}</span>
+        <span>{email}</span>
+      </Stacked>
 
-      <div className="flex flex-col gap-0.5">
-        <span className="font-medium">
+      <Stacked>
+        <span>
           {isToday(new Date(startDate))
             ? "Today"
             : formatDistanceFromNow(startDate)}{" "}
           &rarr; {numNights} night stay
         </span>
-        <span className="text-grey-500 text-xs">
+        <span>
           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
           {format(new Date(endDate), "MMM dd yyyy")}
         </span>
-      </div>
+      </Stacked>
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <div className="font-mono font-medium">{formatCurrency(totalPrice)}</div>
+      <Amount>{formatCurrency(totalPrice)}</Amount>
 
       <Modal>
         <Menus.Menu>
@@ -117,5 +144,25 @@ function BookingRow({
     </Table.Row>
   );
 }
+
+BookingRow.propTypes = {
+  booking: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    created_at: PropTypes.string,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    numNights: PropTypes.number.isRequired,
+    numGuests: PropTypes.number.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    guests: PropTypes.shape({
+      fullName: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+    }).isRequired,
+    cabins: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default BookingRow;

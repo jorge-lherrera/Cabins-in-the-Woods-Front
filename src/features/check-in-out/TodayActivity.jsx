@@ -1,26 +1,61 @@
+import styled from "styled-components";
+
 import { useTodayActivity } from "../../hooks/bookings/useTodayActivity";
+
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
-
 import Spinner from "../../ui/Spinner";
 import TodayItem from "./TodayItem";
+
+const StyledToday = styled.div`
+  /* Box */
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+
+  padding: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  grid-column: 1 / span 2;
+  padding-top: 2.4rem;
+`;
+
+const TodayList = styled.ul`
+  overflow: scroll;
+  overflow-x: hidden;
+
+  /* Removing scrollbars for webkit, firefox, and ms, respectively */
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+`;
+
+const NoActivity = styled.p`
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-top: 0.8rem;
+`;
 
 function TodayActivity() {
   const { activities, isLoading } = useTodayActivity();
 
   return (
-    <div className="bg-grey-0 border-grey-100 col-span-2 flex flex-col gap-6 rounded-md border p-8 pt-6">
+    <StyledToday>
       <Row type="horizontal">
         <Heading as="h2">Today</Heading>
       </Row>
 
       {!isLoading ? (
         activities?.length > 0 ? (
-          <ul className="scrollbar-hide overflow-scroll overflow-x-hidden">
+          <TodayList>
             {activities.map((activity) => (
               <TodayItem activity={activity} key={activity.id} />
             ))}
-          </ul>
+          </TodayList>
         ) : (
           <p className="mt-2 text-center text-lg font-semibold">
             No activity today...
@@ -29,7 +64,7 @@ function TodayActivity() {
       ) : (
         <Spinner />
       )}
-    </div>
+    </StyledToday>
   );
 }
 

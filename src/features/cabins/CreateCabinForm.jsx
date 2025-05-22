@@ -1,4 +1,8 @@
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
+
+import { useCreateCabin } from "../../hooks/cabins/useCreateCabin";
+import { useEditCabin } from "../../hooks/cabins/useEditCabin";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -6,8 +10,6 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
-import { useCreateCabin } from "../../hooks/cabins/useCreateCabin";
-import { useEditCabin } from "../../hooks/cabins/useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { isCreating, createCabin } = useCreateCabin();
@@ -33,7 +35,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
     else
       createCabin(
@@ -43,7 +45,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
             reset();
             onCloseModal?.();
           },
-        }
+        },
       );
   }
 
@@ -153,5 +155,18 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
     </Form>
   );
 }
+
+CreateCabinForm.propTypes = {
+  cabinToEdit: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    maxCapacity: PropTypes.number,
+    regularPrice: PropTypes.number,
+    discount: PropTypes.number,
+    image: PropTypes.string,
+    description: PropTypes.string,
+  }),
+  onCloseModal: PropTypes.func,
+};
 
 export default CreateCabinForm;
