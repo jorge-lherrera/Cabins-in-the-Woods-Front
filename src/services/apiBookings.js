@@ -35,10 +35,24 @@ export async function getStaysAfterDate(date) {
     const { data } = await api.get("/bookings/stays-after-date", {
       params: { date },
     });
-    return data;
+    // Éxito: devuelve datos
+    return { status: "success", data };
   } catch (error) {
+    // Si es 404, no hay estancias para la fecha indicada
+    if (error.response && error.response.status === 404) {
+      return {
+        status: "not_found",
+        data: [],
+        message: error.response.data?.message || "No hay estancias recientes.",
+      };
+    }
+    // Otros errores
     toast.error("Erro ao carregar estadas recentes");
-    throw error;
+    return {
+      status: "error",
+      data: [],
+      message: "Ocurrió un error inesperado.",
+    };
   }
 }
 

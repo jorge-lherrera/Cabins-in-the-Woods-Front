@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Heading from "../../ui/Heading";
 import {
   Cell,
@@ -38,7 +39,10 @@ function prepareData(startData, stays) {
     );
   }
 
-  const data = stays
+  // Protección: stays siempre debe ser array
+  const safeStays = Array.isArray(stays) ? stays : [];
+
+  const data = safeStays
     .reduce((arr, cur) => {
       const num = cur.numNights;
       if (num === 1) return incArrayValue(arr, "1 night");
@@ -59,6 +63,7 @@ function prepareData(startData, stays) {
 function DurationChart({ confirmedStays }) {
   const { isDarkMode } = useDarkMode();
   const startData = isDarkMode ? startDataDark : startDataLight;
+  // Protección: confirmedStays siempre debe ser array
   const data = prepareData(startData, confirmedStays);
 
   return (
@@ -102,5 +107,9 @@ function DurationChart({ confirmedStays }) {
     </div>
   );
 }
+
+DurationChart.propTypes = {
+  confirmedStays: PropTypes.array.isRequired,
+};
 
 export default DurationChart;
