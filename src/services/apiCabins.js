@@ -25,7 +25,7 @@ export async function createCabin(newCabin) {
   }
 }
 
-export async function editCabin(id, updatedCabin) {
+export async function updateCabin(id, updatedCabin) {
   try {
     const formData = new FormData();
     Object.entries(updatedCabin).forEach(([key, value]) => {
