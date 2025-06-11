@@ -1,9 +1,11 @@
-function Guest() {
+import Heading from "../ui/Heading";
+
+function NewGuest() {
   return (
-    <div>
-      <h1>Guest</h1>
-    </div>
+    <>
+      <Heading as="h1">Create a new guest</Heading>
+    </>
   );
 }
 
-export default Guest;
+export default NewGuest;

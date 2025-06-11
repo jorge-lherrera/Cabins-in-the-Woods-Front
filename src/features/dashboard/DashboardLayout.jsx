@@ -20,7 +20,7 @@ function DashboardLayout() {
   if (error) return <div>Erro ao carregar dados do dashboard</div>;
 
   const stats = data?.resource;
-  console.log("Stats data:", stats);
+
   return (
     <StyledDashboardLayout>
       <Stats

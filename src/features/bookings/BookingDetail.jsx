@@ -3,9 +3,10 @@ import { HiArrowUpOnSquare } from "react-icons/hi2";
 import styled from "styled-components";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useBooking } from "./useBooking";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "./useDeleteBooking";
+import { useBooking } from "../../hooks/bookings/useBooking";
+import { useCheckout } from "../../hooks/bookings/useCheckout";
+import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
+
 import BookingDataBox from "./BookingDataBox";
 import Button from "../../ui/Button";
 import ButtonGroup from "../../ui/ButtonGroup";

@@ -48,9 +48,9 @@ function App() {
                 <Route path="/account" element={<Account />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/checkin" element={<Checkin />} />
-                <Route path="/booking" element={<Booking />} />
+                <Route path="/bookings" element={<Booking />} />
                 <Route path="/cabins" element={<Cabins />} />
-                <Route path="/guest" element={<Guest />} />
+                <Route path="/guests" element={<Guest />} />
                 <Route path="/workers" element={<Workers />} />
               </Route>
               <Route path="/login" element={<Login />} />
