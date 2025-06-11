@@ -16,12 +16,26 @@ export function useCheckin() {
       }),
 
     onSuccess: (data) => {
-      toast.success(`Booking #${data.id} successfully checked in`);
-      queryClient.invalidateQueries({ active: true });
+      const booking = data?.resource;
+      toast.success(
+        booking
+          ? `Booking #${booking.id} successfully checked in`
+          : "Check-in realizado com sucesso",
+      );
+
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      if (booking?.id)
+        queryClient.invalidateQueries({ queryKey: ["booking", booking.id] });
       navigate("/");
     },
 
-    onError: () => toast.error("There was an error while checking in"),
+    onError: (err) => {
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Erro ao realizar check-in",
+      );
+    },
   });
 
   return { checkin, isCheckingIn };

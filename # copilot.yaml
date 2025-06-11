@@ -11,6 +11,7 @@ guidelines:
   - Centraliza constantes globales en src/utils/constants.js.
   - Los hooks personalizados deben encapsular lógica de negocio y ser reutilizables.
   - Organiza el código por features en la carpeta src/features.
+  - Todos los mensajes de succeso o error exibidos al usuário deben estar en português Brasil.
 
 patterns:
   - Los hooks deben empezar con "use".

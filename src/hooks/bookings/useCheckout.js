@@ -12,11 +12,23 @@ export function useCheckout() {
       }),
 
     onSuccess: (data) => {
-      toast.success(`Booking #${data.id} successfully checked out`);
-      queryClient.invalidateQueries({ active: true });
+      const booking = data?.resource;
+      toast.success(
+        booking
+          ? `Reserva #${booking.id} finalizada com sucesso`
+          : "Check-out realizado com sucesso",
+      );
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      if (booking?.id)
+        queryClient.invalidateQueries({ queryKey: ["booking", booking.id] });
     },
 
-    onError: () => toast.error("There was an error while checking out"),
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Ocorreu um erro ao finalizar o check-out",
+      ),
   });
 
   return { checkout, isCheckingOut };

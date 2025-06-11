@@ -7,14 +7,21 @@ export function useDeleteBooking() {
 
   const { isLoading: isDeleting, mutate: deleteBooking } = useMutation({
     mutationFn: deleteBookingApi,
-    onSuccess: () => {
-      toast.success("Booking successfully deleted");
-
-      queryClient.invalidateQueries({
-        queryKey: ["bookings"],
-      });
+    onSuccess: (data) => {
+      const booking = data?.resource;
+      toast.success(
+        booking
+          ? `Reserva #${booking.id} excluída com sucesso`
+          : "Reserva excluída com sucesso",
+      );
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Ocorreu um erro ao excluir a reserva",
+      ),
   });
 
   return { isDeleting, deleteBooking };

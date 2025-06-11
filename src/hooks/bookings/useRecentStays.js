@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { subDays } from "date-fns";
 import { useSearchParams } from "react-router-dom";
-import { getStaysAfterDate } from "../../services/apiBookings";
+import { getBookings } from "../../services/apiBookings";
+import { toast } from "react-hot-toast";
 
 export function useRecentStays() {
   const [searchParams] = useSearchParams();
@@ -11,26 +12,34 @@ export function useRecentStays() {
     : Number(searchParams.get("last"));
   const queryDate = subDays(new Date(), numDays).toISOString();
 
-  const { isLoading, data: result } = useQuery({
-    queryFn: () => getStaysAfterDate(queryDate),
+  const { isLoading, data, error } = useQuery({
     queryKey: ["stays", `last-${numDays}`],
+    queryFn: () =>
+      getBookings({
+        startDate: queryDate,
+        orderBy: "startDate",
+        order: "DESC",
+        page: 1,
+      }),
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Ocorreu um erro ao carregar as estadias recentes",
+      ),
   });
 
-  // Manejo seguro de datos según el status de la respuesta
-  const stays = result?.status === "success" ? result.data : [];
+  // Extrae stays de la respuesta estándar
+  const stays = data?.resource?.bookings || [];
   const confirmedStays = stays.filter(
     (stay) => stay.status === "checked-in" || stay.status === "checked-out",
   );
-  const notFoundMessage =
-    result?.status === "not_found" ? result.message : null;
-  const errorMessage = result?.status === "error" ? result.message : null;
 
   return {
     isLoading,
     stays,
     confirmedStays,
     numDays,
-    notFoundMessage,
-    errorMessage,
+    error,
   };
 }
