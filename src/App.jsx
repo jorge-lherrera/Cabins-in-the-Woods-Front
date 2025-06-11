@@ -5,6 +5,7 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 import ToasterComponent from "./utils/ToasterComponent";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import GlobalStyles from "./styles/GlobalStyles";
+import Spinner from "./ui/Spinner";
 
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 
@@ -33,7 +34,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <BrowserRouter>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner />}>
             <Routes>
               <Route
                 element={
