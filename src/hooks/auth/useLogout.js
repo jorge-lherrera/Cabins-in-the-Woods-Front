@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logout as logoutApi } from "../../services/apiAuth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export function useLogout() {
   const navigate = useNavigate();
@@ -10,8 +11,15 @@ export function useLogout() {
     mutationFn: logoutApi,
     onSuccess: () => {
       queryClient.removeQueries();
+      toast.success("Logout realizado com sucesso");
       navigate("/login", { replace: true });
     },
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+        err?.message ||
+        "Ocorreu um erro ao sair"
+      ),
   });
 
   return { logout, isLoading };

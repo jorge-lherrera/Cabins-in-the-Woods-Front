@@ -1,13 +1,10 @@
-import { api } from "../../services/apiUrl";
 import { useQuery } from "@tanstack/react-query";
+import { getSession } from "../../services/apiAuth";
 
-export const useSession = () => {
+export function useSession() {
   return useQuery({
     queryKey: ["session"],
-    queryFn: async () => {
-      const response = await api.get("/session", { withCredentials: true });
-      return response.data;
-    },
+    queryFn: getSession,
     retry: false,
   });
-};
+}
