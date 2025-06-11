@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+
 import {
   HiOutlineBanknotes,
   HiOutlineBriefcase,
@@ -6,59 +7,48 @@ import {
   HiOutlineChartBar,
 } from "react-icons/hi2";
 
+import Stat from "./Stat";
 import { formatCurrency } from "../../utils/helpers";
 
-import Stat from "./Stat";
-
 function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
-  const numBookings = Array.isArray(bookings) ? bookings.length : 0;
-
-  const sales = Array.isArray(bookings)
-    ? bookings.reduce((acc, cur) => acc + cur.totalPrice, 0)
-    : 0;
-
-  const checkins = Array.isArray(confirmedStays) ? confirmedStays.length : 0;
-
-  const occupation =
-    (Array.isArray(confirmedStays)
-      ? confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0)
-      : 0) / (numDays * cabinCount || 1); // evita división por cero
-
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <>
       <Stat
         title="Bookings"
         color="blue"
         icon={<HiOutlineBriefcase />}
-        value={numBookings}
+        value={bookings}
       />
       <Stat
         title="Sales"
         color="green"
         icon={<HiOutlineBanknotes />}
-        value={formatCurrency(sales)}
+        value={formatCurrency(numDays)}
       />
       <Stat
         title="Check ins"
         color="indigo"
         icon={<HiOutlineCalendarDays />}
-        value={checkins}
+        value={confirmedStays}
       />
       <Stat
         title="Occupancy rate"
         color="yellow"
         icon={<HiOutlineChartBar />}
-        value={Math.round(occupation * 100) + "%"}
+        value={
+          typeof cabinCount === "number" ? `${cabinCount}%` : cabinCount || "0%"
+        }
       />
-    </div>
+    </>
   );
 }
 
 Stats.propTypes = {
-  bookings: PropTypes.array.isRequired,
-  confirmedStays: PropTypes.array.isRequired,
+  bookings: PropTypes.number.isRequired,
+  confirmedStays: PropTypes.number.isRequired,
   numDays: PropTypes.number.isRequired,
-  cabinCount: PropTypes.number.isRequired,
+  cabinCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
 };
 
 export default Stats;

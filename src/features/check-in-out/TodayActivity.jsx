@@ -1,14 +1,11 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
-
-import { useTodayActivity } from "../../hooks/bookings/useTodayActivity";
-
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
 import Spinner from "../../ui/Spinner";
 import TodayItem from "./TodayItem";
 
 const StyledToday = styled.div`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
@@ -25,7 +22,6 @@ const TodayList = styled.ul`
   overflow: scroll;
   overflow-x: hidden;
 
-  /* Removing scrollbars for webkit, firefox, and ms, respectively */
   &::-webkit-scrollbar {
     width: 0 !important;
   }
@@ -40,8 +36,8 @@ const NoActivity = styled.p`
   margin-top: 0.8rem;
 `;
 
-function TodayActivity() {
-  const { activities, isLoading } = useTodayActivity();
+function TodayActivity({ bookingsToday }) {
+  if (!bookingsToday) return <Spinner />;
 
   return (
     <StyledToday>
@@ -49,23 +45,24 @@ function TodayActivity() {
         <Heading as="h2">Today</Heading>
       </Row>
 
-      {!isLoading ? (
-        activities?.length > 0 ? (
-          <TodayList>
-            {activities.map((activity) => (
-              <TodayItem activity={activity} key={activity.id} />
-            ))}
-          </TodayList>
-        ) : (
-          <p className="mt-2 text-center text-lg font-semibold">
-            No activity today...
-          </p>
-        )
+      {bookingsToday.length > 0 ? (
+        <TodayList>
+          {bookingsToday.map((activity) => (
+            <TodayItem
+              activity={activity.resource}
+              key={activity.resource.id}
+            />
+          ))}
+        </TodayList>
       ) : (
-        <Spinner />
+        <NoActivity>No activity today...</NoActivity>
       )}
     </StyledToday>
   );
 }
+
+TodayActivity.propTypes = {
+  bookingsToday: PropTypes.array,
+};
 
 export default TodayActivity;

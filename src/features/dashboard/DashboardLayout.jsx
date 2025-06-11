@@ -1,9 +1,5 @@
 import styled from "styled-components";
-
-import { useRecentBookings } from "../../hooks/bookings/useRecentBookings";
-import { useCabins } from "../../hooks/cabins/useCabins";
-import { useRecentStays } from "../../hooks/bookings/useRecentStays";
-
+import { useBookings } from "../../hooks/bookings/useBookings";
 import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
@@ -18,23 +14,24 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { bookings, isLoading: isLoading1 } = useRecentBookings();
-  const { confirmedStays, isLoading: isLoading2, numDays } = useRecentStays();
-  const { cabins, isLoading: isLoading3 } = useCabins();
+  const { isLoading, error, data } = useBookings();
 
-  if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
+  if (isLoading) return <Spinner />;
+  if (error) return <div>Erro ao carregar dados do dashboard</div>;
 
+  const stats = data?.resource;
+  console.log("Stats data:", stats);
   return (
     <StyledDashboardLayout>
       <Stats
-        bookings={bookings}
-        confirmedStays={confirmedStays}
-        numDays={numDays}
-        cabinCount={cabins.length}
+        bookings={stats?.total ?? 0}
+        confirmedStays={stats?.checkedInBookings ?? 0}
+        numDays={stats?.totalRevenue ?? 0}
+        cabinCount={stats?.occupancyRate ?? 0}
       />
-      <TodayActivity />
-      <DurationChart confirmedStays={confirmedStays} />
-      <SalesChart bookings={bookings} numDays={numDays} />
+      <TodayActivity bookingsToday={stats?.bookingsToday ?? []} />
+      <DurationChart nightRanges={stats?.nightRanges ?? {}} />
+      <SalesChart salesChart={stats?.salesChart ?? []} />
     </StyledDashboardLayout>
   );
 }

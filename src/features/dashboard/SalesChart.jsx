@@ -9,64 +9,46 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 import { useDarkMode } from "../../context/DarkModeContext";
-
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
 
-  /* Hack to change grid line colors */
   & .recharts-cartesian-grid-horizontal line,
   & .recharts-cartesian-grid-vertical line {
     stroke: var(--color-grey-300);
   }
 `;
 
-function SalesChart({ bookings, numDays }) {
+function SalesChart({ salesChart }) {
   const { isDarkMode } = useDarkMode();
 
-  const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
-    end: new Date(),
-  });
-
-  const data = allDates.map((date) => {
-    return {
-      label: format(date, "MMM dd"),
-      totalSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.totalPrice, 0),
-      extrasSales: bookings
-        .filter((booking) => isSameDay(date, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
-    };
-  });
+  // Asegúrate de que salesChart tenga fechas válidas y revenue como número
+  const data = (salesChart ?? []).map((item) => ({
+    ...item,
+    label: item.date ? format(parseISO(item.date), "MMM dd") : "",
+    revenue: Number(item.revenue) || 0,
+  }));
 
   const colors = isDarkMode
     ? {
-        totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
-        extrasSales: { stroke: "#22c55e", fill: "#22c55e" },
+        revenue: { stroke: "#4f46e5", fill: "#4f46e5" },
         text: "#e5e7eb",
         background: "#18212f",
       }
     : {
-        totalSales: { stroke: "#4f46e5", fill: "#c7d2fe" },
-        extrasSales: { stroke: "#16a34a", fill: "#dcfce7" },
+        revenue: { stroke: "#4f46e5", fill: "#c7d2fe" },
         text: "#374151",
         background: "#fff",
       };
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">
-        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
-        {format(allDates.at(-1), "MMM dd yyyy")}{" "}
-      </Heading>
-
+      <Heading as="h2">Sales (last 30 days)</Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
@@ -82,21 +64,12 @@ function SalesChart({ bookings, numDays }) {
           <CartesianGrid strokeDasharray="4" />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Area
-            dataKey="totalSales"
+            dataKey="revenue"
             type="monotone"
-            stroke={colors.totalSales.stroke}
-            fill={colors.totalSales.fill}
+            stroke={colors.revenue.stroke}
+            fill={colors.revenue.fill}
             strokeWidth={2}
-            name="Total sales"
-            unit="$"
-          />
-          <Area
-            dataKey="extrasSales"
-            type="monotone"
-            stroke={colors.extrasSales.stroke}
-            fill={colors.extrasSales.fill}
-            strokeWidth={2}
-            name="Extras sales"
+            name="Revenue"
             unit="$"
           />
         </AreaChart>
@@ -106,14 +79,13 @@ function SalesChart({ bookings, numDays }) {
 }
 
 SalesChart.propTypes = {
-  bookings: PropTypes.arrayOf(
+  salesChart: PropTypes.arrayOf(
     PropTypes.shape({
-      created_at: PropTypes.string.isRequired,
-      totalPrice: PropTypes.number.isRequired,
-      extrasPrice: PropTypes.number.isRequired,
+      date: PropTypes.string.isRequired,
+      revenue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
     }),
   ).isRequired,
-  numDays: PropTypes.number.isRequired,
 };
 
 export default SalesChart;
