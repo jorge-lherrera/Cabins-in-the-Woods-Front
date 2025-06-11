@@ -1,0 +1,22 @@
+# copilot.yaml
+guidelines:
+  - Usa React Query para todas las llamadas a la API.
+  - Los hooks deben manejar los mensajes de error con react-hot-toast.
+  - Los services solo deben comunicarse con la API y no mostrar mensajes.
+  - Usa la estructura { resource, error, status } para las respuestas de la API.
+  - Prefiere funciones asíncronas y await.
+  - Usa styled-components para los estilos en componentes de UI.
+  - Organiza el código por features en la carpeta src/features.
+  - Usa Yup para validaciones de formularios en la carpeta src/validations.
+  - Centraliza constantes globales en src/utils/constants.js.
+  - Los hooks personalizados deben encapsular lógica de negocio y ser reutilizables.
+  - Organiza el código por features en la carpeta src/features.
+
+patterns:
+  - Los hooks deben empezar con "use".
+  - Los archivos de servicios deben empezar con "api".
+  - Los componentes de UI deben estar en la carpeta "ui".
+  - Los archivos de validaciones deben terminar en Validation.js o Validations.js.
+  - Los archivos de constantes deben estar en la carpeta "utils" y llamarse constants.js.
+  - Los archivos de cada feature deben estar en src/features/[featureName].
+  - Los archivos de contexto deben estar en src/context y terminar en Context.jsx.

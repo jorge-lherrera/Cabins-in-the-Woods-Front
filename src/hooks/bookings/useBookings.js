@@ -2,38 +2,40 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
+import { toast } from "react-hot-toast";
 
 export function useBookings() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
-  // FILTER
   const filterValue = searchParams.get("status");
   const filter =
     !filterValue || filterValue === "all"
       ? null
       : { field: "status", value: filterValue };
-  // { field: "totalPrice", value: 5000, method: "gte" };
 
-  // SORT
   const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
   const [field, direction] = sortByRaw.split("-");
   const sortBy = { field, direction };
 
-  // PAGINATION
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
-  // QUERY
-  const {
-    isLoading,
-    data: { data: bookings, count } = {},
-    error,
-  } = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ["bookings", filter, sortBy, page],
     queryFn: () => getBookings({ filter, sortBy, page }),
+    onError: (err) => {
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Error al cargar las reservas",
+      );
+    },
+    keepPreviousData: true,
   });
 
-  // PRE-FETCHING
+  const bookings = data?.resource?.bookings || [];
+  const count = data?.resource?.count || 0;
+
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)
