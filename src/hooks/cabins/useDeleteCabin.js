@@ -7,14 +7,21 @@ export function useDeleteCabin() {
 
   const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
     mutationFn: deleteCabinApi,
-    onSuccess: () => {
-      toast.success("Cabin successfully deleted");
-
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
+    onSuccess: (data) => {
+      const cabin = data?.resource;
+      toast.success(
+        cabin?.name
+          ? `Cabana "${cabin.name}" excluída com sucesso`
+          : "Cabana excluída com sucesso",
+      );
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Ocorreu um erro ao excluir a cabana",
+      ),
   });
 
   return { isDeleting, deleteCabin };

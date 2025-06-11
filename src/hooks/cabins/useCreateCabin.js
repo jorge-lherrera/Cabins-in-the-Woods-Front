@@ -7,11 +7,21 @@ export function useCreateCabin() {
 
   const { mutate: createCabin, isLoading: isCreating } = useMutation({
     mutationFn: createCabinApi,
-    onSuccess: () => {
-      toast.success("New cabin successfully created");
+    onSuccess: (data) => {
+      const cabin = data?.resource;
+      toast.success(
+        cabin?.name
+          ? `Cabana "${cabin.name}" criada com sucesso`
+          : "Cabana criada com sucesso",
+      );
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) =>
+      toast.error(
+        err?.response?.data?.error ||
+          err?.message ||
+          "Ocorreu um erro ao criar a cabana",
+      ),
   });
 
   return { isCreating, createCabin };
