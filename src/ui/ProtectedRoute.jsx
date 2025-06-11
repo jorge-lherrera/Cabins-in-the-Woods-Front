@@ -19,7 +19,7 @@ function ProtectedRoute({ children }) {
   const { data, isLoading } = useSession();
 
   useEffect(() => {
-    if (!isLoading && !data?.resource) navigate("/login");
+    if (!isLoading && !data?.loggedIn) navigate("/login");
   }, [isLoading, data, navigate]);
 
   if (isLoading)
@@ -29,7 +29,7 @@ function ProtectedRoute({ children }) {
       </FullPage>
     );
 
-  if (data?.resource) return children;
+  if (data?.loggedIn) return children;
 
   return null;
 }
