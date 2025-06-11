@@ -12,7 +12,7 @@ guidelines:
   - Los hooks personalizados deben encapsular lógica de negocio y ser reutilizables.
   - Organiza el código por features en la carpeta src/features.
   - Todos los mensajes de succeso o error exibidos al usuário deben estar en português Brasil.
-  - No coloques comentarios en el codigo sino es solicitado.
+  - El front solamente mostrara resultados, todos los calculos, filtros y logica en general deben venir de la api.
 patterns:
   - Los hooks deben empezar con "use".
   - Los archivos de servicios deben empezar con "api".

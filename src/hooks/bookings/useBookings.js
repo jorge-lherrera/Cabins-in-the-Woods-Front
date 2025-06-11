@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
-import { PAGE_SIZE } from "../../utils/constants";
 import { toast } from "react-hot-toast";
 
 export function useBookings() {
@@ -31,10 +30,9 @@ export function useBookings() {
     keepPreviousData: true,
   });
 
-  const bookings = data?.resource?.bookings || [];
-  const count = data?.resource?.count || 0;
-
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const bookings = data?.resource || [];
+  const count = data?.resource?.total || 0;
+  const pageCount = data?.resource?.pageCount || 0;
 
   if (page < pageCount)
     queryClient.prefetchQuery({
@@ -48,5 +46,5 @@ export function useBookings() {
       queryFn: () => getBookings({ status, orderBy, order, page: page - 1 }),
     });
 
-  return { isLoading, error, bookings, count, data };
+  return { isLoading, error, bookings, count, pageCount };
 }

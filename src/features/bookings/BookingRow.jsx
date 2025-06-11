@@ -9,10 +9,10 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
-import { useCheckout } from "../check-in-out/useCheckout";
-import { useDeleteBooking } from "./useDeleteBooking";
+import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
+
+import { useCheckout } from "../../hooks/bookings/useCheckout";
+import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
@@ -47,24 +47,25 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  booking: {
+function BookingRow({ booking }) {
+  const {
     id: bookingId,
-    created_at,
+    createdAt,
     startDate,
     endDate,
     numNights,
     numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
+    guest: { fullName: guestName, email },
+    cabin: { name: cabinName },
+  } = booking;
+
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
   const { deleteBooking, isDeleting } = useDeleteBooking();
 
+  console.log("booking roww", booking);
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -153,13 +154,14 @@ BookingRow.propTypes = {
     endDate: PropTypes.string.isRequired,
     numNights: PropTypes.number.isRequired,
     numGuests: PropTypes.number.isRequired,
-    totalPrice: PropTypes.number.isRequired,
+    totalPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     status: PropTypes.string.isRequired,
-    guests: PropTypes.shape({
+    guest: PropTypes.shape({
       fullName: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
     }).isRequired,
-    cabins: PropTypes.shape({
+    cabin: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,

@@ -7,23 +7,23 @@ export async function getBooking(id) {
 }
 
 export async function getBookings({
-  page = 1,
-  limit = PAGE_SIZE,
-  orderBy = "startDate",
-  order = "ASC",
+  page,
+  limit,
+  orderBy,
+  order,
   status,
-  ...extraFilters
 } = {}) {
-  const params = {
-    page,
-    limit,
-    orderBy,
-    order,
-    ...extraFilters,
-  };
-  if (status) params.status = status;
+  const params = {};
+
+  params.page = page ?? 1;
+  params.limit = limit ?? PAGE_SIZE;
+  params.orderBy = orderBy ?? "startDate";
+  params.order = order ?? "ASC";
+
+  if (status && status !== "all") params.status = status;
 
   const { data } = await api.get("/bookings", { params });
+
   return data;
 }
 

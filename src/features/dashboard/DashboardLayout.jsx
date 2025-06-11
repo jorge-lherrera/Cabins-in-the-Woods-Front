@@ -14,12 +14,12 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { isLoading, error, data } = useBookings();
+  const { isLoading, error, bookings } = useBookings();
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Erro ao carregar dados do dashboard</div>;
 
-  const stats = data?.resource;
+  const stats = bookings;
 
   return (
     <StyledDashboardLayout>
