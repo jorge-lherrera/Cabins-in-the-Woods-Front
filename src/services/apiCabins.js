@@ -1,6 +1,28 @@
+import { PAGE_SIZE } from "../utils/constants";
 import { api } from "./apiUrl";
 
-export async function getCabins(params = {}) {
+export async function getCabin(id) {
+  const { data } = await api.get(`/cabins/${id}`);
+  return data;
+}
+
+export async function getCabins({
+  page,
+  limit,
+  orderBy,
+  order,
+  discountFilter,
+} = {}) {
+  const params = {};
+  params.page = page ?? 1;
+  params.limit = limit ?? PAGE_SIZE;
+  params.orderBy = orderBy ?? "name";
+  params.order = order ?? "ASC";
+
+  if (discountFilter && discountFilter !== "all") {
+    params.discountFilter = discountFilter;
+  }
+
   const { data } = await api.get("/cabins", { params });
   return data;
 }

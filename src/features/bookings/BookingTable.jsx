@@ -29,7 +29,7 @@ function BookingTable() {
         <Table.Body
           data={bookings}
           render={(booking) => (
-            <BookingRow key={booking.resource.id} booking={booking.resource} />
+            <BookingRow key={booking.id} booking={booking} />
           )}
         />
 
