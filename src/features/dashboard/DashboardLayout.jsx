@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useBookings } from "../../hooks/bookings/useBookings";
+
+import { useDashboardBookings } from "../../hooks/bookings/useDashboardBookings";
+
 import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
@@ -14,7 +16,7 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { isLoading, error, bookings } = useBookings();
+  const { isLoading, error, bookings } = useDashboardBookings();
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Erro ao carregar dados do dashboard</div>;

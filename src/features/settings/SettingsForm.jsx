@@ -1,4 +1,3 @@
-import { useSettings } from "../../hooks/settings/useSettings";
 import { useUpdateSetting } from "../../hooks/settings/useUpdateSetting";
 
 import Form from "../../ui/Form";
@@ -7,18 +6,9 @@ import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 
 function UpdateSettingsForm() {
-  const {
-    isLoading,
-    settings: {
-      minBookingLength,
-      maxBookingLength,
-      maxGuestsPerBooking,
-      breakfastPrice,
-    } = {},
-  } = useSettings();
   const { isUpdating, updateSetting } = useUpdateSetting();
 
-  if (isLoading) return <Spinner />;
+  if (isUpdating) return <Spinner />;
 
   function handleUpdate(e, field) {
     const { value } = e.target;

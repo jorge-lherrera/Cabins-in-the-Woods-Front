@@ -7,19 +7,38 @@ export function useBookings() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
-  const status = (() => {
-    const value = searchParams.get("status");
-    return !value || value === "all" ? undefined : value;
-  })();
+  // Valores por defecto
+  const DEFAULTS = {
+    page: 1,
+    orderBy: "startDate",
+    order: "desc",
+  };
 
-  const sortByRaw = searchParams.get("sortBy") || "startDate-desc";
-  const [orderBy, order] = sortByRaw.split("-");
+  // Obtener y validar parámetros
+  const statusParam = searchParams.get("status");
+  const status =
+    !statusParam || statusParam === "all" ? undefined : statusParam;
 
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const sortBy =
+    searchParams.get("sortBy") || `${DEFAULTS.orderBy}-${DEFAULTS.order}`;
+  const [orderBy, order] = sortBy.split("-");
+
+  const pageRaw = searchParams.get("page");
+  const page = isNaN(Number(pageRaw)) ? DEFAULTS.page : Number(pageRaw);
+
+  // Crear objeto de filtros válidos
+  const filters = {
+    ...(status && { status }),
+    orderBy,
+    order,
+    page,
+  };
+
+  const queryKey = ["bookings", filters];
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["bookings", status, orderBy, order, page],
-    queryFn: () => getBookings({ status, orderBy, order, page }),
+    queryKey,
+    queryFn: () => getBookings(filters),
     onError: (err) => {
       toast.error(
         err?.response?.data?.error ||
@@ -33,19 +52,25 @@ export function useBookings() {
   const bookings = data?.resource || [];
   const count = data?.resource?.total || 0;
   const pageCount = data?.resource?.pageCount || 0;
+  console.log("useBookings", bookings);
 
-  if (page < pageCount)
+  // Prefetch siguiente página
+  if (page < pageCount) {
+    const nextPageFilters = { ...filters, page: page + 1 };
     queryClient.prefetchQuery({
-      queryKey: ["bookings", status, orderBy, order, page + 1],
-      queryFn: () => getBookings({ status, orderBy, order, page: page + 1 }),
+      queryKey: ["bookings", nextPageFilters],
+      queryFn: () => getBookings(nextPageFilters),
     });
+  }
 
-  if (page > 1)
+  // Prefetch página anterior
+  if (page > 1) {
+    const prevPageFilters = { ...filters, page: page - 1 };
     queryClient.prefetchQuery({
-      queryKey: ["bookings", status, orderBy, order, page - 1],
-      queryFn: () => getBookings({ status, orderBy, order, page: page - 1 }),
+      queryKey: ["bookings", prevPageFilters],
+      queryFn: () => getBookings(prevPageFilters),
     });
+  }
 
-  console.log(bookings, `esto es bookings`);
   return { isLoading, error, bookings, count, pageCount };
 }
