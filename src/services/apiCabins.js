@@ -30,6 +30,8 @@ export async function getCabins({
 export async function createCabin(newCabin) {
   const formData = new FormData();
   Object.entries(newCabin).forEach(([key, value]) => {
+    // Solo agrega 'file' si hay archivo
+    if (key === "file" && !value) return;
     formData.append(key, value);
   });
   const { data } = await api.post("/cabins", formData, {

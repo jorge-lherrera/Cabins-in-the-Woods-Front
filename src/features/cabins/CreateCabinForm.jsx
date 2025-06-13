@@ -1,13 +1,17 @@
-import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import { useCreateCabin } from "../../hooks/cabins/useCreateCabin";
 import { useEditCabin } from "../../hooks/cabins/useEditCabin";
+
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
+import cabinsValidationSchema from "../../validations/cabinsValidations";
 
 function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { isCreating, createCabin } = useCreateCabin();
@@ -17,34 +21,64 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
-    defaultValues: isEditSession ? editValues : {},
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: isEditSession
+      ? {
+          ...editValues,
+          maxCapacity: Number(editValues.maxCapacity),
+          regularPrice: Number(editValues.regularPrice),
+          discount: Number(editValues.discount),
+        }
+      : {},
+    resolver: yupResolver(cabinsValidationSchema),
   });
   const { errors } = formState;
 
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
+    const payload = {
+      name: data.name,
+      maxCapacity: data.maxCapacity ? Number(data.maxCapacity) : undefined,
+      regularPrice: data.regularPrice ? Number(data.regularPrice) : undefined,
+      discount: data.discount ? Number(data.discount) : 0,
+      description: data.description || "",
+      file: image,
+    };
+
+    console.log("Payload to create/edit cabin:", payload);
+
     if (isEditSession) {
       editCabin(
-        { id: editId, newCabinData: { ...data, image } },
         {
-          onSuccess: (data) => {
+          id: editId,
+          newCabinData: {
+            ...data,
+            maxCapacity: data.maxCapacity
+              ? Number(data.maxCapacity)
+              : undefined,
+            regularPrice: data.regularPrice
+              ? Number(data.regularPrice)
+              : undefined,
+            discount: data.discount ? Number(data.discount) : 0,
+            description: data.description || "",
+            file: image,
+          },
+        },
+        {
+          onSuccess: () => {
             reset();
             onCloseModal?.();
           },
         },
       );
     } else {
-      createCabin(
-        { ...data, image: image },
-        {
-          onSuccess: (data) => {
-            reset();
-            onCloseModal?.();
-          },
+      createCabin(payload, {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
         },
-      );
+      });
     }
   }
 
@@ -62,9 +96,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           type="text"
           id="name"
           disabled={isWorking}
-          {...register("name", {
-            required: "Este campo é obrigatório",
-          })}
+          {...register("name")}
         />
       </FormRow>
 
@@ -73,13 +105,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           type="number"
           id="maxCapacity"
           disabled={isWorking}
-          {...register("maxCapacity", {
-            required: "Este campo é obrigatório",
-            min: {
-              value: 1,
-              message: "A capacidade deve ser pelo menos 1",
-            },
-          })}
+          {...register("maxCapacity")}
         />
       </FormRow>
 
@@ -88,13 +114,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           type="number"
           id="regularPrice"
           disabled={isWorking}
-          {...register("regularPrice", {
-            required: "Este campo é obrigatório",
-            min: {
-              value: 1,
-              message: "O preço deve ser pelo menos 1",
-            },
-          })}
+          {...register("regularPrice")}
         />
       </FormRow>
 
@@ -104,35 +124,21 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
           id="discount"
           defaultValue={0}
           disabled={isWorking}
-          {...register("discount", {
-            required: "Este campo é obrigatório",
-            validate: (value) =>
-              value <= getValues().regularPrice ||
-              "O desconto deve ser menor que o preço regular",
-          })}
+          {...register("discount")}
         />
       </FormRow>
 
       <FormRow label="Descrição da cabana" error={errors?.description?.message}>
         <Textarea
-          type="number"
           id="description"
           defaultValue=""
           disabled={isWorking}
-          {...register("description", {
-            required: "Este campo é obrigatório",
-          })}
+          {...register("description")}
         />
       </FormRow>
 
       <FormRow label="Foto da cabana" error={errors?.image?.message}>
-        <FileInput
-          id="image"
-          accept="image/*"
-          {...register("image", {
-            required: isEditSession ? false : "Este campo é obrigatório",
-          })}
-        />
+        <FileInput id="image" accept="image/*" {...register("image")} />
       </FormRow>
 
       <FormRow>
@@ -158,7 +164,7 @@ CreateCabinForm.propTypes = {
     maxCapacity: PropTypes.number,
     regularPrice: PropTypes.number,
     discount: PropTypes.number,
-    image: PropTypes.string,
+
     description: PropTypes.string,
   }),
   onCloseModal: PropTypes.func,

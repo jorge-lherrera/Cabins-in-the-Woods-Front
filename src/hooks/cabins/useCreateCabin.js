@@ -9,6 +9,7 @@ export function useCreateCabin() {
     mutationFn: createCabinApi,
     onSuccess: (data) => {
       const cabin = data?.resource;
+      console.log("Cabin created successfully:", cabin);
       toast.success(
         cabin?.name
           ? `Cabana "${cabin.name}" criada com sucesso`
