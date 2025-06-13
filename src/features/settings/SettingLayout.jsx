@@ -104,12 +104,14 @@ function SettingLayout() {
           onChange={handleChange}
         />
       </FormRow>
-      <Button
-        disabled={!isChanged || isUpdating}
-        title={!isChanged ? "Altere algum campo para ativar." : undefined}
-      >
-        Update
-      </Button>
+      <div style={{ paddingTop: "1.2rem" }}>
+        <Button
+          disabled={!isChanged || isUpdating}
+          title={!isChanged ? "Altere algum campo para ativar." : undefined}
+        >
+          Update
+        </Button>
+      </div>
     </Form>
   );
 }
