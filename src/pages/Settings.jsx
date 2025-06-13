@@ -10,6 +10,7 @@ function Settings() {
       <Row>
         <Heading as="h1">Settings</Heading>
       </Row>
+
       <Row>
         <SettingLayout />
         <AddSetting />

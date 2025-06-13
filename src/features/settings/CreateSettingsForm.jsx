@@ -24,12 +24,20 @@ function CreateSettingForm({ onCloseModal }) {
   const { errors } = formState;
 
   function onSubmit(data) {
-    createSetting(data, {
-      onSuccess: () => {
-        reset();
-        onCloseModal?.();
+    createSetting(
+      {
+        minBookingLength: Number(data.minBookingLength),
+        maxBookingLength: Number(data.maxBookingLength),
+        maxGuestsPerBooking: Number(data.maxGuestsPerBooking),
+        breakfastPrice: Number(data.breakfastPrice),
       },
-    });
+      {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
+        },
+      },
+    );
   }
 
   function onError(errors) {
