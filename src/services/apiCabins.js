@@ -27,13 +27,16 @@ export async function getCabins({
   return data;
 }
 
-export async function createCabin(newCabin) {
+export async function createCabin(payload) {
   const formData = new FormData();
-  Object.entries(newCabin).forEach(([key, value]) => {
-    // Solo agrega 'file' si hay archivo
-    if (key === "file" && !value) return;
-    formData.append(key, value);
+  Object.entries(payload).forEach(([key, value]) => {
+    if (key === "file" && value) {
+      formData.append("file", value);
+    } else if (value !== undefined && value !== null) {
+      formData.append(key, value);
+    }
   });
+
   const { data } = await api.post("/cabins", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
