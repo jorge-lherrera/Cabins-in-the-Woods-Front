@@ -9,7 +9,7 @@ import Spinner from "./ui/Spinner";
 
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 
-const Account = lazy(() => import("./pages/Account"));
+const WorkersAccount = lazy(() => import("./pages/WorkersAccount"));
 const Booking = lazy(() => import("./pages/Booking"));
 const Cabins = lazy(() => import("./pages/Cabins"));
 const Checkin = lazy(() => import("./pages/Checkin"));
@@ -18,7 +18,6 @@ const Guest = lazy(() => import("./pages/Guest"));
 const Login = lazy(() => import("./pages/Login"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const Settings = lazy(() => import("./pages/Settings"));
-const Workers = lazy(() => import("./pages/Workers"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,13 +44,12 @@ function App() {
               >
                 <Route index element={<Navigate replace to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/account" element={<Account />} />
+                <Route path="/account" element={<WorkersAccount />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/checkin" element={<Checkin />} />
                 <Route path="/bookings" element={<Booking />} />
                 <Route path="/cabins" element={<Cabins />} />
                 <Route path="/guests" element={<Guest />} />
-                <Route path="/workers" element={<Workers />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />
