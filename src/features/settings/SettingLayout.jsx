@@ -28,8 +28,7 @@ function SettingLayout() {
   }, [settings]);
 
   if (isLoading || fields === null) return <Spinner />;
-  if (!settings || Object.keys(settings).length === 0)
-    return <Empty resourceName="settings" />;
+
   if (isUpdating) return <Spinner />;
 
   function handleChange(e) {
@@ -105,7 +104,12 @@ function SettingLayout() {
           onChange={handleChange}
         />
       </FormRow>
-      <Button disabled={!isChanged || isUpdating}>Update</Button>
+      <Button
+        disabled={!isChanged || isUpdating}
+        title={!isChanged ? "Altere algum campo para ativar." : undefined}
+      >
+        Update
+      </Button>
     </Form>
   );
 }

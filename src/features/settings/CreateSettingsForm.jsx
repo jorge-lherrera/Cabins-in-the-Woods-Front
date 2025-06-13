@@ -14,12 +14,6 @@ function CreateSettingForm({ onCloseModal }) {
 
   const { register, handleSubmit, reset, formState } = useForm({
     resolver: yupResolver(settingValidationSchema),
-    defaultValues: {
-      minBookingLength: 1,
-      maxBookingLength: 30,
-      maxGuestsPerBooking: 10,
-      breakfastPrice: 0,
-    },
   });
   const { errors } = formState;
 
