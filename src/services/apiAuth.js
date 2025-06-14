@@ -1,12 +1,11 @@
 import { api } from "./apiUrl";
 
 export async function login({ email, password }) {
-  await api.post("/login", { email, password });
-  const { data } = await api.get("/session");
-  if (data.resource) {
-    return { loggedIn: true, user: data.resource };
+  const { data } = await api.post("/login", { email, password });
+  if (data.resource && data.resource.worker) {
+    return { loggedIn: true, user: data.resource.worker };
   } else {
-    throw new Error("Erro ao obter sessão após login.");
+    throw new Error("Erro ao fazer login.");
   }
 }
 

@@ -9,6 +9,7 @@ import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
+import Spinner from "../../ui/Spinner";
 
 function LoginForm() {
   const {
@@ -20,6 +21,9 @@ function LoginForm() {
   });
 
   const mutation = useLogin();
+  const isLoading = mutation.isLoading || isSubmitting;
+
+  if (isLoading) return <Spinner />;
 
   const onSubmit = (data) => {
     mutation.mutate(data);
@@ -53,7 +57,7 @@ function LoginForm() {
         </Button>
       </FormRowVertical>
       {mutation.isError && (
-        <div className="text-red-700 text-sm mt-2">
+        <div className="mt-2 text-sm text-red-700">
           {mutation.error?.response?.data?.message || "Erro ao fazer login"}
         </div>
       )}

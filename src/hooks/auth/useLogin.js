@@ -8,7 +8,7 @@ export const useLogin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: async (data) => {
       return await login(data);
     },
@@ -26,4 +26,9 @@ export const useLogin = () => {
       }
     },
   });
+
+  return {
+    ...mutation,
+    isLoading: mutation.isLoading,
+  };
 };
