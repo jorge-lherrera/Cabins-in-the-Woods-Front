@@ -1,23 +1,23 @@
 # copilot.yaml
 guidelines:
-  - Usa React Query para todas las llamadas a la API.
-  - Los hooks deben manejar los mensajes de error con react-hot-toast.
-  - Los services solo deben comunicarse con la API y no mostrar mensajes.
-  - Usa la estructura { resource, error, status } para las respuestas de la API.
-  - Prefiere funciones asíncronas y await.
-  - Usa styled-components para los estilos en componentes de UI.
-  - Organiza el código por features en la carpeta src/features.
-  - Usa Yup para validaciones de formularios en la carpeta src/validations.
-  - Centraliza constantes globales en src/utils/constants.js.
-  - Los hooks personalizados deben encapsular lógica de negocio y ser reutilizables.
-  - Organiza el código por features en la carpeta src/features.
-  - Todos los mensajes de succeso o error exibidos al usuário deben estar en português Brasil.
-  - El front solamente mostrara resultados, todos los calculos, filtros y logica en general deben venir de la api.
+  - Use React Query for all API calls.
+  - Hooks must handle error messages with react-hot-toast.
+  - Services should only communicate with the API and not display messages.
+  - Use the structure { resource, error, status } for API responses.
+  - Prefer async functions and await.
+  - Use styled-components for styles in UI components.
+  - Organize code by features in the src/features folder.
+  - Use Yup for form validations in the src/validations folder.
+  - Centralize global constants in src/utils/constants.js.
+  - Custom hooks should encapsulate business logic and be reusable.
+  - Organize code by features in the src/features folder.
+  - All success or error messages shown to the user must be in Brazilian Portuguese.
+  - The frontend will only display results; all calculations, filters, and general logic must come from the API.
 patterns:
-  - Los hooks deben empezar con "use".
-  - Los archivos de servicios deben empezar con "api".
-  - Los componentes de UI deben estar en la carpeta "ui".
-  - Los archivos de validaciones deben terminar en Validation.js o Validations.js.
-  - Los archivos de constantes deben estar en la carpeta "utils" y llamarse constants.js.
-  - Los archivos de cada feature deben estar en src/features/[featureName].
-  - Los archivos de contexto deben estar en src/context y terminar en Context.jsx.
+  - Hooks must start with "use".
+  - Service files must start with "api".
+  - UI components must be in the "ui" folder.
+  - Validation files must end with Validation.js or Validations.js.
+  - Constant files must be in the "utils" folder and called constants.js.
+  - Each feature's files must be in src/features/[featureName].
+  - Context files must be in src/context and end with Context.jsx.
