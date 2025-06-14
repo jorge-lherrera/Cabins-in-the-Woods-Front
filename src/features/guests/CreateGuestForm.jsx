@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
 import { useEditGuest } from "../../hooks/guests/useEditGuest";
@@ -7,9 +8,8 @@ import { useEditGuest } from "../../hooks/guests/useEditGuest";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
+import guestsValidation from "../../validations/guestsValidations";
 
 function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   const { isCreating, createGuest } = useCreateGuest();
@@ -19,17 +19,16 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = guestToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
+  const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
+    resolver: yupResolver(guestsValidation),
   });
   const { errors } = formState;
 
   function onSubmit(data) {
-    const image = typeof data.image === "string" ? data.image : data.image[0];
-
     if (isEditSession) {
       editGuest(
-        { id: editId, newGuestData: { ...data, image } },
+        { id: editId, newGuestData: data },
         {
           onSuccess: () => {
             reset();
@@ -38,15 +37,12 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
         },
       );
     } else {
-      createGuest(
-        { ...data, image: image },
-        {
-          onSuccess: () => {
-            reset();
-            onCloseModal?.();
-          },
+      createGuest(data, {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
         },
-      );
+      });
     }
   }
 
@@ -59,81 +55,51 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="Nome da pessoa" error={errors?.name?.message}>
+      <FormRow label="Nome completo" error={errors?.fullName?.message}>
         <Input
           type="text"
-          id="name"
+          id="fullName"
           disabled={isWorking}
-          {...register("name", {
-            required: "Este campo é obrigatório",
-          })}
+          {...register("fullName")}
         />
       </FormRow>
 
-      <FormRow label="Capacidade máxima" error={errors?.maxCapacity?.message}>
+      <FormRow label="Email" error={errors?.email?.message}>
         <Input
-          type="number"
-          id="maxCapacity"
+          type="email"
+          id="email"
           disabled={isWorking}
-          {...register("maxCapacity", {
-            required: "Este campo é obrigatório",
-            min: {
-              value: 1,
-              message: "A capacidade deve ser pelo menos 1",
-            },
-          })}
+          {...register("email")}
         />
       </FormRow>
 
-      <FormRow label="Preço regular" error={errors?.regularPrice?.message}>
+      <FormRow label="Nacionalidade" error={errors?.nationality?.message}>
         <Input
-          type="number"
-          id="regularPrice"
+          type="text"
+          id="nationality"
           disabled={isWorking}
-          {...register("regularPrice", {
-            required: "Este campo é obrigatório",
-            min: {
-              value: 1,
-              message: "O preço deve ser pelo menos 1",
-            },
-          })}
+          {...register("nationality")}
         />
       </FormRow>
 
-      <FormRow label="Desconto" error={errors?.discount?.message}>
+      <FormRow label="Bandeira do país" error={errors?.countryFlag?.message}>
         <Input
-          type="number"
-          id="discount"
-          defaultValue={0}
+          type="text"
+          id="countryFlag"
           disabled={isWorking}
-          {...register("discount", {
-            required: "Este campo é obrigatório",
-            validate: (value) =>
-              value <= getValues().regularPrice ||
-              "O desconto deve ser menor que o preço regular",
-          })}
+          {...register("countryFlag")}
         />
       </FormRow>
 
-      <FormRow label="Descrição da cabana" error={errors?.description?.message}>
-        <Textarea
-          type="number"
-          id="description"
-          defaultValue=""
+      <FormRow
+        label="Número de identificação"
+        error={errors?.nationalIdNumber?.message}
+      >
+        <Input
+          type="text"
+          id="nationalIdNumber"
           disabled={isWorking}
-          {...register("description", {
-            required: "Este campo é obrigatório",
-          })}
-        />
-      </FormRow>
-
-      <FormRow label="Foto da cabana" error={errors?.image?.message}>
-        <FileInput
-          id="image"
-          accept="image/*"
-          {...register("image", {
-            required: isEditSession ? false : "Este campo é obrigatório",
-          })}
+          {...register("nationalIdNumber")}
         />
       </FormRow>
 
@@ -146,7 +112,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
           Cancelar
         </Button>
         <Button disabled={isWorking}>
-          {isEditSession ? "Editar cabana" : "Criar nova cabana"}
+          {isEditSession ? "Editar hóspede" : "Criar novo hóspede"}
         </Button>
       </FormRow>
     </Form>
@@ -156,12 +122,11 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
 CreateGuestForm.propTypes = {
   guestToEdit: PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
-    maxCapacity: PropTypes.number,
-    regularPrice: PropTypes.number,
-    discount: PropTypes.number,
-    image: PropTypes.string,
-    description: PropTypes.string,
+    fullName: PropTypes.string,
+    email: PropTypes.string,
+    nationality: PropTypes.string,
+    countryFlag: PropTypes.string,
+    nationalIdNumber: PropTypes.string,
   }),
   onCloseModal: PropTypes.func,
 };

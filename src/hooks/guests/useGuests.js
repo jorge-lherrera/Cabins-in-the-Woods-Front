@@ -13,11 +13,11 @@ export function useGuests() {
     : Number(searchParams.get("limit"));
   const orderBy = searchParams.get("orderBy") || "name";
   const order = searchParams.get("order") || "ASC";
-  const discountFilter = searchParams.get("discountFilter") || undefined;
+  const nationality = searchParams.get("nationality") || undefined;
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["guests", page, limit, orderBy, order, discountFilter],
-    queryFn: () => getGuests({ page, limit, orderBy, order, discountFilter }),
+    queryKey: ["guests", page, limit, orderBy, order, nationality],
+    queryFn: () => getGuests({ page, limit, orderBy, order, nationality }),
     onError: (err) => {
       toast.error(
         err?.response?.data?.error ||
@@ -28,10 +28,9 @@ export function useGuests() {
     keepPreviousData: true,
   });
 
-  const guests = data?.resource || [];
+  const guests = data?.resource?.guests || [];
   const count = data?.resource?.total || 0;
   const pageCount = data?.resource?.pageCount || 0;
-  console.log(guests, `esto es guests`);
 
   return { isLoading, error, guests, count, pageCount };
 }

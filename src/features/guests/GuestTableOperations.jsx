@@ -2,15 +2,14 @@ import TableOperations from "../../ui/TableOperations";
 import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
 
-function CabinTableOperations() {
+function GuestTableOperations() {
   return (
     <TableOperations>
       <Filter
-        filterField="discount"
+        filterField="nationality"
         options={[
           { value: "all", label: "All" },
-          { value: "no-discount", label: "No discount" },
-          { value: "with-discount", label: "With discount" },
+          { value: "nationality", label: "Nationality" },
         ]}
       />
 
@@ -18,14 +17,12 @@ function CabinTableOperations() {
         options={[
           { value: "name-asc", label: "Sort by name (A-Z)" },
           { value: "name-desc", label: "Sort by name (Z-A)" },
-          { value: "regularPrice-asc", label: "Sort by price (low first)" },
-          { value: "regularPrice-desc", label: "Sort by price (high first)" },
-          { value: "maxCapacity-asc", label: "Sort by capacity (low first)" },
-          { value: "maxCapacity-desc", label: "Sort by capacity (high first)" },
+          { value: "email-asc", label: "Sort by email (A-Z)" },
+          { value: "email-desc", label: "Sort by email (Z-A)" },
         ]}
       />
     </TableOperations>
   );
 }
 
-export default CabinTableOperations;
+export default GuestTableOperations;

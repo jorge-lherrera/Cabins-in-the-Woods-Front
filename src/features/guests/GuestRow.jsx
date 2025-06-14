@@ -4,7 +4,6 @@ import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 
 import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
 import { useDeleteGuest } from "../../hooks/guests/useDeleteGuest";
-import { formatCurrency } from "../../utils/helpers";
 
 import CreateGuestForm from "./CreateGuestForm";
 import Modal from "../../ui/Modal";
@@ -21,74 +20,32 @@ const Img = styled.img`
   transform: scale(1.5) translateX(-7px);
 `;
 
-const Cabin = styled.div`
+const GuestName = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
 `;
 
-const Price = styled.div`
-  font-family: "Sono";
-  font-weight: 600;
-`;
+function GuestRow({ guest }) {
+  const { isDeleting, deleteGuest } = useDeleteGuest();
 
-const Discount = styled.div`
-  font-family: "Sono";
-  font-weight: 500;
-  color: var(--color-green-700);
-`;
-
-function CabinRow({ cabin }) {
-  const { isDeleting, deleteCabin } = useDeleteGuest();
-  const { isCreating, createCabin } = useCreateGuest();
-
-  const {
-    id: cabinId,
-    name,
-    maxCapacity,
-    regularPrice,
-    discount,
-    image,
-    description,
-  } = cabin;
-
-  function handleDuplicate() {
-    createCabin({
-      name: `Copy of ${name}`,
-      maxCapacity,
-      regularPrice,
-      discount,
-      image,
-      description,
-    });
-  }
+  const { id, fullName, email, nationality, countryFlag, nationalIdNumber } =
+    guest;
 
   return (
     <Table.Row>
-      <Img src={image} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      {discount ? (
-        <Discount>{formatCurrency(discount)}</Discount>
-      ) : (
-        <span>&mdash;</span>
-      )}
+      <Img src={countryFlag} alt={nationality} />
+      <GuestName>{fullName}</GuestName>
+      <div>{email}</div>
+      <div>{nationality}</div>
+      <div>{nationalIdNumber}</div>
       <div>
         <Modal>
           <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
+            <Menus.Toggle id={id} />
 
-            <Menus.List id={cabinId}>
-              <Menus.Button
-                icon={<HiSquare2Stack />}
-                onClick={handleDuplicate}
-                disabled={isCreating}
-              >
-                Duplicate
-              </Menus.Button>
-
+            <Menus.List id={id}>
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
@@ -99,14 +56,14 @@ function CabinRow({ cabin }) {
             </Menus.List>
 
             <Modal.Window name="edit">
-              <CreateGuestForm cabinToEdit={cabin} />
+              <CreateGuestForm guestToEdit={guest} />
             </Modal.Window>
 
             <Modal.Window name="delete">
               <ConfirmDelete
-                resourceName="cabins"
+                resourceName="guests"
                 disabled={isDeleting}
-                onConfirm={() => deleteCabin(cabinId)}
+                onConfirm={() => deleteGuest(id)}
               />
             </Modal.Window>
           </Menus.Menu>
@@ -116,16 +73,15 @@ function CabinRow({ cabin }) {
   );
 }
 
-CabinRow.propTypes = {
-  cabin: PropTypes.shape({
+GuestRow.propTypes = {
+  guest: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    maxCapacity: PropTypes.number.isRequired,
-    regularPrice: PropTypes.number.isRequired,
-    discount: PropTypes.number,
-    image: PropTypes.string.isRequired,
-    description: PropTypes.string,
+    fullName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    nationality: PropTypes.string.isRequired,
+    countryFlag: PropTypes.string,
+    nationalIdNumber: PropTypes.string,
   }).isRequired,
 };
 
-export default CabinRow;
+export default GuestRow;
