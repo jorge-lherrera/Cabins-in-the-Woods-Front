@@ -1,4 +1,4 @@
-import { useGuests } from "../../hooks/cabins/useGuests";
+import { useGuests } from "../../hooks/guests/useGuests";
 
 import Spinner from "../../ui/Spinner";
 import GuestRow from "./GuestRow";

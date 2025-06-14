@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+
 import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
-import { useEditCabin } from "../../hooks/guests/useEditCabin";
+import { useEditGuest } from "../../hooks/guests/useEditGuest";
+
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
@@ -11,7 +13,7 @@ import FormRow from "../../ui/FormRow";
 
 function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   const { isCreating, createGuest } = useCreateGuest();
-  const { isEditing, editGuest } = useEditCabin();
+  const { isEditing, editGuest } = useEditGuest();
   const isWorking = isCreating || isEditing;
 
   const { id: editId, ...editValues } = guestToEdit;
@@ -29,7 +31,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       editGuest(
         { id: editId, newGuestData: { ...data, image } },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             reset();
             onCloseModal?.();
           },
@@ -39,7 +41,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       createGuest(
         { ...data, image: image },
         {
-          onSuccess: (data) => {
+          onSuccess: () => {
             reset();
             onCloseModal?.();
           },
@@ -151,8 +153,8 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   );
 }
 
-CreateCabinForm.propTypes = {
-  cabinToEdit: PropTypes.shape({
+CreateGuestForm.propTypes = {
+  guestToEdit: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
     maxCapacity: PropTypes.number,
@@ -164,4 +166,4 @@ CreateCabinForm.propTypes = {
   onCloseModal: PropTypes.func,
 };
 
-export default CreateCabinForm;
+export default CreateGuestForm;

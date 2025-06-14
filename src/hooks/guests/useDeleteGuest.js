@@ -1,28 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { deleteCabin as deleteCabinApi } from "../../services/apiCabins";
+import { deleteGuest as deleteGuestApi } from "../../services/apiGuests";
 
-export function useDeleteCabin() {
+export function useDeleteGuest() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
-    mutationFn: deleteCabinApi,
+  const { isLoading: isDeleting, mutate: deleteGuest } = useMutation({
+    mutationFn: deleteGuestApi,
     onSuccess: (data) => {
-      const cabin = data?.resource;
+      const guest = data?.resource;
       toast.success(
-        cabin?.name
-          ? `Cabana "${cabin.name}" excluída com sucesso`
-          : "Cabana excluída com sucesso",
+        guest?.name
+          ? `Hóspede "${guest.name}" excluído com sucesso`
+          : "Hóspede excluído com sucesso",
       );
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Ocorreu um erro ao excluir a cabana",
+          "Ocorreu um erro ao excluir o hóspede",
       ),
   });
 
-  return { isDeleting, deleteCabin };
+  return { isDeleting, deleteGuest };
 }

@@ -1,28 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { createCabin as createCabinApi } from "../../services/apiCabins";
+import { createGuest as createGuestApi } from "../../services/apiGuests";
 
-export function useCreateCabin() {
+export function useCreateGuest() {
   const queryClient = useQueryClient();
 
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createCabinApi,
+  const { mutate: createGuest, isLoading: isCreating } = useMutation({
+    mutationFn: createGuestApi,
     onSuccess: (data) => {
-      const cabin = data?.resource;
+      const guest = data?.resource;
       toast.success(
-        cabin?.name
-          ? `Cabana "${cabin.name}" criada com sucesso`
-          : "Cabana criada com sucesso",
+        guest?.name
+          ? `Hóspede "${guest.name}" criado com sucesso`
+          : "Hóspede criado com sucesso",
       );
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Ocorreu um erro ao criar a cabana",
+          "Ocorreu um erro ao criar o hóspede",
       ),
   });
 
-  return { isCreating, createCabin };
+  return { isCreating, createGuest };
 }

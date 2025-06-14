@@ -1,28 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { updateCabin } from "../../services/apiCabins";
+import { updateGuest } from "../../services/apiGuests";
 
-export function useEditCabin() {
+export function useEditGuest() {
   const queryClient = useQueryClient();
 
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
-    mutationFn: ({ id, newCabinData }) => updateCabin(id, newCabinData),
+  const { mutate: editGuest, isLoading: isEditing } = useMutation({
+    mutationFn: ({ id, newGuestData }) => updateGuest(id, newGuestData),
     onSuccess: (data) => {
-      const cabin = data?.resource;
+      const guest = data?.resource;
       toast.success(
-        cabin?.name
-          ? `Cabana "${cabin.name}" editada com sucesso`
-          : "Cabana editada com sucesso",
+        guest?.name
+          ? `Hóspede "${guest.name}" editado com sucesso`
+          : "Hóspede editado com sucesso",
       );
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Ocorreu um erro ao editar a cabana",
+          "Ocorreu um erro ao editar o hóspede",
       ),
   });
 
-  return { isEditing, editCabin };
+  return { isEditing, editGuest };
 }
