@@ -1,23 +1,27 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
-
-import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import { useDeleteGuest } from "../../hooks/guests/useDeleteGuest";
-
 import CreateGuestForm from "./CreateGuestForm";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import ReactCountryFlag from "react-country-flag";
+import { getCode } from "country-list";
 
-const Img = styled.img`
-  display: block;
+const FlagImg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 6.4rem;
   aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.5) translateX(-7px);
+
+  & > span {
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+  }
 `;
 
 const GuestName = styled.div`
@@ -27,19 +31,42 @@ const GuestName = styled.div`
   font-family: "Sono";
 `;
 
+const Email = styled.div`
+  font-family: "Sono";
+  color: var(--color-grey-700);
+`;
+
+const Nationality = styled.div`
+  font-family: "Sono";
+  color: var(--color-grey-700);
+`;
+
+const NationalId = styled.div`
+  font-family: "Sono";
+  color: var(--color-grey-700);
+`;
+
 function GuestRow({ guest }) {
   const { isDeleting, deleteGuest } = useDeleteGuest();
-
-  const { id, fullName, email, nationality, countryFlag, nationalIdNumber } =
-    guest;
+  const { id, fullName, email, nationality, nationalIdNumber } = guest;
+  const countryCode = getCode(nationality);
 
   return (
     <Table.Row>
-      <Img src={countryFlag} alt={nationality} />
+      <FlagImg>
+        {countryCode && (
+          <ReactCountryFlag
+            countryCode={countryCode}
+            svg
+            style={{ width: "100%", height: "100%" }}
+            title={nationality}
+          />
+        )}
+      </FlagImg>
       <GuestName>{fullName}</GuestName>
-      <div>{email}</div>
-      <div>{nationality}</div>
-      <div>{nationalIdNumber}</div>
+      <Email>{email}</Email>
+      <Nationality>{nationality}</Nationality>
+      <NationalId>{nationalIdNumber}</NationalId>
       <div>
         <Modal>
           <Menus.Menu>
@@ -79,7 +106,6 @@ GuestRow.propTypes = {
     fullName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     nationality: PropTypes.string.isRequired,
-    countryFlag: PropTypes.string,
     nationalIdNumber: PropTypes.string,
   }).isRequired,
 };

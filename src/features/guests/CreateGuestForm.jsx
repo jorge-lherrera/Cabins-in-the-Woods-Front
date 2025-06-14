@@ -1,15 +1,14 @@
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
 import { useEditGuest } from "../../hooks/guests/useEditGuest";
-
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FormRow from "../../ui/FormRow";
 import guestsValidation from "../../validations/guestsValidations";
+import { getNames } from "country-list";
 
 function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
   const { isCreating, createGuest } = useCreateGuest();
@@ -24,6 +23,8 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
     resolver: yupResolver(guestsValidation),
   });
   const { errors } = formState;
+
+  const countries = getNames();
 
   function onSubmit(data) {
     if (isEditSession) {
@@ -74,21 +75,18 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Nacionalidade" error={errors?.nationality?.message}>
-        <Input
-          type="text"
+        <select
           id="nationality"
           disabled={isWorking}
           {...register("nationality")}
-        />
-      </FormRow>
-
-      <FormRow label="Bandeira do país" error={errors?.countryFlag?.message}>
-        <Input
-          type="text"
-          id="countryFlag"
-          disabled={isWorking}
-          {...register("countryFlag")}
-        />
+        >
+          <option value="">Selecione...</option>
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
       </FormRow>
 
       <FormRow
@@ -125,7 +123,6 @@ CreateGuestForm.propTypes = {
     fullName: PropTypes.string,
     email: PropTypes.string,
     nationality: PropTypes.string,
-    countryFlag: PropTypes.string,
     nationalIdNumber: PropTypes.string,
   }),
   onCloseModal: PropTypes.func,

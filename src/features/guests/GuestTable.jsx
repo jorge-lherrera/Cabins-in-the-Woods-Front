@@ -18,10 +18,10 @@ function GuestTable() {
       <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
-          <div>Guest</div>
-          <div>Capacity</div>
-          <div>Price</div>
-          <div>Discount</div>
+          <div>Nome</div>
+          <div>Email</div>
+          <div>Nacionalidade</div>
+          <div>Identificação</div>
           <div></div>
         </Table.Header>
 
