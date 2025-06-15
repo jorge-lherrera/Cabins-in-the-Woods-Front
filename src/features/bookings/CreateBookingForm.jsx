@@ -11,7 +11,7 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
-import cabinsValidationSchema from "../../validations/cabinsValidations";
+import bookingsValidationSchema from "../../validations/bookingsValidations";
 
 function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
@@ -30,7 +30,7 @@ function CreateBookingForm({ bookingToEdit = {}, onCloseModal }) {
           discount: Number(editValues.discount),
         }
       : {},
-    resolver: yupResolver(cabinsValidationSchema),
+    resolver: yupResolver(bookingsValidationSchema),
   });
   const { errors } = formState;
 
