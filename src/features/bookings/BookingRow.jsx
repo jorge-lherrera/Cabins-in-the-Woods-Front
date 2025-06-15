@@ -10,7 +10,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
-
 import { useCheckout } from "../../hooks/bookings/useCheckout";
 import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
