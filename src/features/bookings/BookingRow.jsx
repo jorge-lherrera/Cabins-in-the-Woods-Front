@@ -9,7 +9,6 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 
-import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
 import { useCheckout } from "../../hooks/bookings/useCheckout";
 import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
@@ -19,7 +18,7 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-const Cabin = styled.div`
+const Booking = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
@@ -53,7 +52,7 @@ function BookingRow({ booking }) {
     startDate,
     endDate,
     numNights,
-    numGuests,
+
     totalPrice,
     status,
     guest: { fullName: guestName, email },
@@ -73,7 +72,7 @@ function BookingRow({ booking }) {
 
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <Booking>{cabinName}</Booking>
 
       <Stacked>
         <span>{guestName}</span>
