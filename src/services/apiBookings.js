@@ -1,6 +1,15 @@
 import { api } from "./apiUrl";
 import { PAGE_SIZE } from "../utils/constants";
 
+export async function getBookingsDashboard({ days } = {}) {
+  const params = {};
+  params.days = days ?? 7;
+
+  const { data } = await api.get("/bookings", { params });
+  console.log("api dashboard", data);
+  return data;
+}
+
 export async function getBooking(id) {
   const { data } = await api.get(`/bookings/${id}`);
   return data;
@@ -12,7 +21,6 @@ export async function getBookings({
   orderBy,
   order,
   status,
-  days,
 } = {}) {
   const params = {};
 
@@ -22,9 +30,9 @@ export async function getBookings({
   params.order = order ?? "ASC";
 
   if (status && status !== "all") params.status = status;
-  if (days) params.days = days;
+
   const { data } = await api.get("/bookings", { params });
-  console.log("api", data);
+  console.log("api booking table", data);
   return data;
 }
 

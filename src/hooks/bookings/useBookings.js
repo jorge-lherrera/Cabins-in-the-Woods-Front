@@ -7,14 +7,12 @@ export function useBookings() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
-  // Valores por defecto
   const DEFAULTS = {
     page: 1,
     orderBy: "startDate",
     order: "desc",
   };
 
-  // Obtener y validar parámetros
   const statusParam = searchParams.get("status");
   const status =
     !statusParam || statusParam === "all" ? undefined : statusParam;
@@ -26,7 +24,6 @@ export function useBookings() {
   const pageRaw = searchParams.get("page");
   const page = isNaN(Number(pageRaw)) ? DEFAULTS.page : Number(pageRaw);
 
-  // Crear objeto de filtros válidos
   const filters = {
     ...(status && { status }),
     orderBy,
@@ -54,7 +51,6 @@ export function useBookings() {
   const pageCount = data?.resource?.pageCount || 0;
   console.log("useBookings", bookings);
 
-  // Prefetch siguiente página
   if (page < pageCount) {
     const nextPageFilters = { ...filters, page: page + 1 };
     queryClient.prefetchQuery({
@@ -63,7 +59,6 @@ export function useBookings() {
     });
   }
 
-  // Prefetch página anterior
   if (page > 1) {
     const prevPageFilters = { ...filters, page: page - 1 };
     queryClient.prefetchQuery({
