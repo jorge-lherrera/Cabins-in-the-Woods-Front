@@ -16,24 +16,22 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { isLoading, error, bookings } = useDashboardBookings();
+  const { isLoading, error, dashboardData } = useDashboardBookings();
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Erro ao carregar dados do dashboard</div>;
 
-  const stats = bookings;
-
   return (
     <StyledDashboardLayout>
       <Stats
-        bookings={stats?.total ?? 0}
-        confirmedStays={stats?.checkedInBookings ?? 0}
-        numDays={stats?.totalRevenue ?? 0}
-        cabinCount={stats?.occupancyRate ?? 0}
+        bookings={dashboardData?.total ?? 0}
+        confirmedStays={dashboardData?.checkedInBookings ?? 0}
+        numDays={dashboardData?.totalRevenue ?? 0}
+        cabinCount={dashboardData?.occupancyRate ?? 0}
       />
-      <TodayActivity bookingsToday={stats?.bookingsToday ?? []} />
-      <DurationChart nightRanges={stats?.nightRanges ?? {}} />
-      <SalesChart salesChart={stats?.salesChart ?? []} />
+      <TodayActivity bookingsToday={dashboardData?.bookingsToday ?? []} />
+      <DurationChart nightRanges={dashboardData?.nightRanges ?? {}} />
+      <SalesChart salesChart={dashboardData?.salesChart ?? []} />
     </StyledDashboardLayout>
   );
 }

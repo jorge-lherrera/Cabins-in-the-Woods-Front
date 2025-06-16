@@ -47,16 +47,13 @@ const Amount = styled.div`
 
 function BookingRow({ booking }) {
   const {
-    id: bookingId,
-    createdAt,
+    cabinId,
     startDate,
     endDate,
     numNights,
-
     totalPrice,
-    status,
     guest: { fullName: guestName, email },
-    cabin: { name: cabinName },
+    daysUntilStart,
   } = booking;
 
   const navigate = useNavigate();

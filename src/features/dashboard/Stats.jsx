@@ -8,7 +8,6 @@ import {
 } from "react-icons/hi2";
 
 import Stat from "./Stat";
-import { formatCurrency } from "../../utils/helpers";
 
 function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
   return (
@@ -23,7 +22,7 @@ function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
         title="Sales"
         color="green"
         icon={<HiOutlineBanknotes />}
-        value={formatCurrency(numDays)}
+        value={numDays}
       />
       <Stat
         title="Check ins"

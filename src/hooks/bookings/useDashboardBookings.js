@@ -15,7 +15,6 @@ export function useDashboardBookings() {
     },
   });
 
-  const bookings = data?.resource || [];
-
-  return { isLoading, error, bookings };
+  const dashboardData = data?.resource || {};
+  return { isLoading, error, dashboardData };
 }
