@@ -12,6 +12,7 @@ export async function getBookings({
   orderBy,
   order,
   status,
+  days,
 } = {}) {
   const params = {};
 
@@ -21,9 +22,9 @@ export async function getBookings({
   params.order = order ?? "ASC";
 
   if (status && status !== "all") params.status = status;
-
+  if (days) params.days = days;
   const { data } = await api.get("/bookings", { params });
-
+  console.log("api", data);
   return data;
 }
 
