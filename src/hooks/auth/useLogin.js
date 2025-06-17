@@ -13,7 +13,10 @@ export const useLogin = () => {
       return await login(data);
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["user"], data.user);
+      queryClient.setQueryData(["session"], {
+        loggedIn: true,
+        user: data.user,
+      });
 
       toast.success("Login realizado com sucesso!");
       navigate("/dashboard", { replace: true });

@@ -46,8 +46,8 @@ export function useBookings() {
     keepPreviousData: true,
   });
 
-  const bookings = data?.resource || [];
-  const count = data?.resource?.total || 0;
+  const bookings = data?.resource?.bookings || [];
+  const count = bookings.length;
   const pageCount = data?.resource?.pageCount || 0;
   console.log("useBookings", bookings);
 

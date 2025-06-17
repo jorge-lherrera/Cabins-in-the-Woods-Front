@@ -47,20 +47,23 @@ const Amount = styled.div`
 
 function BookingRow({ booking }) {
   const {
+    id: bookingId,
     cabinId,
     startDate,
     endDate,
     numNights,
     totalPrice,
-    guest: { fullName: guestName, email },
     daysUntilStart,
+    status,
+    // Acceso a campos planos de la API
+    ["guest.fullName"]: guestName,
+    ["guest.email"]: email,
   } = booking;
 
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
   const { deleteBooking, isDeleting } = useDeleteBooking();
 
-  console.log("booking roww", booking);
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -69,7 +72,7 @@ function BookingRow({ booking }) {
 
   return (
     <Table.Row>
-      <Booking>{cabinName}</Booking>
+      <Booking>{cabinId}</Booking>
 
       <Stacked>
         <span>{guestName}</span>
@@ -80,7 +83,11 @@ function BookingRow({ booking }) {
         <span>
           {isToday(new Date(startDate))
             ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
+            : daysUntilStart > 0
+              ? `In ${daysUntilStart} days`
+              : daysUntilStart === 0
+                ? "Today"
+                : `${Math.abs(daysUntilStart)} days ago`}{" "}
           &rarr; {numNights} night stay
         </span>
         <span>
@@ -91,7 +98,12 @@ function BookingRow({ booking }) {
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Amount>
+        {new Intl.NumberFormat("en", {
+          style: "currency",
+          currency: "USD",
+        }).format(Number(totalPrice))}
+      </Amount>
 
       <Modal>
         <Menus.Menu>
@@ -143,22 +155,17 @@ function BookingRow({ booking }) {
 
 BookingRow.propTypes = {
   booking: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    created_at: PropTypes.string,
+    id: PropTypes.number,
+    cabinId: PropTypes.number.isRequired,
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
     numNights: PropTypes.number.isRequired,
-    numGuests: PropTypes.number.isRequired,
     totalPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
     status: PropTypes.string.isRequired,
-    guest: PropTypes.shape({
-      fullName: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-    }).isRequired,
-    cabin: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }).isRequired,
+    daysUntilStart: PropTypes.number,
+    "guest.fullName": PropTypes.string.isRequired,
+    "guest.email": PropTypes.string.isRequired,
   }).isRequired,
 };
 

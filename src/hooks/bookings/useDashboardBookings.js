@@ -17,5 +17,7 @@ export function useDashboardBookings() {
   });
 
   const dashboardData = data?.resource || {};
+
+  console.log("Dashboard Data hook:", dashboardData);
   return { isLoading, error, dashboardData };
 }
