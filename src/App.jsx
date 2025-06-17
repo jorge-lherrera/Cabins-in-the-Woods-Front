@@ -18,6 +18,7 @@ const Guest = lazy(() => import("./pages/Guest"));
 const Login = lazy(() => import("./pages/Login"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const Settings = lazy(() => import("./pages/Settings"));
+const Signup = lazy(() => import("./pages/Signup"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +53,7 @@ function App() {
                 <Route path="/guests" element={<Guest />} />
               </Route>
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>

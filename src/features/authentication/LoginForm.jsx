@@ -10,6 +10,7 @@ import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Spinner from "../../ui/Spinner";
+import { Link } from "react-router-dom";
 
 function LoginForm() {
   const {
@@ -61,6 +62,17 @@ function LoginForm() {
           {mutation.error?.response?.data?.message || "Erro ao fazer login"}
         </div>
       )}
+      <div style={{ marginTop: "1.5rem", textAlign: "right" }}>
+        <span style={{ fontSize: "1.4rem" }}>
+          Ainda não tem cadastro?{" "}
+          <Link
+            to="/signup"
+            style={{ color: "#2563eb", textDecoration: "underline" }}
+          >
+            Cadastre-se
+          </Link>
+        </span>
+      </div>
     </Form>
   );
 }
