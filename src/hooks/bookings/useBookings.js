@@ -22,7 +22,10 @@ export function useBookings() {
   const [orderBy, order] = sortBy.split("-");
 
   const pageRaw = searchParams.get("page");
-  const page = isNaN(Number(pageRaw)) ? DEFAULTS.page : Number(pageRaw);
+  const page =
+    !pageRaw || isNaN(Number(pageRaw)) || Number(pageRaw) < 1
+      ? DEFAULTS.page
+      : Number(pageRaw);
 
   const filters = {
     ...(status && { status }),

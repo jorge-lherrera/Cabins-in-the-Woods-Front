@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { format, isToday } from "date-fns";
 import {
   HiArrowDownOnSquare,
   HiArrowUpOnSquare,
@@ -49,13 +48,11 @@ function BookingRow({ booking }) {
   const {
     id: bookingId,
     cabinId,
-    startDate,
-    endDate,
-    numNights,
-    totalPrice,
-    daysUntilStart,
+    startDateFormatted,
+    endDateFormatted,
+    stayDescription, // Ejemplo: "Today → 3 night stay"
     status,
-    // Acceso a campos planos de la API
+    totalPriceFormatted,
     ["guest.fullName"]: guestName,
     ["guest.email"]: email,
   } = booking;
@@ -80,30 +77,15 @@ function BookingRow({ booking }) {
       </Stacked>
 
       <Stacked>
+        <span>{stayDescription}</span>
         <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : daysUntilStart > 0
-              ? `In ${daysUntilStart} days`
-              : daysUntilStart === 0
-                ? "Today"
-                : `${Math.abs(daysUntilStart)} days ago`}{" "}
-          &rarr; {numNights} night stay
-        </span>
-        <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
+          {startDateFormatted} &mdash; {endDateFormatted}
         </span>
       </Stacked>
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Amount>
-        {new Intl.NumberFormat("en", {
-          style: "currency",
-          currency: "USD",
-        }).format(Number(totalPrice))}
-      </Amount>
+      <Amount>{totalPriceFormatted}</Amount>
 
       <Modal>
         <Menus.Menu>
@@ -157,13 +139,11 @@ BookingRow.propTypes = {
   booking: PropTypes.shape({
     id: PropTypes.number,
     cabinId: PropTypes.number.isRequired,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    numNights: PropTypes.number.isRequired,
-    totalPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
+    startDateFormatted: PropTypes.string.isRequired,
+    endDateFormatted: PropTypes.string.isRequired,
+    stayDescription: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    daysUntilStart: PropTypes.number,
+    totalPriceFormatted: PropTypes.string.isRequired,
     "guest.fullName": PropTypes.string.isRequired,
     "guest.email": PropTypes.string.isRequired,
   }).isRequired,
