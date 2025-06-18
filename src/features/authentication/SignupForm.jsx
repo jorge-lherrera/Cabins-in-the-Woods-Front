@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import { useSignup } from "../../hooks/auth/useSignup";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-import { useSignup } from "../../hooks/auth/useSignup";
 import signupSchema from "../../validations/signupValidations";
 import FileInput from "../../ui/FileInput";
 
 function SignupForm() {
   const { signup, isLoading } = useSignup();
-  const { register, formState, handleSubmit, reset, watch } = useForm({
+  const { register, formState, handleSubmit, reset } = useForm({
     resolver: yupResolver(signupSchema),
   });
   const { errors } = formState;

@@ -17,7 +17,7 @@ export const useLogin = () => {
         loggedIn: true,
         user: data.user,
       });
-
+      queryClient.invalidateQueries(["session"]);
       toast.success("Login realizado com sucesso!");
       navigate("/dashboard", { replace: true });
     },
