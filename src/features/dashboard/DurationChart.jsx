@@ -8,7 +8,6 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-
 import Heading from "../../ui/Heading";
 
 const ChartBox = styled.div`
