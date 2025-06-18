@@ -49,10 +49,7 @@ function TodayActivity({ bookingsToday }) {
       {bookingsToday.length > 0 ? (
         <TodayList>
           {bookingsToday.map((activity, idx) => (
-            <TodayItem
-              activity={activity}
-              key={activity.cabinId + "-" + activity.startDate + "-" + idx}
-            />
+            <TodayItem activity={activity} key={activity.id || idx} />
           ))}
         </TodayList>
       ) : (

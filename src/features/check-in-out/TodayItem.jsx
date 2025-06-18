@@ -27,7 +27,8 @@ const Guest = styled.div`
   font-weight: 500;
 `;
 
-function TodayItem({ id, fullName, nationality, numNights, status }) {
+function TodayItem({ activity }) {
+  const { id, fullName, nationality, numNights, status } = activity;
   const countryCode = nationality ? getCode(nationality) : "";
 
   return (
@@ -64,11 +65,13 @@ function TodayItem({ id, fullName, nationality, numNights, status }) {
 }
 
 TodayItem.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  fullName: PropTypes.string.isRequired,
-  nationality: PropTypes.string.isRequired,
-  numNights: PropTypes.number.isRequired,
-  status: PropTypes.string.isRequired,
+  activity: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    fullName: PropTypes.string.isRequired,
+    nationality: PropTypes.string.isRequired,
+    numNights: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default TodayItem;
