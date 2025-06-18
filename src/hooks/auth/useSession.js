@@ -6,8 +6,10 @@ export function useSession() {
     queryKey: ["session"],
     queryFn: async () => {
       const data = await getSession();
-
-      return data.resource || null;
+      if (data.resource) {
+        return { loggedIn: true, user: data.resource };
+      }
+      return { loggedIn: false };
     },
     retry: false,
   });
