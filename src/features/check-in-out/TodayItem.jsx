@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import { Flag } from "../../ui/Flag";
+import ReactCountryFlag from "react-country-flag";
+import { getCode } from "country-list";
 
 import Tag from "../../ui/Tag";
 import Button from "../../ui/Button";
@@ -27,16 +27,25 @@ const Guest = styled.div`
   font-weight: 500;
 `;
 
-function TodayItem({ activity }) {
-  const { id, status, guests, numNights } = activity;
+function TodayItem({ id, fullName, nationality, numNights, status }) {
+  const countryCode = nationality ? getCode(nationality) : "";
 
   return (
     <StyledTodayItem>
       {status === "unconfirmed" && <Tag type="green">Arriving</Tag>}
       {status === "checked-in" && <Tag type="blue">Departing</Tag>}
 
-      <Flag nationality={guests.nationality} title={guests.nationality} />
-      <Guest>{guests.fullName}</Guest>
+      {countryCode ? (
+        <ReactCountryFlag
+          countryCode={countryCode}
+          svg
+          style={{ width: "2rem", height: "2rem" }}
+          title={nationality}
+        />
+      ) : (
+        <span />
+      )}
+      <Guest>{fullName}</Guest>
       <div>{numNights} nights</div>
 
       {status === "unconfirmed" && (
@@ -55,16 +64,11 @@ function TodayItem({ activity }) {
 }
 
 TodayItem.propTypes = {
-  activity: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    status: PropTypes.string.isRequired,
-    numNights: PropTypes.number.isRequired,
-    guests: PropTypes.shape({
-      fullName: PropTypes.string.isRequired,
-      country: PropTypes.string.isRequired,
-      countryFlag: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  fullName: PropTypes.string.isRequired,
+  nationality: PropTypes.string.isRequired,
+  numNights: PropTypes.number.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default TodayItem;

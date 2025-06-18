@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+
 import { useSettings } from "../../hooks/settings/useSettings";
 import { useUpdateSetting } from "../../hooks/settings/useUpdateSetting";
+
 import Button from "../../ui/Button";
 import Empty from "../../ui/Empty";
 import Form from "../../ui/Form";
@@ -28,8 +30,8 @@ function SettingLayout() {
   }, [settings]);
 
   if (isLoading || fields === null) return <Spinner />;
-
   if (isUpdating) return <Spinner />;
+  if (!settings.length) return <Empty resourceName="settings" />;
 
   function handleChange(e) {
     const { name, value } = e.target;
