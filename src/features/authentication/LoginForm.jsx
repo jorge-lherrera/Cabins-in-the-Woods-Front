@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link } from "react-router-dom";
+
 import { useLogin } from "../../hooks/auth/useLogin";
 
 import loginSchema from "../../validations/loginValidations";
-
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Spinner from "../../ui/Spinner";
-import { Link } from "react-router-dom";
 
 function LoginForm() {
   const {
@@ -32,7 +32,7 @@ function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRowVertical label="Email address" error={errors.email?.message}>
+      <FormRowVertical label="Email" error={errors.email?.message}>
         <Input
           type="email"
           id="email"
@@ -42,7 +42,7 @@ function LoginForm() {
         />
       </FormRowVertical>
 
-      <FormRowVertical label="Password" error={errors.password?.message}>
+      <FormRowVertical label="Senha" error={errors.password?.message}>
         <Input
           type="password"
           id="password"
