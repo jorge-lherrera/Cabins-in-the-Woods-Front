@@ -23,9 +23,9 @@ export const useLogin = () => {
     },
     onError: (error) => {
       if (error.response && error.response.status === 401) {
-        toast.error(error.response.data?.error || "Credenciais inválidas");
+        toast.error(error.response.data?.message || "Credenciais inválidas");
       } else {
-        toast.error(error.response?.data?.error || "Erro no servidor");
+        toast.error(error.response?.data?.message || "Erro no servidor");
       }
     },
   });
