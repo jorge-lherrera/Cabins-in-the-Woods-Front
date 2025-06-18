@@ -1,4 +1,4 @@
-import { useUser } from "../../hooks/auth/useUser";
+import { useSession } from "../../hooks/auth/useSession";
 import styled from "styled-components";
 
 const StyledUserAvatar = styled.div`
@@ -22,10 +22,9 @@ const Avatar = styled.img`
 `;
 
 function UserAvatar() {
-  const { user } = useUser();
-  const name = user?.name || "User";
-
-  const avatar = user?.avatar || "default-user.jpg";
+  const { data: session } = useSession();
+  const name = session?.name || "User";
+  const avatar = session?.avatar || "default-user.jpg";
 
   return (
     <StyledUserAvatar>
