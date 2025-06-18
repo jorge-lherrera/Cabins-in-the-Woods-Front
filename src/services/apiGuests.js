@@ -24,7 +24,7 @@ export async function getGuests({
   }
 
   const { data } = await api.get("/guests", { params });
-  console.log("getGuests data: api guests", data);
+
   return data;
 }
 

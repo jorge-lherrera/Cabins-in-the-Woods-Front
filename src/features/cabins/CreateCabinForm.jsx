@@ -46,8 +46,6 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       file: image,
     };
 
-    console.log("Payload to create/edit cabin:", payload);
-
     if (isEditSession) {
       editCabin(
         {

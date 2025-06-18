@@ -30,6 +30,6 @@ export function useCabins() {
   const cabins = data?.resource || [];
   const count = data?.resource?.total || 0;
   const pageCount = data?.resource?.pageCount || 0;
-  console.log(cabins, `esto es cabins`);
+
   return { isLoading, error, cabins, count, pageCount };
 }

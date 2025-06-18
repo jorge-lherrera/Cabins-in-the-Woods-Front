@@ -52,7 +52,6 @@ export function useBookings() {
   const bookings = data?.resource?.bookings || [];
   const count = bookings.length;
   const pageCount = data?.resource?.pageCount || 0;
-  console.log("useBookings", bookings);
 
   if (page < pageCount) {
     const nextPageFilters = { ...filters, page: page + 1 };

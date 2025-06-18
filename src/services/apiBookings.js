@@ -6,7 +6,7 @@ export async function getBookingsDashboard({ days } = {}) {
   params.days = days ?? 7;
 
   const { data } = await api.get("/bookings/dashboard", { params });
-  console.log("api dashboard", data);
+
   return data;
 }
 
@@ -32,7 +32,7 @@ export async function getBookings({
   if (status && status !== "all") params.status = status;
 
   const { data } = await api.get("/bookings", { params });
-  console.log("api booking table", data);
+
   return data;
 }
 
