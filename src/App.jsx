@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import ToasterComponent from "./utils/ToasterComponent";
-import ProtectedRoute from "./ui/ProtectedRoute";
+// import ProtectedRoute from "./ui/ProtectedRoute";
 import GlobalStyles from "./styles/GlobalStyles";
 import Spinner from "./ui/Spinner";
 
@@ -38,9 +38,9 @@ function App() {
             <Routes>
               <Route
                 element={
-                  <ProtectedRoute>
+                  // <ProtectedRoute>
                     <AppLayout />
-                  </ProtectedRoute>
+                  // </ProtectedRoute>
                 }
               >
                 <Route index element={<Navigate replace to="/dashboard" />} />
