@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import ToasterComponent from "./utils/ToasterComponent";
-// import ProtectedRoute from "./ui/ProtectedRoute";
+import ProtectedRoute from "./ui/ProtectedRoute";
 import GlobalStyles from "./styles/GlobalStyles";
 import Spinner from "./ui/Spinner";
 
@@ -18,7 +18,6 @@ const Guest = lazy(() => import("./pages/Guest"));
 const Login = lazy(() => import("./pages/Login"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const Settings = lazy(() => import("./pages/Settings"));
-const Signup = lazy(() => import("./pages/Signup"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,9 +37,9 @@ function App() {
             <Routes>
               <Route
                 element={
-                  // <ProtectedRoute>
+                  <ProtectedRoute>
                     <AppLayout />
-                  // </ProtectedRoute>
+                  </ProtectedRoute>
                 }
               >
                 <Route index element={<Navigate replace to="/dashboard" />} />
@@ -53,7 +52,6 @@ function App() {
                 <Route path="/guests" element={<Guest />} />
               </Route>
               <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>

@@ -43,7 +43,7 @@ export function useBookings() {
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Erro ao carregar as reservas",
+          "Erro ao carregar as reservas"
       );
     },
     keepPreviousData: true,

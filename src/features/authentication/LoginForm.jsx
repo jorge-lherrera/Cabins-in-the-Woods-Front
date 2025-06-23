@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
 
 import { useLogin } from "../../hooks/auth/useLogin";
 
+import Modal from "../../ui/Modal";
+import SignupForm from "./SignupForm";
 import loginSchema from "../../validations/loginValidations";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
@@ -31,49 +32,59 @@ function LoginForm() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRowVertical label="Email" error={errors.email?.message}>
-        <Input
-          type="email"
-          id="email"
-          autoComplete="username"
-          disabled={mutation.isLoading || isSubmitting}
-          {...register("email")}
-        />
-      </FormRowVertical>
+    <Modal>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormRowVertical label="Email" error={errors.email?.message}>
+          <Input
+            type="email"
+            id="email"
+            autoComplete="username"
+            disabled={mutation.isLoading || isSubmitting}
+            {...register("email")}
+          />
+        </FormRowVertical>
 
-      <FormRowVertical label="Senha" error={errors.password?.message}>
-        <Input
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          disabled={mutation.isLoading || isSubmitting}
-          {...register("password")}
-        />
-      </FormRowVertical>
+        <FormRowVertical label="Senha" error={errors.password?.message}>
+          <Input
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            disabled={mutation.isLoading || isSubmitting}
+            {...register("password")}
+          />
+        </FormRowVertical>
 
-      <FormRowVertical>
-        <Button size="large" disabled={mutation.isLoading || isSubmitting}>
-          {!mutation.isLoading ? "Log in" : <SpinnerMini />}
-        </Button>
-      </FormRowVertical>
-      {mutation.isError && (
-        <div className="mt-2 text-sm text-red-700">
-          {mutation.error?.response?.data?.message || "Erro ao fazer login"}
+        <FormRowVertical>
+          <Button size="large" disabled={mutation.isLoading || isSubmitting}>
+            {!mutation.isLoading ? "Log in" : <SpinnerMini />}
+          </Button>
+        </FormRowVertical>
+        {mutation.isError && (
+          <div className="mt-2 text-sm text-red-700">
+            {mutation.error?.response?.data?.message || "Erro ao fazer login"}
+          </div>
+        )}
+        <div style={{ marginTop: "1.5rem", textAlign: "right" }}>
+          <span style={{ fontSize: "1.4rem" }}>
+            Ainda não tem cadastro?{" "}
+            <Modal.Open opens="signup-form">
+              <span
+                style={{
+                  color: "#2563eb",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Cadastre-se
+              </span>
+            </Modal.Open>
+          </span>
         </div>
-      )}
-      <div style={{ marginTop: "1.5rem", textAlign: "right" }}>
-        <span style={{ fontSize: "1.4rem" }}>
-          Ainda não tem cadastro?{" "}
-          <Link
-            to="/signup"
-            style={{ color: "#2563eb", textDecoration: "underline" }}
-          >
-            Cadastre-se
-          </Link>
-        </span>
-      </div>
-    </Form>
+      </Form>
+      <Modal.Window name="signup-form">
+        <SignupForm />
+      </Modal.Window>
+    </Modal>
   );
 }
 
