@@ -3,15 +3,15 @@ import { toast } from "react-hot-toast";
 
 import { getBookingsDashboard } from "../../services/apiBookings";
 
-export function useDashboardBookings() {
+export function useDashboardBookings({ days }) {
   const { isLoading, data, error } = useQuery({
-    queryKey: ["dashboard-bookings"],
-    queryFn: () => getBookingsDashboard(),
+    queryKey: ["dashboard-bookings", days],
+    queryFn: () => getBookingsDashboard({ days }),
     onError: (err) => {
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Erro ao carregar os dados do dashboard",
+          "Erro ao carregar os dados do dashboard"
       );
     },
   });

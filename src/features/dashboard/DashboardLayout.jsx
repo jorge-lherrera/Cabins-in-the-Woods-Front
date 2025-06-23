@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 import { useDashboardBookings } from "../../hooks/bookings/useDashboardBookings";
 
@@ -6,7 +7,6 @@ import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
-// import TodayActivity from "../check-in-out/TodayActivity";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -16,7 +16,10 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { isLoading, error, dashboardData } = useDashboardBookings();
+  const [searchParams] = useSearchParams();
+  const days = Number(searchParams.get("last")) || 7;
+
+  const { isLoading, error, dashboardData } = useDashboardBookings({ days });
 
   if (isLoading) return <Spinner />;
   if (error) return <div>Erro ao carregar dados do dashboard</div>;
