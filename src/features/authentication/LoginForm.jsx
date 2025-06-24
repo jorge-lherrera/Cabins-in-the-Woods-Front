@@ -59,11 +59,7 @@ function LoginForm() {
             {!mutation.isLoading ? "Log in" : <SpinnerMini />}
           </Button>
         </FormRowVertical>
-        {mutation.isError && (
-          <div className="mt-2 text-sm text-red-700">
-            {mutation.error?.response?.data?.message || "Erro ao fazer login"}
-          </div>
-        )}
+
         <div style={{ marginTop: "1.5rem", textAlign: "right" }}>
           <span style={{ fontSize: "1.4rem" }}>
             Ainda não tem cadastro?{" "}

@@ -1,10 +1,17 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+} from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import ConfirmModal from "./ConfirmModal";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -48,9 +55,6 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
   }
 `;
@@ -87,18 +91,39 @@ Open.propTypes = {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
-  const ref = useOutsideClick(close);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleTryClose = useCallback(() => {
+    setShowConfirm(true);
+  }, []);
+
+  const handleConfirmClose = useCallback(() => {
+    setShowConfirm(false);
+    close();
+  }, [close]);
+
+  const handleCancelClose = useCallback(() => {
+    setShowConfirm(false);
+  }, []);
+
+  const ref = useOutsideClick(handleTryClose);
 
   if (name !== openName) return null;
 
   return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
-        <Button onClick={close}>
+        <Button onClick={handleTryClose}>
           <HiXMark />
         </Button>
-
-        <div>{cloneElement(children, { onCloseModal: close })}</div>
+        <div>{cloneElement(children, { onCloseModal: handleTryClose })}</div>
+        {showConfirm && (
+          <ConfirmModal
+            message="Tem certeza que deseja fechar?"
+            onConfirm={handleConfirmClose}
+            onCancel={handleCancelClose}
+          />
+        )}
       </StyledModal>
     </Overlay>,
     document.body
