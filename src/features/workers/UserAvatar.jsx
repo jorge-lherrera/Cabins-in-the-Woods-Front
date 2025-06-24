@@ -1,5 +1,6 @@
-import { useSession } from "../../hooks/auth/useSession";
 import styled from "styled-components";
+
+import { useSession } from "../../hooks/auth/useSession";
 
 const StyledUserAvatar = styled.div`
   display: flex;
