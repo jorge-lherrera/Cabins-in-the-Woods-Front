@@ -34,7 +34,7 @@ function LoginForm() {
   return (
     <Modal>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRowVertical label="Email" error={errors.email?.message}>
+        <FormRowVertical label="Email address" error={errors.email?.message}>
           <Input
             type="email"
             id="email"
@@ -44,7 +44,7 @@ function LoginForm() {
           />
         </FormRowVertical>
 
-        <FormRowVertical label="Senha" error={errors.password?.message}>
+        <FormRowVertical label="Password" error={errors.password?.message}>
           <Input
             type="password"
             id="password"
