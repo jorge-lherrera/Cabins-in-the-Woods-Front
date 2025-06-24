@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-
 import { updateWorker } from "../../services/apiWorkers";
 
 export function useUpdateWorker() {
@@ -10,7 +9,7 @@ export function useUpdateWorker() {
     mutationFn: updateWorker,
     onSuccess: (worker) => {
       toast.success("Conta atualizada com sucesso!");
-      queryClient.setQueryData(["user"], worker);
+      queryClient.invalidateQueries(["session"]);
     },
     onError: (err) => {
       toast.error(

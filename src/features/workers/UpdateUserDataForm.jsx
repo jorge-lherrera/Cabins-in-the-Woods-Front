@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { workerValidationSchema } from "../../validations/workerValidations";
+import { workerUpdateValidationSchema } from "../../validations/workerValidations";
 import { useSession } from "../../hooks/auth/useSession";
 import { useUpdateWorker } from "../../hooks/workers/useUpdateWorker";
 
@@ -23,9 +23,9 @@ function UpdateUserDataForm() {
     handleSubmit,
     watch,
     reset,
-    formState: { errors, isDirty, dirtyFields },
+    formState: { errors, dirtyFields },
   } = useForm({
-    resolver: yupResolver(workerValidationSchema),
+    resolver: yupResolver(workerUpdateValidationSchema),
     defaultValues: {
       name: session?.name || "",
       email: session?.email || "",
@@ -35,17 +35,14 @@ function UpdateUserDataForm() {
     },
   });
 
-  // Watch fields for changes
   const watchedFields = watch();
 
-  // Solo permite update si hay cambios en name, avatar o password
   const hasChanges =
     !!dirtyFields.name ||
     !!dirtyFields.avatar ||
     (!!watchedFields.password && !!watchedFields.currentPassword);
 
   function onSubmit(formData) {
-    // Solo enviar campos modificados
     const dataToSend = {};
     if (dirtyFields.name) dataToSend.name = formData.name;
     if (dirtyFields.avatar && formData.avatar && formData.avatar[0])
@@ -78,16 +75,19 @@ function UpdateUserDataForm() {
 
   function handleAvatarChange(e) {
     const file = e.target.files[0];
-    if (file) setAvatarPreview(URL.createObjectURL(file));
+
+    if (file && file.type && file.type.startsWith("image/")) {
+      setAvatarPreview(URL.createObjectURL(file));
+    }
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Email">
-        <Input value={watchedFields.email} disabled />
+      <FormRow label="Email" id="email">
+        <Input id="email" value={session?.email || ""} disabled readOnly />
       </FormRow>
 
-      <FormRow label="Nome">
+      <FormRow label="Nome" id="name">
         <Input
           type="text"
           id="name"
@@ -97,7 +97,7 @@ function UpdateUserDataForm() {
         {errors.name && <span>{errors.name.message}</span>}
       </FormRow>
 
-      <FormRow label="Avatar">
+      <FormRow label="Avatar" id="avatar">
         <FileInput
           id="avatar"
           accept="image/*"
@@ -115,7 +115,7 @@ function UpdateUserDataForm() {
         {errors.avatar && <span>{errors.avatar.message}</span>}
       </FormRow>
 
-      <FormRow label="Nova senha">
+      <FormRow label="Nova senha" id="password">
         <Input
           type="password"
           id="password"
@@ -126,7 +126,10 @@ function UpdateUserDataForm() {
         {errors.password && <span>{errors.password.message}</span>}
       </FormRow>
 
-      <FormRow label="Senha atual (obrigatória para trocar senha)">
+      <FormRow
+        label="Senha atual (obrigatória para trocar senha)"
+        id="currentPassword"
+      >
         <Input
           type="password"
           id="currentPassword"
