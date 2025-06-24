@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { useDarkMode } from "../context/DarkModeContext";
 
@@ -18,7 +19,9 @@ function Logo() {
 
   return (
     <StyledLogo>
-      <Img src={src} alt="Logo" />
+      <Link to="/dashboard">
+        <Img src={src} alt="Logo" />
+      </Link>
     </StyledLogo>
   );
 }
