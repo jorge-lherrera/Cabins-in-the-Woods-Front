@@ -8,11 +8,10 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import signupSchema from "../../validations/signupValidations";
 import FileInput from "../../ui/FileInput";
-import Modal from "../../ui/Modal";
 
 function SignupForm({ onCloseModal }) {
   const { signup, isLoading } = useSignup();
-  const { register, formState, handleSubmit, reset } = useForm({
+  const { register, formState, handleSubmit, reset, setError } = useForm({
     resolver: yupResolver(signupSchema),
   });
   const { errors } = formState;
@@ -23,7 +22,7 @@ function SignupForm({ onCloseModal }) {
     signup(
       { name, email, password, avatar: avatarFile },
       {
-        onSettled: () => {
+        onSuccess: () => {
           reset();
           if (onCloseModal) onCloseModal();
         },
@@ -32,7 +31,6 @@ function SignupForm({ onCloseModal }) {
   }
 
   function handleCancel() {
-    reset();
     if (onCloseModal) onCloseModal();
   }
 

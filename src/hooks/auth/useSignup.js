@@ -9,17 +9,9 @@ export function useSignup() {
 
   const { mutate: signup, isLoading } = useMutation({
     mutationFn: async ({ name, email, password, avatar }) => {
-      try {
-        const signupResult = await signupApi({ name, email, password, avatar });
-        console.log("Signup result:", signupResult); // test
-
-        const loginResult = await loginApi({ email, password });
-        console.log("Login successful after signup:", loginResult); // test
-        return loginResult;
-      } catch (error) {
-        console.error("Error in signup mutationFn:", error);
-        throw error;
-      }
+      await signupApi({ name, email, password, avatar });
+      const loginResult = await loginApi({ email, password });
+      return loginResult;
     },
     onSuccess: (loginResult) => {
       queryClient.setQueryData(["session"], {
@@ -31,7 +23,12 @@ export function useSignup() {
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
-      toast.error(error.message || "Erro ao criar usuário.");
+      const backendMsg =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        error.message;
+
+      toast.error(backendMsg || "Erro ao criar usuário.");
     },
   });
 

@@ -16,7 +16,7 @@ export async function signup({ name, email, password, avatar }) {
   if (data.resource) {
     return data.resource;
   } else {
-    throw new Error(data.error || "Erro ao criar usuário.");
+    throw { response: { data } };
   }
 }
 export async function login({ email, password }) {
