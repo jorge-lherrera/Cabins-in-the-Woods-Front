@@ -12,24 +12,26 @@ const StyledUserAvatar = styled.div`
 `;
 
 const Avatar = styled.img`
-  display: block;
-  width: 4rem;
   width: 3.6rem;
-  aspect-ratio: 1;
+  height: 3.6rem;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
   outline: 2px solid var(--color-grey-100);
+  flex-shrink: 0;
 `;
 
 function UserAvatar() {
   const { data: session } = useSession();
-  const name = session?.name || "User";
-  const avatar = session?.avatar || "default-user.jpg";
+
+  const user = session?.user || session;
+
+  const name = user?.name || "User";
+  const avatar = user?.avatar || "default-user.jpg";
 
   return (
     <StyledUserAvatar>
-      <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${name}`} />
+      <Avatar src={avatar} alt={`Avatar of ${name}`} />
       <span>{name}</span>
     </StyledUserAvatar>
   );
