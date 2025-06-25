@@ -57,16 +57,31 @@ export const workerUpdateValidationSchema = yup.object().shape({
     .notRequired(),
   password: yup
     .string()
+    .transform((value) => (value === "" ? undefined : value))
     .min(8, "A senha deve ter pelo menos 8 caracteres")
     .max(100, "A senha não pode ter mais de 100 caracteres")
     .notRequired(),
-  currentPassword: yup.string().when("password", {
-    is: (val) => !!val,
-    then: (schema) =>
-      schema
-        .required("A senha atual é obrigatória para trocar a senha")
-        .min(8, "A senha atual deve ter pelo menos 8 caracteres")
-        .max(100, "A senha atual não pode ter mais de 100 caracteres"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+  confirmPassword: yup
+    .string()
+    .transform((value) => (value === "" ? undefined : value))
+    .when("password", {
+      is: (val) => !!val,
+      then: (schema) =>
+        schema
+          .required("Confirme a nova senha")
+          .oneOf([yup.ref("password")], "As senhas não coincidem"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  currentPassword: yup
+    .string()
+    .transform((value) => (value === "" ? undefined : value))
+    .when("password", {
+      is: (val) => !!val,
+      then: (schema) =>
+        schema
+          .required("A senha atual é obrigatória para trocar a senha")
+          .min(8, "A senha atual deve ter pelo menos 8 caracteres")
+          .max(100, "A senha atual não pode ter mais de 100 caracteres"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
 });

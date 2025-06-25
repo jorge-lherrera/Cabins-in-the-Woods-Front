@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigate } from "react-router-dom";
 
 import { workerUpdateValidationSchema } from "../../validations/workerValidations";
 import { useSession } from "../../hooks/auth/useSession";
@@ -14,40 +15,61 @@ import Input from "../../ui/Input";
 
 function UpdateUserDataForm() {
   const { data: session } = useSession();
+  const user = session?.user || session;
   const { updateWorker, isUpdating } = useUpdateWorker();
+  const navigate = useNavigate();
 
-  const [avatarPreview, setAvatarPreview] = useState(session?.avatar || "");
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   const {
     register,
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors, dirtyFields },
   } = useForm({
     resolver: yupResolver(workerUpdateValidationSchema),
     defaultValues: {
-      name: session?.name || "",
-      email: session?.email || "",
+      name: "",
       avatar: null,
       password: "",
+      confirmPassword: "",
       currentPassword: "",
     },
+    mode: "onChange",
   });
 
   const watchedFields = watch();
 
+  function handleAvatarChange(e) {
+    const file = e.target.files[0];
+    if (file && file.type && file.type.startsWith("image/")) {
+      setAvatarPreview(URL.createObjectURL(file));
+      setValue("avatar", e.target.files, { shouldDirty: true });
+    } else {
+      setAvatarPreview(null);
+      setValue("avatar", null, { shouldDirty: true });
+    }
+  }
+
   const hasChanges =
     !!dirtyFields.name ||
     !!dirtyFields.avatar ||
-    (!!watchedFields.password && !!watchedFields.currentPassword);
+    (!!dirtyFields.password &&
+      !!dirtyFields.currentPassword &&
+      !!dirtyFields.confirmPassword);
 
   function onSubmit(formData) {
     const dataToSend = {};
     if (dirtyFields.name) dataToSend.name = formData.name;
     if (dirtyFields.avatar && formData.avatar && formData.avatar[0])
       dataToSend.avatar = formData.avatar[0];
-    if (formData.password && formData.currentPassword) {
+    if (
+      formData.password &&
+      formData.currentPassword &&
+      formData.confirmPassword
+    ) {
       dataToSend.password = formData.password;
       dataToSend.currentPassword = formData.currentPassword;
     }
@@ -56,41 +78,31 @@ function UpdateUserDataForm() {
       onSuccess: () => {
         reset(
           {
-            name: formData.name,
-            email: formData.email,
+            name: "",
             avatar: null,
             password: "",
+            confirmPassword: "",
             currentPassword: "",
           },
           { keepDirty: false }
         );
-        setAvatarPreview(
-          formData.avatar && formData.avatar[0]
-            ? URL.createObjectURL(formData.avatar[0])
-            : session?.avatar || ""
-        );
+        setAvatarPreview(null);
+        navigate("/dashboard", { replace: true });
       },
     });
-  }
-
-  function handleAvatarChange(e) {
-    const file = e.target.files[0];
-
-    if (file && file.type && file.type.startsWith("image/")) {
-      setAvatarPreview(URL.createObjectURL(file));
-    }
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Email" id="email">
-        <Input id="email" value={session?.email || ""} disabled readOnly />
+        <Input id="email" value={user?.email || ""} disabled readOnly />
       </FormRow>
 
       <FormRow label="Nome" id="name">
         <Input
           type="text"
           id="name"
+          placeholder={user?.name || ""}
           {...register("name")}
           disabled={isUpdating}
         />
@@ -109,7 +121,13 @@ function UpdateUserDataForm() {
           <img
             src={avatarPreview}
             alt="Avatar preview"
-            style={{ width: 48, height: 48, borderRadius: "50%", marginTop: 8 }}
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              marginTop: 8,
+              objectFit: "cover",
+            }}
           />
         )}
         {errors.avatar && <span>{errors.avatar.message}</span>}
@@ -119,20 +137,32 @@ function UpdateUserDataForm() {
         <Input
           type="password"
           id="password"
+          placeholder="Nova senha"
           {...register("password")}
           disabled={isUpdating}
           autoComplete="new-password"
         />
-        {errors.password && <span>{errors.password.message}</span>}
       </FormRow>
 
-      <FormRow
-        label="Senha atual (obrigatória para trocar senha)"
-        id="currentPassword"
-      >
+      <FormRow label="Confirmar nova senha" id="confirmPassword">
+        <Input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirmar nova senha"
+          {...register("confirmPassword")}
+          disabled={isUpdating}
+          autoComplete="new-password"
+        />
+        {errors.confirmPassword && (
+          <span>{errors.confirmPassword.message}</span>
+        )}
+      </FormRow>
+
+      <FormRow label="Senha atual" id="currentPassword">
         <Input
           type="password"
           id="currentPassword"
+          placeholder="Senha atual"
           {...register("currentPassword")}
           disabled={isUpdating}
           autoComplete="current-password"
@@ -143,7 +173,16 @@ function UpdateUserDataForm() {
       </FormRow>
 
       <FormRow>
-        <Button type="submit" disabled={isUpdating || !hasChanges}>
+        <Button
+          type="submit"
+          disabled={
+            isUpdating ||
+            !hasChanges ||
+            (watchedFields.password &&
+              watchedFields.confirmPassword &&
+              watchedFields.password !== watchedFields.confirmPassword)
+          }
+        >
           Atualizar conta
         </Button>
       </FormRow>
