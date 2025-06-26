@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 import {
   positiveNumber,
   positiveInteger,
@@ -5,7 +7,7 @@ import {
 } from "./validationsUtils";
 
 const settingValidationSchema = applyNoUnknown(
-  {
+  Yup.object().shape({
     minBookingLength: positiveInteger("duração mínima"),
     maxBookingLength: positiveInteger("duração máxima").test(
       "is-greater-than-min",
@@ -22,7 +24,7 @@ const settingValidationSchema = applyNoUnknown(
     breakfastPrice: positiveNumber("preço do café da manhã").required(
       "O preço do café da manhã é obrigatório."
     ),
-  },
+  }),
   "Os campos adicionais não são permitidos. Por favor, verifique os campos."
 );
 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+
 import { useSettings } from "../../hooks/settings/useSettings";
 import { useUpdateSetting } from "../../hooks/settings/useUpdateSetting";
+
 import Button from "../../ui/Button";
-import Empty from "../../ui/Empty";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
@@ -36,7 +37,6 @@ function SettingLayout() {
     const newFields = { ...fields, [name]: value };
     setFields(newFields);
 
-    // Compara con los valores originales de settings
     const changed =
       Number(newFields.minBookingLength) !==
         Number(settings.minBookingLength) ||

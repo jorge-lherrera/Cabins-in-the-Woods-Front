@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 
-import { workerValidation } from "../../validations/workerValidations";
 import { useSession } from "../../hooks/auth/useSession";
 import { useUpdateWorker } from "../../hooks/workers/useUpdateWorker";
 import { makeAllFieldsOptional } from "../../utils/makeAllFieldsOptional";
 
+import workerValidation from "../../validations/workerValidations";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
@@ -34,11 +34,11 @@ function UpdateUserDataForm() {
   } = useForm({
     resolver: yupResolver(workerUpdateValidationSchema),
     defaultValues: {
-      name: "",
+      name: undefined,
       avatar: null,
-      password: "",
-      confirmPassword: "",
-      currentPassword: "",
+      password: undefined,
+      confirmPassword: undefined,
+      currentPassword: undefined,
     },
     mode: "onChange",
   });
@@ -81,11 +81,11 @@ function UpdateUserDataForm() {
       onSuccess: () => {
         reset(
           {
-            name: "",
+            name: undefined,
             avatar: null,
-            password: "",
-            confirmPassword: "",
-            currentPassword: "",
+            password: undefined,
+            confirmPassword: undefined,
+            currentPassword: undefined,
           },
           { keepDirty: false }
         );
@@ -177,6 +177,15 @@ function UpdateUserDataForm() {
 
       <FormRow>
         <Button
+          title={
+            !hasChanges
+              ? "Altere algum campo para ativar."
+              : watchedFields.password &&
+                  watchedFields.confirmPassword &&
+                  watchedFields.password !== watchedFields.confirmPassword
+                ? "As senhas devem ser iguais."
+                : undefined
+          }
           type="submit"
           disabled={
             isUpdating ||
