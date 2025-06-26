@@ -1,15 +1,14 @@
-import * as yup from "yup";
+import * as Yup from "yup";
+import { validateStringLength, applyNoUnknown } from "./validationsUtils";
 
-const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("O email fornecido não é válido.")
-    .required("O email é obrigatório."),
-  password: yup
-    .string()
-    .min(8, "O campo senha deve ter pelo menos 8 caracteres")
-    .max(100, "O campo senha não pode ter mais de 100 caracteres")
-    .required("O campo senha é obrigatório"),
-});
+const loginValidation = applyNoUnknown(
+  Yup.object().shape({
+    email: Yup.string()
+      .email("O email fornecido não é válido.")
+      .required("O email é obrigatório."),
+    password: validateStringLength("senha", 8, 100),
+  }),
+  "Os campos adicionais não são permitidos. Campos obrigatórios: email, password."
+);
 
-export default loginSchema;
+export default loginValidation;
