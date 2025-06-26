@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 
-import { workerUpdateValidationSchema } from "../../validations/workerValidations";
+import { workerValidation } from "../../validations/workerValidations";
 import { useSession } from "../../hooks/auth/useSession";
 import { useUpdateWorker } from "../../hooks/workers/useUpdateWorker";
+import { makeAllFieldsOptional } from "../../utils/makeAllFieldsOptional";
 
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
@@ -20,6 +21,8 @@ function UpdateUserDataForm() {
   const navigate = useNavigate();
 
   const [avatarPreview, setAvatarPreview] = useState(null);
+
+  const workerUpdateValidationSchema = makeAllFieldsOptional(workerValidation);
 
   const {
     register,
