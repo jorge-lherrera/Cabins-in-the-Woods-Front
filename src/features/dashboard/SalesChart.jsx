@@ -24,10 +24,9 @@ const StyledSalesChart = styled(DashboardBox)`
   }
 `;
 
-function SalesChart({ salesChart }) {
+function SalesChart({ salesChart, days }) {
   const { isDarkMode } = useDarkMode();
 
-  // Asegúrate de que salesChart tenga fechas válidas y revenue como número
   const data = (salesChart ?? []).map((item) => ({
     ...item,
     label: item.date ? format(parseISO(item.date), "MMM dd") : "",
@@ -48,7 +47,7 @@ function SalesChart({ salesChart }) {
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales (last 30 days)</Heading>
+      <Heading as="h2">{`Sales (last ${days} days)`}</Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
@@ -84,8 +83,9 @@ SalesChart.propTypes = {
       date: PropTypes.string.isRequired,
       revenue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         .isRequired,
-    }),
+    })
   ).isRequired,
+  days: PropTypes.number.isRequired,
 };
 
 export default SalesChart;

@@ -34,7 +34,7 @@ function DashboardLayout() {
       />
       {/* <TodayActivity bookingsToday={dashboardData?.bookingsToday ?? []} /> */}
       <DurationChart nightRanges={dashboardData?.nightRanges ?? {}} />
-      <SalesChart salesChart={dashboardData?.salesChart ?? []} />
+      <SalesChart salesChart={dashboardData?.salesChart ?? []} days={days} />
     </StyledDashboardLayout>
   );
 }
