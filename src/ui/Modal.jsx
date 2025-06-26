@@ -11,7 +11,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { useOutsideClick } from "../hooks/useOutsideClick";
-import ConfirmModal from "./ConfirmModal";
+import ConfirmDialog from "./ConfirmDialog"; // Cambiado aquí
 
 const StyledModal = styled.div`
   position: fixed;
@@ -118,10 +118,15 @@ function Window({ children, name }) {
         </Button>
         <div>{cloneElement(children, { onCloseModal: handleTryClose })}</div>
         {showConfirm && (
-          <ConfirmModal
+          <ConfirmDialog
+            open={showConfirm}
+            title="Confirmação"
             message="Tem certeza que deseja fechar?"
+            confirmLabel="Sim, fechar"
+            cancelLabel="Cancelar"
             onConfirm={handleConfirmClose}
             onCancel={handleCancelClose}
+            confirmVariant="danger"
           />
         )}
       </StyledModal>

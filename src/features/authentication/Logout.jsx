@@ -4,22 +4,7 @@ import { HiArrowRightOnRectangle } from "react-icons/hi2";
 import SpinnerMini from "../../ui/SpinnerMini";
 import ButtonIcon from "../../ui/ButtonIcon";
 import { useLogout } from "../../hooks/auth/useLogout";
-import ConfirmCancel from "../../ui/ConfirmCancel";
-import styled from "styled-components";
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--backdrop-color, rgba(0, 0, 0, 0.3));
-  backdrop-filter: blur(4px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import ConfirmDialog from "../../ui/ConfirmDialog";
 
 function Logout() {
   const { logout, isLoading } = useLogout();
@@ -39,16 +24,16 @@ function Logout() {
       <ButtonIcon disabled={isLoading} onClick={handleLogout}>
         {!isLoading ? <HiArrowRightOnRectangle /> : <SpinnerMini />}
       </ButtonIcon>
-      {showConfirm && (
-        <Overlay>
-          <ConfirmCancel
-            resourceName="logout"
-            onConfirm={handleConfirm}
-            onCloseModal={handleCancel}
-            disabled={isLoading}
-          />
-        </Overlay>
-      )}
+      <ConfirmDialog
+        open={showConfirm}
+        title="Sair"
+        message="Tem certeza que deseja sair da aplicação?"
+        confirmLabel="Sair"
+        cancelLabel="Cancelar"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        confirmVariant="secondary"
+      />
     </>
   );
 }

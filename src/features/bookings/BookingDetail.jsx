@@ -11,7 +11,7 @@ import BookingDataBox from "./BookingDataBox";
 import Button from "../../ui/Button";
 import ButtonGroup from "../../ui/ButtonGroup";
 import ButtonText from "../../ui/ButtonText";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+import ConfirmDialog from "../../ui/ConfirmDialog";
 import Empty from "../../ui/Empty";
 import Heading from "../../ui/Heading";
 import Modal from "../../ui/Modal";
@@ -79,14 +79,20 @@ function BookingDetail() {
           </Modal.Open>
 
           <Modal.Window name="delete">
-            <ConfirmDelete
-              resourceName="booking"
-              disabled={isDeleting}
+            <ConfirmDialog
+              open={true}
+              title="Excluir reserva"
+              message="Tem certeza que deseja excluir esta reserva?"
+              confirmLabel="Excluir"
+              cancelLabel="Cancelar"
               onConfirm={() =>
                 deleteBooking(bookingId, {
                   onSettled: () => navigate(-1),
                 })
               }
+              onCancel={() => navigate(-1)}
+              confirmVariant="danger"
+              disabled={isDeleting}
             />
           </Modal.Window>
         </Modal>

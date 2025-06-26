@@ -8,7 +8,7 @@ import { formatCurrency } from "../../utils/helpers";
 
 import CreateCabinForm from "./CreateCabinForm";
 import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+import ConfirmDialog from "../../ui/ConfirmDialog";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 
@@ -103,10 +103,16 @@ function CabinRow({ cabin }) {
             </Modal.Window>
 
             <Modal.Window name="delete">
-              <ConfirmDelete
-                resourceName="cabins"
-                disabled={isDeleting}
+              <ConfirmDialog
+                open={true}
+                title="Excluir cabana"
+                message="Tem certeza que deseja excluir esta cabana?"
+                confirmLabel="Excluir"
+                cancelLabel="Cancelar"
                 onConfirm={() => deleteCabin(cabinId)}
+                onCancel={() => {}}
+                confirmVariant="danger"
+                disabled={isDeleting}
               />
             </Modal.Window>
           </Menus.Menu>

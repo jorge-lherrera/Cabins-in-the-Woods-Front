@@ -4,7 +4,7 @@ import { HiPencil, HiTrash } from "react-icons/hi2";
 import { useDeleteGuest } from "../../hooks/guests/useDeleteGuest";
 import CreateGuestForm from "./CreateGuestForm";
 import Modal from "../../ui/Modal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+import ConfirmDialog from "../../ui/ConfirmDialog";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import ReactCountryFlag from "react-country-flag";
@@ -87,10 +87,16 @@ function GuestRow({ guest }) {
             </Modal.Window>
 
             <Modal.Window name="delete">
-              <ConfirmDelete
-                resourceName="guests"
-                disabled={isDeleting}
+              <ConfirmDialog
+                open={true}
+                title="Excluir hóspede"
+                message="Tem certeza que deseja excluir este hóspede?"
+                confirmLabel="Excluir"
+                cancelLabel="Cancelar"
                 onConfirm={() => deleteGuest(id)}
+                onCancel={() => {}}
+                confirmVariant="danger"
+                disabled={isDeleting}
               />
             </Modal.Window>
           </Menus.Menu>

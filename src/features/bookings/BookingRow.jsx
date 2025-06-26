@@ -15,7 +15,7 @@ import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
-import ConfirmDelete from "../../ui/ConfirmDelete";
+import ConfirmDialog from "../../ui/ConfirmDialog";
 
 const Booking = styled.div`
   font-size: 1.6rem;
@@ -124,10 +124,16 @@ function BookingRow({ booking }) {
         </Menus.Menu>
 
         <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="booking"
-            disabled={isDeleting}
+          <ConfirmDialog
+            open={true}
+            title="Excluir reserva"
+            message="Tem certeza que deseja excluir esta reserva?"
+            confirmLabel="Excluir"
+            cancelLabel="Cancelar"
             onConfirm={() => deleteBooking(bookingId)}
+            onCancel={() => {}}
+            confirmVariant="danger"
+            disabled={isDeleting}
           />
         </Modal.Window>
       </Modal>
