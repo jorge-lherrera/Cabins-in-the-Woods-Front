@@ -61,24 +61,21 @@ const PaginationButton = styled.button`
   }
 `;
 
-function Pagination({ count }) {
+function Pagination({ count, pageCount, currentPage }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = !searchParams.get("page")
-    ? 1
-    : Number(searchParams.get("page"));
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const page =
+    currentPage ||
+    (!searchParams.get("page") ? 1 : Number(searchParams.get("page")));
 
   function nextPage() {
-    const next = currentPage === pageCount ? currentPage : currentPage + 1;
-
+    const next = page === pageCount ? page : page + 1;
     searchParams.set("page", next);
     setSearchParams(searchParams);
   }
 
   function prevPage() {
-    const prev = currentPage === 1 ? currentPage : currentPage - 1;
-
+    const prev = page === 1 ? page : page - 1;
     searchParams.set("page", prev);
     setSearchParams(searchParams);
   }
@@ -88,22 +85,17 @@ function Pagination({ count }) {
   return (
     <StyledPagination>
       <P>
-        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{" "}
-        <span>
-          {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
-        </span>{" "}
-        of <span>{count}</span> results
+        Showing <span>{(page - 1) * PAGE_SIZE + 1}</span> to{" "}
+        <span>{page === pageCount ? count : page * PAGE_SIZE}</span> of{" "}
+        <span>{count}</span> results
       </P>
 
       <Buttons>
-        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+        <PaginationButton onClick={prevPage} disabled={page === 1}>
           <HiChevronLeft /> <span>Previous</span>
         </PaginationButton>
 
-        <PaginationButton
-          onClick={nextPage}
-          disabled={currentPage === pageCount}
-        >
+        <PaginationButton onClick={nextPage} disabled={page === pageCount}>
           <span>Next</span>
           <HiChevronRight />
         </PaginationButton>
@@ -114,6 +106,8 @@ function Pagination({ count }) {
 
 Pagination.propTypes = {
   count: PropTypes.number.isRequired,
+  pageCount: PropTypes.number.isRequired,
+  currentPage: PropTypes.number,
 };
 
 export default Pagination;

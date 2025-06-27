@@ -50,24 +50,32 @@ export function useBookings() {
   });
 
   const bookings = data?.resource?.bookings || [];
-  const count = bookings.length;
+  const currentPage = data?.resource?.page || 1;
   const pageCount = data?.resource?.pageCount || 0;
+  const totalCount = pageCount * 10;
 
-  if (page < pageCount) {
-    const nextPageFilters = { ...filters, page: page + 1 };
+  if (currentPage < pageCount) {
+    const nextPageFilters = { ...filters, page: currentPage + 1 };
     queryClient.prefetchQuery({
       queryKey: ["bookings", nextPageFilters],
       queryFn: () => getBookings(nextPageFilters),
     });
   }
 
-  if (page > 1) {
-    const prevPageFilters = { ...filters, page: page - 1 };
+  if (currentPage > 1) {
+    const prevPageFilters = { ...filters, page: currentPage - 1 };
     queryClient.prefetchQuery({
       queryKey: ["bookings", prevPageFilters],
       queryFn: () => getBookings(prevPageFilters),
     });
   }
 
-  return { isLoading, error, bookings, count, pageCount };
+  return {
+    isLoading,
+    error,
+    bookings,
+    count: totalCount,
+    pageCount,
+    currentPage,
+  };
 }
