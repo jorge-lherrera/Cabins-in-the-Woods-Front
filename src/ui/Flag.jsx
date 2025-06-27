@@ -3,7 +3,7 @@ import ReactCountryFlag from "react-country-flag";
 import { getCode } from "country-list";
 
 const StyledFlag = styled(ReactCountryFlag)`
-  max-width: 2rem;
+  max-width: 2.2rem;
   width: 2rem;
   height: 2rem;
   border-radius: var(--border-radius-tiny);
