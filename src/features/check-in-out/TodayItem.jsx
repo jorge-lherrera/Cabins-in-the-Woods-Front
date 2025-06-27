@@ -1,70 +1,67 @@
-// import PropTypes from "prop-types";
-// import styled from "styled-components";
-// import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-// import { Flag } from "../../ui/Flag";
+import { Flag } from "../../ui/Flag";
 
-// import Tag from "../../ui/Tag";
-// import Button from "../../ui/Button";
-// import CheckoutButton from "./CheckoutButton";
+import Tag from "../../ui/Tag";
+import Button from "../../ui/Button";
+import CheckoutButton from "./CheckoutButton";
 
-// const StyledTodayItem = styled.li`
-//   display: grid;
-//   grid-template-columns: 9rem 2rem 1fr 7rem 9rem;
-//   gap: 1.2rem;
-//   align-items: center;
+const StyledTodayItem = styled.li`
+  display: grid;
+  grid-template-columns: 9rem 2rem 1fr 7rem 9rem;
+  gap: 1.2rem;
+  align-items: center;
 
-//   font-size: 1.4rem;
-//   padding: 0.8rem 0;
-//   border-bottom: 1px solid var(--color-grey-100);
+  font-size: 1.4rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--color-grey-100);
 
-//   &:first-child {
-//     border-top: 1px solid var(--color-grey-100);
-//   }
-// `;
+  &:first-child {
+    border-top: 1px solid var(--color-grey-100);
+  }
+`;
 
-// const Guest = styled.div`
-//   font-weight: 500;
-// `;
+const Guest = styled.div`
+  font-weight: 500;
+`;
 
-// function TodayItem({ activity }) {
-//   const { id, status, guests, numNights } = activity;
+function TodayItem({ activity }) {
+  const { id, status, fullName, nationality, numNights } = activity;
 
-//   return (
-//     <StyledTodayItem>
-//       {status === "unconfirmed" && <Tag type="green">Arriving</Tag>}
-//       {status === "checked-in" && <Tag type="blue">Departing</Tag>}
+  return (
+    <StyledTodayItem>
+      {status === "unconfirmed" && <Tag type="green">Arriving</Tag>}
+      {status === "checked-in" && <Tag type="blue">Departing</Tag>}
 
-//       <Flag nationality={guests.nationality} title={guests.nationality} />
-//       <Guest>{guests.fullName}</Guest>
-//       <div>{numNights} nights</div>
+      <Flag nationality={nationality} title={nationality} />
+      <Guest>{fullName}</Guest>
+      <div>{numNights} nights</div>
 
-//       {status === "unconfirmed" && (
-//         <Button
-//           size="small"
-//           variation="primary"
-//           as={Link}
-//           to={`/checkin/${id}`}
-//         >
-//           Check in
-//         </Button>
-//       )}
-//       {status === "checked-in" && <CheckoutButton bookingId={id} />}
-//     </StyledTodayItem>
-//   );
-// }
+      {status === "unconfirmed" && (
+        <Button
+          size="small"
+          variation="primary"
+          as={Link}
+          to={`/checkin/${id}`}
+        >
+          Check in
+        </Button>
+      )}
+      {status === "checked-in" && <CheckoutButton bookingId={id} />}
+    </StyledTodayItem>
+  );
+}
 
-// TodayItem.propTypes = {
-//   activity: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     status: PropTypes.string.isRequired,
-//     numNights: PropTypes.number.isRequired,
-//     guests: PropTypes.shape({
-//       fullName: PropTypes.string.isRequired,
-//       country: PropTypes.string.isRequired,
-//       countryFlag: PropTypes.string.isRequired,
-//     }).isRequired,
-//   }).isRequired,
-// };
+TodayItem.propTypes = {
+  activity: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    numNights: PropTypes.number.isRequired,
+    fullName: PropTypes.string.isRequired,
+    nationality: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
-// export default TodayItem;
+export default TodayItem;

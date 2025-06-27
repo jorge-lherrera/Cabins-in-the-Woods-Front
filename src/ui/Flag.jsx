@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
+import { getCode } from "country-list";
 
 const StyledFlag = styled(ReactCountryFlag)`
   max-width: 2rem;
@@ -10,6 +11,7 @@ const StyledFlag = styled(ReactCountryFlag)`
   border: 1px solid var(--color-grey-100);
 `;
 
-export const Flag = ({ nationality, ...props }) => (
-  <StyledFlag countryCode={nationality} svg {...props} />
-);
+export const Flag = ({ nationality, ...props }) => {
+  const countryCode = getCode(nationality) || "";
+  return <StyledFlag countryCode={countryCode} svg {...props} />;
+};

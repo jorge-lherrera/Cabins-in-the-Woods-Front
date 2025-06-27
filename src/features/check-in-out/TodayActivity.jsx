@@ -1,65 +1,66 @@
-// import PropTypes from "prop-types";
-// import styled from "styled-components";
-// import Heading from "../../ui/Heading";
-// import Row from "../../ui/Row";
-// import Spinner from "../../ui/Spinner";
-// import TodayItem from "./TodayItem";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
-// const StyledToday = styled.div`
-//   background-color: var(--color-grey-0);
-//   border: 1px solid var(--color-grey-100);
-//   border-radius: var(--border-radius-md);
+import Heading from "../../ui/Heading";
+import Row from "../../ui/Row";
+import Spinner from "../../ui/Spinner";
+import TodayItem from "./TodayItem";
 
-//   padding: 3.2rem;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 2.4rem;
-//   grid-column: 1 / span 2;
-//   padding-top: 2.4rem;
-// `;
+const StyledToday = styled.div`
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
 
-// const TodayList = styled.ul`
-//   overflow: scroll;
-//   overflow-x: hidden;
+  padding: 3.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  grid-column: 1 / span 2;
+  padding-top: 2.4rem;
+`;
 
-//   &::-webkit-scrollbar {
-//     width: 0 !important;
-//   }
-//   scrollbar-width: none;
-//   -ms-overflow-style: none;
-// `;
+const TodayList = styled.ul`
+  overflow: scroll;
+  overflow-x: hidden;
 
-// const NoActivity = styled.p`
-//   text-align: center;
-//   font-size: 1.8rem;
-//   font-weight: 500;
-//   margin-top: 0.8rem;
-// `;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+`;
 
-// function TodayActivity({ bookingsToday }) {
-//   if (!bookingsToday) return <Spinner />;
+const NoActivity = styled.p`
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-top: 0.8rem;
+`;
 
-//   return (
-//     <StyledToday>
-//       <Row type="horizontal">
-//         <Heading as="h2">Today</Heading>
-//       </Row>
+function TodayActivity({ bookingsToday }) {
+  if (!bookingsToday) return <Spinner />;
 
-//       {bookingsToday.length > 0 ? (
-//         <TodayList>
-//           {bookingsToday.map((activity, idx) => (
-//             <TodayItem activity={activity} key={activity.id || idx} />
-//           ))}
-//         </TodayList>
-//       ) : (
-//         <NoActivity>No activity today...</NoActivity>
-//       )}
-//     </StyledToday>
-//   );
-// }
+  return (
+    <StyledToday>
+      <Row type="horizontal">
+        <Heading as="h2">Today</Heading>
+      </Row>
 
-// TodayActivity.propTypes = {
-//   bookingsToday: PropTypes.array,
-// };
+      {bookingsToday.length > 0 ? (
+        <TodayList>
+          {bookingsToday.map((activity, idx) => (
+            <TodayItem activity={activity} key={activity.id || idx} />
+          ))}
+        </TodayList>
+      ) : (
+        <NoActivity>No activity today...</NoActivity>
+      )}
+    </StyledToday>
+  );
+}
 
-// export default TodayActivity;
+TodayActivity.propTypes = {
+  bookingsToday: PropTypes.array,
+};
+
+export default TodayActivity;

@@ -7,6 +7,7 @@ import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
 import DurationChart from "./DurationChart";
+import TodayActivity from "../check-in-out/TodayActivity";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -32,7 +33,7 @@ function DashboardLayout() {
         numDays={dashboardData?.totalRevenue ?? 0}
         cabinCount={dashboardData?.occupancyRate ?? 0}
       />
-      {/* <TodayActivity bookingsToday={dashboardData?.bookingsToday ?? []} /> */}
+      <TodayActivity bookingsToday={dashboardData?.bookingsToday ?? []} />
       <DurationChart nightRanges={dashboardData?.nightRanges ?? {}} />
       <SalesChart salesChart={dashboardData?.salesChart ?? []} days={days} />
     </StyledDashboardLayout>
