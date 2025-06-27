@@ -7,7 +7,9 @@ import {
   HiTrash,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
+import { formatCurrency } from "../../utils/helpers";
 import { useCheckout } from "../../hooks/bookings/useCheckout";
 import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 
@@ -48,13 +50,15 @@ function BookingRow({ booking }) {
   const {
     id: bookingId,
     cabinId,
-    startDateFormatted,
-    endDateFormatted,
-    stayDescription, // Ejemplo: "Today → 3 night stay"
+    startDate,
+    endDate,
+    stayDescription,
     status,
-    totalPriceFormatted,
+    totalPrice,
     ["guest.fullName"]: guestName,
     ["guest.email"]: email,
+    numNights,
+    daysUntilStart,
   } = booking;
 
   const navigate = useNavigate();
@@ -67,6 +71,18 @@ function BookingRow({ booking }) {
     "checked-out": "silver",
   };
 
+  const startDateFormatted = format(new Date(startDate), "MMM dd yyyy");
+  const endDateFormatted = format(new Date(endDate), "MMM dd yyyy");
+
+  const totalPriceFormatted = formatCurrency(Number(totalPrice));
+
+  let stayText;
+  if (daysUntilStart === 0) {
+    stayText = `Today \u2192 ${numNights} night${numNights > 1 ? "s" : ""} stay`;
+  } else {
+    stayText = `In ${daysUntilStart} day${daysUntilStart > 1 ? "s" : ""} \u2192 ${numNights} night${numNights > 1 ? "s" : ""} stay`;
+  }
+
   return (
     <Table.Row>
       <Booking>{cabinId}</Booking>
@@ -77,10 +93,11 @@ function BookingRow({ booking }) {
       </Stacked>
 
       <Stacked>
-        <span>{stayDescription}</span>
+        <span>{stayText}</span>
         <span>
           {startDateFormatted} &mdash; {endDateFormatted}
         </span>
+        <span>{stayDescription}</span>
       </Stacked>
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
@@ -145,13 +162,16 @@ BookingRow.propTypes = {
   booking: PropTypes.shape({
     id: PropTypes.number,
     cabinId: PropTypes.number.isRequired,
-    startDateFormatted: PropTypes.string.isRequired,
-    endDateFormatted: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
     stayDescription: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    totalPriceFormatted: PropTypes.string.isRequired,
+    totalPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     "guest.fullName": PropTypes.string.isRequired,
     "guest.email": PropTypes.string.isRequired,
+    numNights: PropTypes.number,
+    daysUntilStart: PropTypes.number,
   }).isRequired,
 };
 
