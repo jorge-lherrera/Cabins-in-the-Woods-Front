@@ -5,9 +5,10 @@ import GuestRow from "./GuestRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
+import Pagination from "../../ui/Pagination";
 
 function GuestTable() {
-  const { guests, isLoading } = useGuests();
+  const { guests, isLoading, count, pageCount, currentPage } = useGuests();
 
   if (isLoading) return <Spinner />;
 
@@ -29,6 +30,14 @@ function GuestTable() {
           data={guests}
           render={(guest) => <GuestRow key={guest.id} guest={guest} />}
         />
+
+        <Table.Footer>
+          <Pagination
+            count={count}
+            pageCount={pageCount}
+            currentPage={currentPage}
+          />
+        </Table.Footer>
       </Table>
     </Menus>
   );

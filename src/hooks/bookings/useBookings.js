@@ -54,21 +54,21 @@ export function useBookings() {
   const pageCount = data?.resource?.pageCount || 0;
   const totalCount = pageCount * 10;
 
-  if (currentPage < pageCount) {
-    const nextPageFilters = { ...filters, page: currentPage + 1 };
-    queryClient.prefetchQuery({
-      queryKey: ["bookings", nextPageFilters],
-      queryFn: () => getBookings(nextPageFilters),
-    });
-  }
+  // if (currentPage < pageCount) {
+  //   const nextPageFilters = { ...filters, page: currentPage + 1 };
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["bookings", nextPageFilters],
+  //     queryFn: () => getBookings(nextPageFilters),
+  //   });
+  // }
 
-  if (currentPage > 1) {
-    const prevPageFilters = { ...filters, page: currentPage - 1 };
-    queryClient.prefetchQuery({
-      queryKey: ["bookings", prevPageFilters],
-      queryFn: () => getBookings(prevPageFilters),
-    });
-  }
+  // if (currentPage > 1) {
+  //   const prevPageFilters = { ...filters, page: currentPage - 1 };
+  //   queryClient.prefetchQuery({
+  //     queryKey: ["bookings", prevPageFilters],
+  //     queryFn: () => getBookings(prevPageFilters),
+  //   });
+  // }
 
   return {
     isLoading,

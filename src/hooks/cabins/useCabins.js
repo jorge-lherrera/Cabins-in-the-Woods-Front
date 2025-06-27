@@ -21,13 +21,13 @@ export function useCabins() {
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Erro ao carregar as cabanas",
+          "Erro ao carregar as cabanas"
       );
     },
     keepPreviousData: true,
   });
 
-  const cabins = data?.resource || [];
+  const cabins = data?.resource?.cabins || [];
   const count = data?.resource?.total || 0;
   const pageCount = data?.resource?.pageCount || 0;
 
