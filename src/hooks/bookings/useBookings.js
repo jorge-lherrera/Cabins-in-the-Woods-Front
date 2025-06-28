@@ -1,10 +1,9 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 export function useBookings() {
-  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
   const DEFAULTS = {
@@ -13,25 +12,20 @@ export function useBookings() {
     order: "desc",
   };
 
-  const statusParam = searchParams.get("status");
-  const status =
-    !statusParam || statusParam === "all" ? undefined : statusParam;
-
-  const sortBy =
-    searchParams.get("sortBy") || `${DEFAULTS.orderBy}-${DEFAULTS.order}`;
-  const [orderBy, order] = sortBy.split("-");
-
-  const pageRaw = searchParams.get("page");
-  const page =
-    !pageRaw || isNaN(Number(pageRaw)) || Number(pageRaw) < 1
-      ? DEFAULTS.page
-      : Number(pageRaw);
+  const status = searchParams.get("status") || "all";
+  const orderBy = searchParams.get("orderBy") || DEFAULTS.orderBy;
+  const order = searchParams.get("order") || DEFAULTS.order;
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const limit = !searchParams.get("limit")
+    ? 10
+    : Number(searchParams.get("limit"));
 
   const filters = {
-    ...(status && { status }),
+    status,
     orderBy,
     order,
     page,
+    limit,
   };
 
   const queryKey = ["bookings", filters];
