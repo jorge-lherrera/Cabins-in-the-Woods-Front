@@ -8,7 +8,7 @@ export function useBooking() {
 
   const {
     isLoading,
-    data: booking,
+    data: apiResponse,
     error,
   } = useQuery({
     queryKey: ["booking", bookingId],
@@ -18,10 +18,12 @@ export function useBooking() {
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Error al cargar la reserva",
+          "Error al cargar la reserva"
       );
     },
   });
+
+  const booking = apiResponse?.resource;
 
   return { isLoading, error, booking };
 }

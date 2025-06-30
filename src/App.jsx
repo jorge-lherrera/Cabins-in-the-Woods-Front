@@ -10,6 +10,7 @@ import Spinner from "./ui/Spinner";
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 
 const WorkersAccount = lazy(() => import("./pages/WorkersAccount"));
+const Booking = lazy(() => import("./pages/Booking"));
 const Bookings = lazy(() => import("./pages/Bookings"));
 const Cabins = lazy(() => import("./pages/Cabins"));
 const Checkin = lazy(() => import("./pages/Checkin"));
@@ -46,7 +47,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/account" element={<WorkersAccount />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/checkin" element={<Checkin />} />
+                <Route path="checkin/:bookingId" element={<Checkin />} />
+                <Route path="bookings/:bookingId" element={<Booking />} />
                 <Route path="/bookings" element={<Bookings />} />
                 <Route path="/cabins" element={<Cabins />} />
                 <Route path="/guests" element={<Guest />} />

@@ -48,10 +48,8 @@ function CreateBookingForm({ onCloseModal }) {
       guestId: Number(data.guestId),
       numGuests: Number(data.numGuests),
       extrasPrice: Number(data.extrasPrice),
-      startDate: data.startDate
-        ? format(parseISO(data.startDate), "yyyy-MM-dd")
-        : "",
-      endDate: data.endDate ? format(parseISO(data.endDate), "yyyy-MM-dd") : "",
+      startDate: data.startDate || "",
+      endDate: data.endDate || "",
     };
     createBooking(payload, {
       onSuccess: () => {
