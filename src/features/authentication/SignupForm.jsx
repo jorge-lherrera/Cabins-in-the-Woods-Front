@@ -1,5 +1,7 @@
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import { useSignup } from "../../hooks/auth/useSignup";
 
 import Button from "../../ui/Button";
@@ -8,10 +10,11 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import signupSchema from "../../validations/signupValidations";
 import FileInput from "../../ui/FileInput";
+import Spinner from "../../ui/Spinner";
 
 function SignupForm({ onCloseModal }) {
   const { signup, isLoading } = useSignup();
-  const { register, formState, handleSubmit, reset, setError } = useForm({
+  const { register, formState, handleSubmit, reset } = useForm({
     resolver: yupResolver(signupSchema),
   });
   const { errors } = formState;
@@ -33,6 +36,8 @@ function SignupForm({ onCloseModal }) {
   function handleCancel() {
     if (onCloseModal) onCloseModal();
   }
+
+  if (isLoading) return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -98,5 +103,9 @@ function SignupForm({ onCloseModal }) {
     </Form>
   );
 }
+
+SignupForm.propTypes = {
+  onCloseModal: PropTypes.func,
+};
 
 export default SignupForm;
