@@ -26,7 +26,7 @@ function WorkerCount() {
 
   const user = session?.user || session;
 
-  const name = user?.name || "User";
+  const name = user?.name ? user.name.split(" ")[0] : "User";
   const avatar = user?.avatar || "default-user.jpg";
 
   return (
