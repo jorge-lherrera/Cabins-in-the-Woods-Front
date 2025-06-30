@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
@@ -21,17 +20,14 @@ function UpdateWorkerForm() {
   const { updateWorker, isUpdating } = useUpdateWorker();
   const navigate = useNavigate();
 
-  const [avatarPreview, setAvatarPreview] = useState(null);
-
   const workerUpdateValidationSchema = makeAllFieldsOptional(workerValidation);
 
   const {
     register,
     handleSubmit,
-    watch,
     reset,
-    setValue,
     formState: { errors, dirtyFields },
+    watch,
   } = useForm({
     resolver: yupResolver(workerUpdateValidationSchema),
     defaultValues: {
@@ -46,17 +42,6 @@ function UpdateWorkerForm() {
 
   const watchedFields = watch();
 
-  function handleAvatarChange(e) {
-    const file = e.target.files[0];
-    if (file && file.type && file.type.startsWith("image/")) {
-      setAvatarPreview(URL.createObjectURL(file));
-      setValue("avatar", file, { shouldDirty: true }); // Guarda SOLO el archivo
-    } else {
-      setAvatarPreview(null);
-      setValue("avatar", null, { shouldDirty: true });
-    }
-  }
-
   const hasChanges =
     !!dirtyFields.name ||
     !!dirtyFields.avatar ||
@@ -64,33 +49,24 @@ function UpdateWorkerForm() {
       !!dirtyFields.currentPassword &&
       !!dirtyFields.confirmPassword);
 
-  function onSubmit(formData) {
+  function onSubmit({
+    name,
+    avatar,
+    password,
+    currentPassword,
+    confirmPassword,
+  }) {
     const dataToSend = {};
-    if (dirtyFields.name) dataToSend.name = formData.name;
-    if (dirtyFields.avatar && formData.avatar)
-      dataToSend.avatar = formData.avatar; // Ahora es un File, no un array
-    if (
-      formData.password &&
-      formData.currentPassword &&
-      formData.confirmPassword
-    ) {
-      dataToSend.password = formData.password;
-      dataToSend.currentPassword = formData.currentPassword;
+    if (dirtyFields.name) dataToSend.name = name;
+    if (avatar && avatar.length > 0) dataToSend.avatar = avatar[0];
+    if (password && currentPassword && confirmPassword) {
+      dataToSend.password = password;
+      dataToSend.currentPassword = currentPassword;
     }
 
     updateWorker(dataToSend, {
       onSuccess: () => {
-        reset(
-          {
-            name: undefined,
-            avatar: null,
-            password: undefined,
-            confirmPassword: undefined,
-            currentPassword: undefined,
-          },
-          { keepDirty: false }
-        );
-        setAvatarPreview(null);
+        reset();
         navigate("/dashboard", { replace: true });
       },
     });
@@ -115,33 +91,13 @@ function UpdateWorkerForm() {
         {errors.name && <span>{errors.name.message}</span>}
       </FormRow>
 
-      <FormRow label="Avatar" id="avatar">
+      <FormRow label="Avatar" id="avatar" error={errors?.avatar?.message}>
         <FileInput
           id="avatar"
           accept="image/*"
-          {...register("avatar")}
-          onChange={handleAvatarChange}
           disabled={isUpdating}
+          {...register("avatar")}
         />
-        {avatarPreview && (
-          <img
-            src={avatarPreview}
-            alt="Avatar preview"
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              marginTop: 8,
-              objectFit: "cover",
-            }}
-          />
-        )}
-        {watchedFields.avatar && watchedFields.avatar.name && (
-          <span style={{ fontSize: "1.3rem", color: "#555" }}>
-            {watchedFields.avatar.name}
-          </span>
-        )}
-        {errors.avatar && <span>{errors.avatar.message}</span>}
       </FormRow>
 
       <FormRow label="Nova senha" id="password">
