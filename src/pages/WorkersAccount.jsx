@@ -1,4 +1,4 @@
-import UpdateUserDataForm from "../features/workers/UpdateUserDataForm";
+import UpdateWorkerForm from "../features/workers/UpdateWorkerForm";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
@@ -9,7 +9,7 @@ function Account() {
 
       <Row>
         <Heading as="h3">Update user data</Heading>
-        <UpdateUserDataForm />
+        <UpdateWorkerForm />
       </Row>
     </>
   );

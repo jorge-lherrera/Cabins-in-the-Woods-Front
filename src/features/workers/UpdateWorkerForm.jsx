@@ -14,7 +14,7 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-function UpdateUserDataForm() {
+function UpdateWorkerForm() {
   const { data: session } = useSession();
   const user = session?.user || session;
   const { updateWorker, isUpdating } = useUpdateWorker();
@@ -202,4 +202,4 @@ function UpdateUserDataForm() {
   );
 }
 
-export default UpdateUserDataForm;
+export default UpdateWorkerForm;

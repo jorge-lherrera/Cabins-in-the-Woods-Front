@@ -21,7 +21,7 @@ const Avatar = styled.img`
   flex-shrink: 0;
 `;
 
-function UserAvatar() {
+function WorkerCount() {
   const { data: session } = useSession();
 
   const user = session?.user || session;
@@ -37,4 +37,4 @@ function UserAvatar() {
   );
 }
 
-export default UserAvatar;
+export default WorkerCount;
