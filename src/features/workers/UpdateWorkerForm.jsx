@@ -13,6 +13,7 @@ import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
+import Spinner from "../../ui/Spinner";
 
 function UpdateWorkerForm() {
   const { data: session } = useSession();
@@ -49,7 +50,7 @@ function UpdateWorkerForm() {
     const file = e.target.files[0];
     if (file && file.type && file.type.startsWith("image/")) {
       setAvatarPreview(URL.createObjectURL(file));
-      setValue("avatar", e.target.files, { shouldDirty: true });
+      setValue("avatar", file, { shouldDirty: true }); // Guarda SOLO el archivo
     } else {
       setAvatarPreview(null);
       setValue("avatar", null, { shouldDirty: true });
@@ -66,8 +67,8 @@ function UpdateWorkerForm() {
   function onSubmit(formData) {
     const dataToSend = {};
     if (dirtyFields.name) dataToSend.name = formData.name;
-    if (dirtyFields.avatar && formData.avatar && formData.avatar[0])
-      dataToSend.avatar = formData.avatar[0];
+    if (dirtyFields.avatar && formData.avatar)
+      dataToSend.avatar = formData.avatar; // Ahora es un File, no un array
     if (
       formData.password &&
       formData.currentPassword &&
@@ -94,6 +95,8 @@ function UpdateWorkerForm() {
       },
     });
   }
+
+  if (isUpdating) return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -132,6 +135,11 @@ function UpdateWorkerForm() {
               objectFit: "cover",
             }}
           />
+        )}
+        {watchedFields.avatar && watchedFields.avatar.name && (
+          <span style={{ fontSize: "1.3rem", color: "#555" }}>
+            {watchedFields.avatar.name}
+          </span>
         )}
         {errors.avatar && <span>{errors.avatar.message}</span>}
       </FormRow>
