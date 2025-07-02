@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { format, parseISO } from "date-fns";
 
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
 import { useCabins } from "../../hooks/cabins/useCabins";
@@ -13,6 +12,45 @@ import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import bookingsValidationSchema from "../../validations/bookingsValidations";
+import styled from "styled-components";
+
+const StyledSelect = styled.select`
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-grey-300);
+  background-color: var(--color-grey-0);
+  color: var(--color-grey-700);
+  font-size: 1.6rem;
+  transition: border 0.2s;
+  max-height: 16rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-grey-400) var(--color-grey-100);
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: var(--color-grey-100);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-grey-400);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-brand-600);
+    border-color: var(--color-brand-600);
+  }
+  &:disabled {
+    background-color: var(--color-grey-200);
+    color: var(--color-grey-500);
+  }
+`;
 
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
@@ -41,7 +79,6 @@ function CreateBookingForm({ onCloseModal }) {
   });
 
   function onSubmit(data) {
-    // Formatea fechas a yyyy-MM-dd
     const payload = {
       ...data,
       cabinId: Number(data.cabinId),
@@ -65,25 +102,33 @@ function CreateBookingForm({ onCloseModal }) {
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow label="Cabina" error={errors.cabinId?.message}>
-        <select {...register("cabinId")} disabled={isLoadingCabins} required>
+        <StyledSelect
+          {...register("cabinId")}
+          disabled={isLoadingCabins}
+          required
+        >
           <option value="">Selecciona una cabina</option>
           {cabins.map((cabin) => (
             <option key={cabin.id} value={cabin.id}>
               {cabin.name}
             </option>
           ))}
-        </select>
+        </StyledSelect>
       </FormRow>
 
       <FormRow label="Huésped" error={errors.guestId?.message}>
-        <select {...register("guestId")} disabled={isLoadingGuests} required>
+        <StyledSelect
+          {...register("guestId")}
+          disabled={isLoadingGuests}
+          required
+        >
           <option value="">Selecciona un huésped</option>
           {guests.map((guest) => (
             <option key={guest.id} value={guest.id}>
               {guest.fullName}
             </option>
           ))}
-        </select>
+        </StyledSelect>
       </FormRow>
 
       <FormRow label="Fecha de inicio" error={errors.startDate?.message}>
@@ -115,11 +160,11 @@ function CreateBookingForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Estado" error={errors.status?.message}>
-        <select {...register("status")} required>
+        <StyledSelect {...register("status")} required>
           <option value="unconfirmed">Sin confirmar</option>
           <option value="checked-in">Checked-in</option>
           <option value="checked-out">Checked-out</option>
-        </select>
+        </StyledSelect>
       </FormRow>
 
       <FormRow>
