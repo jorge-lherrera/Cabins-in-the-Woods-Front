@@ -25,6 +25,12 @@ const workerValidation = applyNoUnknown(
         .min(8, "A senha deve ter pelo menos 8 caracteres")
         .max(100, "A senha não pode ter mais de 100 caracteres")
     ),
+    confirmPassword: emptyToUndefined(
+      Yup.string().oneOf(
+        [Yup.ref("password"), null],
+        "As senhas devem ser iguais."
+      )
+    ),
     currentPassword: emptyToUndefined(
       Yup.string()
         .typeError("O campo senha atual deve ser uma string.")
