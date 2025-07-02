@@ -1,4 +1,3 @@
-import { PAGE_SIZE } from "../utils/constants";
 import { api } from "./apiUrl";
 
 export async function getCabin(id) {
@@ -12,16 +11,19 @@ export async function getCabins({
   orderBy,
   order,
   discountFilter,
+  search,
 } = {}) {
   const params = {};
   params.page = page ?? 1;
-  params.limit = limit ?? PAGE_SIZE;
+
   params.orderBy = orderBy ?? "name";
   params.order = order ?? "ASC";
 
   if (discountFilter && discountFilter !== "all") {
     params.discountFilter = discountFilter;
   }
+
+  if (search) params.search = search;
 
   const { data } = await api.get("/cabins", { params });
   return data;

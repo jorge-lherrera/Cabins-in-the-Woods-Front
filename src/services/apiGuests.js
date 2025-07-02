@@ -1,4 +1,3 @@
-import { PAGE_SIZE } from "../utils/constants";
 import { api } from "./apiUrl";
 
 export async function getGuest(id) {
@@ -16,7 +15,7 @@ export async function getGuests({
 } = {}) {
   const params = {};
   params.page = page ?? 1;
-  params.limit = limit ?? PAGE_SIZE;
+
   params.orderBy = orderBy ?? "name";
   params.order = order ?? "ASC";
 

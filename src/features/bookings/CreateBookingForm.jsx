@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
 import { useCabins } from "../../hooks/cabins/useCabins";
 import { useGuestSearch } from "../../hooks/guests/useGuestSearch";
+import { useCabinSearch } from "../../hooks/cabins/useCabinSearch";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -56,7 +57,9 @@ const StyledSelect = styled.select`
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
   const { cabins, isLoading: isLoadingCabins } = useCabins();
+
   const loadGuestOptions = useGuestSearch();
+  const loadCabinOptions = useCabinSearch();
 
   const {
     register,
@@ -104,18 +107,14 @@ function CreateBookingForm({ onCloseModal }) {
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow label="Cabina" error={errors.cabinId?.message}>
-        <StyledSelect
-          {...register("cabinId")}
-          disabled={isLoadingCabins}
-          required
-        >
-          <option value="">Selecciona una cabina</option>
-          {cabins.map((cabin) => (
-            <option key={cabin.id} value={cabin.id}>
-              {cabin.name}
-            </option>
-          ))}
-        </StyledSelect>
+        <AsyncSelect
+          cacheOptions
+          defaultOptions
+          loadOptions={loadCabinOptions}
+          onChange={(option) => setValue("cabinId", option ? option.value : "")}
+          isClearable
+          placeholder="Busca una cabina..."
+        />
       </FormRow>
 
       <FormRow label="Huésped" error={errors.guestId?.message}>
