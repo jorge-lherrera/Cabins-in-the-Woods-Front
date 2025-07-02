@@ -12,6 +12,7 @@ export async function getGuests({
   orderBy,
   order,
   nationality,
+  search,
 } = {}) {
   const params = {};
   params.page = page ?? 1;
@@ -22,6 +23,8 @@ export async function getGuests({
   if (nationality && nationality !== "all") {
     params.nationality = nationality;
   }
+
+  if (search) params.search = search;
 
   const { data } = await api.get("/guests", { params });
 

@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
+import AsyncSelect from "react-select/async";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
 import { useCabins } from "../../hooks/cabins/useCabins";
-import { useGuests } from "../../hooks/guests/useGuests";
+import { useGuestSearch } from "../../hooks/guests/useGuestSearch";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -55,12 +56,13 @@ const StyledSelect = styled.select`
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
   const { cabins, isLoading: isLoadingCabins } = useCabins();
-  const { guests, isLoading: isLoadingGuests } = useGuests();
+  const loadGuestOptions = useGuestSearch();
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(bookingsValidationSchema),
@@ -117,18 +119,14 @@ function CreateBookingForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Huésped" error={errors.guestId?.message}>
-        <StyledSelect
-          {...register("guestId")}
-          disabled={isLoadingGuests}
-          required
-        >
-          <option value="">Selecciona un huésped</option>
-          {guests.map((guest) => (
-            <option key={guest.id} value={guest.id}>
-              {guest.fullName}
-            </option>
-          ))}
-        </StyledSelect>
+        <AsyncSelect
+          cacheOptions
+          defaultOptions
+          loadOptions={loadGuestOptions}
+          onChange={(option) => setValue("guestId", option ? option.value : "")}
+          isClearable
+          placeholder="Busca un huésped..."
+        />
       </FormRow>
 
       <FormRow label="Fecha de inicio" error={errors.startDate?.message}>
