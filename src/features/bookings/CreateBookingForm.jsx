@@ -16,6 +16,52 @@ import FormRow from "../../ui/FormRow";
 import bookingsValidationSchema from "../../validations/bookingsValidations";
 import SpinnerMini from "../../ui/SpinnerMini";
 
+const StyledCheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  user-select: none;
+`;
+
+const StyledCheckbox = styled.input.attrs({ type: "checkbox" })`
+  appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--color-grey-400);
+  border-radius: 0.4rem;
+  background: var(--color-grey-0);
+  display: inline-block;
+  position: relative;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+
+  &:checked {
+    background: var(--color-brand-600);
+    border-color: var(--color-brand-600);
+  }
+
+  &:checked::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 0.2rem;
+    width: 0.5rem;
+    height: 1rem;
+    border: solid #fff;
+    border-width: 0 0.3rem 0.3rem 0;
+    transform: rotate(45deg);
+    display: block;
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-brand-600);
+    box-shadow: 0 0 0 2px var(--color-brand-200);
+  }
+`;
+
 const StyledSelect = styled.select`
   width: 100%;
   padding: 0.8rem 1.2rem;
@@ -24,7 +70,10 @@ const StyledSelect = styled.select`
   background-color: var(--color-grey-0);
   color: var(--color-grey-700);
   font-size: 1.6rem;
-  transition: border 0.2s;
+  transition:
+    border 0.2s,
+    background-color 0.3s,
+    color 0.3s;
   max-height: 16rem;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -52,7 +101,39 @@ const StyledSelect = styled.select`
     background-color: var(--color-grey-200);
     color: var(--color-grey-500);
   }
+
+  option {
+    background-color: var(--color-grey-0);
+    color: var(--color-grey-700);
+  }
 `;
+
+const customSelectStyles = {
+  control: (base) => ({
+    ...base,
+    backgroundColor: "var(--color-grey-0)",
+    color: "var(--color-grey-700)",
+    borderColor: "var(--color-grey-300)",
+  }),
+  menu: (base) => ({
+    ...base,
+    backgroundColor: "var(--color-grey-0)",
+    color: "var(--color-grey-700)",
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isFocused
+      ? (document.documentElement.classList.contains("dark-mode")
+          ? "var(--color-brand-600)"
+          : "var(--color-brand-200)")
+      : "var(--color-grey-0)",
+    color: "var(--color-grey-700)",
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: "var(--color-grey-700)",
+  }),
+};
 
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
@@ -130,6 +211,7 @@ function CreateBookingForm({ onCloseModal }) {
           components={{
             LoadingIndicator: SpinnerMini,
           }}
+          styles={customSelectStyles}
         />
       </FormRow>
 
@@ -150,6 +232,7 @@ function CreateBookingForm({ onCloseModal }) {
           components={{
             LoadingIndicator: SpinnerMini,
           }}
+          styles={customSelectStyles}
         />
       </FormRow>
 
@@ -170,7 +253,10 @@ function CreateBookingForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="¿Incluye desayuno?" error={errors.hasBreakfast?.message}>
-        <input type="checkbox" {...register("hasBreakfast")} />
+        <StyledCheckboxLabel>
+          <StyledCheckbox {...register("hasBreakfast")} />
+          Incluye desayuno
+        </StyledCheckboxLabel>
       </FormRow>
 
       <FormRow label="Observaciones" error={errors.observations?.message}>
@@ -178,7 +264,10 @@ function CreateBookingForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="¿Pagado?" error={errors.isPaid?.message}>
-        <input type="checkbox" {...register("isPaid")} />
+        <StyledCheckboxLabel>
+          <StyledCheckbox {...register("isPaid")} />
+          Pagado
+        </StyledCheckboxLabel>
       </FormRow>
 
       <FormRow label="Estado" error={errors.status?.message}>
