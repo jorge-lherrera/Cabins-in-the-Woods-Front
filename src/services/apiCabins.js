@@ -15,7 +15,7 @@ export async function getCabins({
 } = {}) {
   const params = {};
   params.page = page ?? 1;
-
+  params.limit = limit;
   params.orderBy = orderBy ?? "name";
   params.order = order ?? "ASC";
 

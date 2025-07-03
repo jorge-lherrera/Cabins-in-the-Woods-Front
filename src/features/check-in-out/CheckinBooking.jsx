@@ -17,7 +17,6 @@ import Spinner from "../../ui/Spinner";
 import Checkbox from "../../ui/Checkbox";
 
 const Box = styled.div`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
@@ -35,11 +34,11 @@ function CheckinBooking() {
   const moveBack = useMoveBack();
   const { checkin, isCheckingIn } = useCheckin();
 
-  if (isLoading || isLoadingSettings) return <Spinner />;
+  if (isLoading || isLoadingSettings || !booking) return <Spinner />;
 
   const {
     id: bookingId,
-    guests,
+    guest,
     totalPrice,
     numGuests,
     hasBreakfast,
@@ -58,7 +57,7 @@ function CheckinBooking() {
         breakfast: {
           hasBreakfast: true,
           extrasPrice: optionalBreakfastPrice,
-          totalPrice: totalPrice + optionalBreakfastPrice,
+          totalPrice: Number(totalPrice) + optionalBreakfastPrice,
         },
       });
     } else {
@@ -97,13 +96,14 @@ function CheckinBooking() {
           disabled={confirmPaid || isCheckingIn}
           id="confirm"
         >
-          I confirm that {guests.fullName} has paid the total amount of{" "}
+          I confirm that {guest?.fullName || "the guest"} has paid the total
+          amount of{" "}
           {!addBreakfast
             ? formatCurrency(totalPrice)
             : `${formatCurrency(
-                totalPrice + optionalBreakfastPrice,
+                Number(totalPrice) + optionalBreakfastPrice
               )} (${formatCurrency(totalPrice)} + ${formatCurrency(
-                optionalBreakfastPrice,
+                optionalBreakfastPrice
               )})`}
         </Checkbox>
       </Box>

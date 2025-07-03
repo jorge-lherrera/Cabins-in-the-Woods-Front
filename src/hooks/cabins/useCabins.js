@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCabins } from "../../services/apiCabins";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+
+import { getCabins } from "../../services/apiCabins";
+import { PAGE_SIZE } from "../../utils/constants";
 
 export function useCabins() {
   const [searchParams] = useSearchParams();
 
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
   const limit = !searchParams.get("limit")
-    ? 10
+    ? PAGE_SIZE
     : Number(searchParams.get("limit"));
   const orderBy = searchParams.get("orderBy") || "name";
   const order = searchParams.get("order") || "ASC";

@@ -3,13 +3,14 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 import { getGuests } from "../../services/apiGuests";
+import { PAGE_SIZE } from "../../utils/constants";
 
 export function useGuests() {
   const [searchParams] = useSearchParams();
 
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
   const limit = !searchParams.get("limit")
-    ? 10
+    ? PAGE_SIZE
     : Number(searchParams.get("limit"));
   const orderBy = searchParams.get("orderBy") || "name";
   const order = searchParams.get("order") || "ASC";
@@ -22,7 +23,7 @@ export function useGuests() {
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Erro ao carregar os hóspedes",
+          "Erro ao carregar os hóspedes"
       );
     },
     keepPreviousData: true,
