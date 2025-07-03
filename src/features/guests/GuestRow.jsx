@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import ReactCountryFlag from "react-country-flag";
+import { getCode } from "country-list";
 import { HiPencil, HiTrash } from "react-icons/hi2";
+
 import { useDeleteGuest } from "../../hooks/guests/useDeleteGuest";
+
+import Menus from "../../ui/Menus";
 import CreateGuestForm from "./CreateGuestForm";
 import Modal from "../../ui/Modal";
 import ConfirmDialog from "../../ui/ConfirmDialog";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-import ReactCountryFlag from "react-country-flag";
-import { getCode } from "country-list";
 
 const FlagImg = styled.div`
   display: flex;
