@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import AsyncSelect from "react-select/async";
+import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
-import { useCabins } from "../../hooks/cabins/useCabins";
 import { useGuestSearch } from "../../hooks/guests/useGuestSearch";
 import { useCabinSearch } from "../../hooks/cabins/useCabinSearch";
 
@@ -14,7 +14,7 @@ import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import bookingsValidationSchema from "../../validations/bookingsValidations";
-import styled from "styled-components";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 const StyledSelect = styled.select`
   width: 100%;
@@ -56,10 +56,17 @@ const StyledSelect = styled.select`
 
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
-  const { cabins, isLoading: isLoadingCabins } = useCabins();
 
-  const loadGuestOptions = useGuestSearch();
-  const loadCabinOptions = useCabinSearch();
+  const {
+    loadGuestOptions,
+    isLoading: isLoadingGuests,
+    error: errorGuests,
+  } = useGuestSearch();
+  const {
+    loadCabinOptions,
+    isLoading: isLoadingCabins,
+    error: errorCabins,
+  } = useCabinSearch();
 
   const {
     register,
@@ -114,6 +121,15 @@ function CreateBookingForm({ onCloseModal }) {
           onChange={(option) => setValue("cabinId", option ? option.value : "")}
           isClearable
           placeholder="Busca una cabina..."
+          isLoading={isLoadingCabins}
+          noOptionsMessage={() =>
+            errorCabins
+              ? errorCabins.message || "Error al cargar las cabinas"
+              : "No se encontraron cabinas"
+          }
+          components={{
+            LoadingIndicator: SpinnerMini,
+          }}
         />
       </FormRow>
 
@@ -125,6 +141,15 @@ function CreateBookingForm({ onCloseModal }) {
           onChange={(option) => setValue("guestId", option ? option.value : "")}
           isClearable
           placeholder="Busca un huésped..."
+          isLoading={isLoadingGuests}
+          noOptionsMessage={() =>
+            errorGuests
+              ? errorGuests.message || "Error al cargar los huéspedes"
+              : "No se encontraron huéspedes"
+          }
+          components={{
+            LoadingIndicator: SpinnerMini,
+          }}
         />
       </FormRow>
 
