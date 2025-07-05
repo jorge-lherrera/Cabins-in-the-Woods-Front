@@ -14,11 +14,10 @@ export function useGuests() {
     : Number(searchParams.get("limit"));
   const orderBy = searchParams.get("orderBy") || "name";
   const order = searchParams.get("order") || "ASC";
-  const nationality = searchParams.get("nationality") || undefined;
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["guests", page, limit, orderBy, order, nationality],
-    queryFn: () => getGuests({ page, limit, orderBy, order, nationality }),
+    queryKey: ["guests", page, limit, orderBy, order],
+    queryFn: () => getGuests({ page, limit, orderBy, order }),
     onError: (err) => {
       toast.error(
         err?.response?.data?.error ||
