@@ -20,14 +20,41 @@ const StyledToday = styled.div`
 `;
 
 const TodayList = styled.ul`
-  overflow: scroll;
+  max-height: 32rem;
+  overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-grey-300) transparent;
+  transition: scrollbar-color 0.2s;
 
   &::-webkit-scrollbar {
-    width: 0 !important;
+    width: 0px;
+    background: transparent;
+    transition: width 0.2s;
   }
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+
+  &:hover::-webkit-scrollbar,
+  &:focus-within::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+
+  &:hover,
+  &:focus-within {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-grey-300) transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-grey-300);
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    height: 0;
+    width: 0;
+  }
 `;
 
 const NoActivity = styled.p`

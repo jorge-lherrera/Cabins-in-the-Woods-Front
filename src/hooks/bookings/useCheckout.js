@@ -16,18 +16,19 @@ export function useCheckout() {
       toast.success(
         booking
           ? `Reserva #${booking.id} finalizada com sucesso`
-          : "Check-out realizado com sucesso",
+          : "Check-out realizado com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
       if (booking?.id)
         queryClient.invalidateQueries({ queryKey: ["booking", booking.id] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard-bookings"] });
     },
 
     onError: (err) =>
       toast.error(
         err?.response?.data?.error ||
           err?.message ||
-          "Ocorreu um erro ao finalizar o check-out",
+          "Ocorreu um erro ao finalizar o check-out"
       ),
   });
 
