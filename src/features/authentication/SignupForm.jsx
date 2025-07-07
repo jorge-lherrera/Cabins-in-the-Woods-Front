@@ -16,6 +16,7 @@ function SignupForm({ onCloseModal, onRequestClose }) {
   const { signup, isLoading } = useSignup(onCloseModal);
   const { register, formState, handleSubmit } = useForm({
     resolver: yupResolver(signupSchema),
+    mode: "onChange",
   });
   const { errors } = formState;
 
