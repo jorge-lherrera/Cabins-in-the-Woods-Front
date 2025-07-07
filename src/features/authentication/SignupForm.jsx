@@ -12,9 +12,9 @@ import signupSchema from "../../validations/signupValidations";
 import FileInput from "../../ui/FileInput";
 import Spinner from "../../ui/Spinner";
 
-function SignupForm({ onCloseModal }) {
-  const { signup, isLoading } = useSignup();
-  const { register, formState, handleSubmit, reset } = useForm({
+function SignupForm({ onCloseModal, onRequestClose }) {
+  const { signup, isLoading } = useSignup(onCloseModal);
+  const { register, formState, handleSubmit } = useForm({
     resolver: yupResolver(signupSchema),
   });
   const { errors } = formState;
@@ -22,19 +22,11 @@ function SignupForm({ onCloseModal }) {
   function onSubmit({ name, email, password, avatar }) {
     let avatarFile = undefined;
     if (avatar && avatar.length > 0) avatarFile = avatar[0];
-    signup(
-      { name, email, password, avatar: avatarFile },
-      {
-        onSuccess: () => {
-          reset();
-          if (onCloseModal) onCloseModal();
-        },
-      }
-    );
+    signup({ name, email, password, avatar: avatarFile });
   }
 
   function handleCancel() {
-    if (onCloseModal) onCloseModal();
+    if (onRequestClose) onRequestClose();
   }
 
   if (isLoading) return <Spinner />;
@@ -106,6 +98,7 @@ function SignupForm({ onCloseModal }) {
 
 SignupForm.propTypes = {
   onCloseModal: PropTypes.func,
+  onRequestClose: PropTypes.func,
 };
 
 export default SignupForm;

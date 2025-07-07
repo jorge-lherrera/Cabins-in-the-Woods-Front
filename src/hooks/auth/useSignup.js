@@ -3,7 +3,7 @@ import { signup as signupApi, login as loginApi } from "../../services/apiAuth";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export function useSignup() {
+export function useSignup(onCloseModal) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -20,6 +20,7 @@ export function useSignup() {
       });
       queryClient.invalidateQueries(["session"]);
       toast.success("Conta criada com sucesso!");
+      if (onCloseModal) onCloseModal();
       navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
