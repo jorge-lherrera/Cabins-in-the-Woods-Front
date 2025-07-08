@@ -12,15 +12,13 @@ export function useEditGuest() {
       toast.success(
         guest?.name
           ? `Hóspede "${guest.name}" editado com sucesso`
-          : "Hóspede editado com sucesso",
+          : "Hóspede editado com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao editar o hóspede",
+        err?.response?.data?.message || "Ocorreu um erro ao editar o hóspede"
       ),
   });
 

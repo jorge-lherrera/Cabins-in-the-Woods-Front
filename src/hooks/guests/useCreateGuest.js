@@ -12,15 +12,13 @@ export function useCreateGuest() {
       toast.success(
         guest?.name
           ? `Hóspede "${guest.name}" criado com sucesso`
-          : "Hóspede criado com sucesso",
+          : "Hóspede criado com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao criar o hóspede",
+        err?.response?.data?.message || "Ocorreu um erro ao criar o hóspede"
       ),
   });
 

@@ -12,15 +12,13 @@ export function useDeleteGuest() {
       toast.success(
         guest?.name
           ? `Hóspede "${guest.name}" excluído com sucesso`
-          : "Hóspede excluído com sucesso",
+          : "Hóspede excluído com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["guests"] });
     },
     onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao excluir o hóspede",
+        err?.response?.data?.message || "Ocorreu um erro ao excluir o hóspede"
       ),
   });
 

@@ -19,13 +19,11 @@ export function useGuests() {
   const { isLoading, data, error } = useQuery({
     queryKey: ["guests", page, limit, orderBy, order, nationality],
     queryFn: () => getGuests({ page, limit, orderBy, order, nationality }),
-    onError: (err) => {
+    onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao carregar os hóspedes"
-      );
-    },
+        err?.response?.data?.message ||
+          "Ocorreu um erro ao carregar os hóspedes"
+      ),
     keepPreviousData: true,
   });
 
