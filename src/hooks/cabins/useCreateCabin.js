@@ -13,16 +13,13 @@ export function useCreateCabin() {
       toast.success(
         cabin?.name
           ? `Cabana "${cabin.name}" criada com sucesso`
-          : "Cabana criada com sucesso",
+          : "Cabana criada com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: (err) =>
-      toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao criar a cabana",
-      ),
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Error al crear las cabañas");
+    },
   });
 
   return { isCreating, createCabin };

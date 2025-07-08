@@ -12,16 +12,15 @@ export function useEditCabin() {
       toast.success(
         cabin?.name
           ? `Cabana "${cabin.name}" editada com sucesso`
-          : "Cabana editada com sucesso",
+          : "Cabana editada com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: (err) =>
+    onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao editar a cabana",
-      ),
+        err?.response?.data?.message || "Ocorreu um erro ao editar a cabana"
+      );
+    },
   });
 
   return { isEditing, editCabin };

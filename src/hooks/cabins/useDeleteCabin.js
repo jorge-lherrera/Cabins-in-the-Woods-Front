@@ -12,16 +12,15 @@ export function useDeleteCabin() {
       toast.success(
         cabin?.name
           ? `Cabana "${cabin.name}" excluída com sucesso`
-          : "Cabana excluída com sucesso",
+          : "Cabana excluída com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: (err) =>
+    onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao excluir a cabana",
-      ),
+        err?.response?.data?.message || "Ocorreu um erro ao excluir a cabana"
+      );
+    },
   });
 
   return { isDeleting, deleteCabin };

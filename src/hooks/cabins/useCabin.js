@@ -15,9 +15,7 @@ export function useCabin() {
     retry: false,
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Error al cargar las cabañas",
+        err?.response?.data?.message || "Error al cargar las cabañas"
       );
     },
   });

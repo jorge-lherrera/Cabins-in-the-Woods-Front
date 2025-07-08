@@ -21,9 +21,7 @@ export function useCabins() {
     queryFn: () => getCabins({ page, limit, orderBy, order, discountFilter }),
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao carregar as cabanas"
+        err?.response?.data?.message || "Error al cargar las cabañas"
       );
     },
     keepPreviousData: true,
