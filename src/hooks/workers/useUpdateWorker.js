@@ -19,12 +19,7 @@ export function useUpdateWorker() {
           message: err.response.data.message,
         });
       }
-      toast.error(
-        err?.response?.data?.message ||
-          err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao atualizar a conta"
-      );
+      toast.error(err?.response?.data?.message || "Erro ao atualizar a conta");
     },
   });
 

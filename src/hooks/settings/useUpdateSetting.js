@@ -13,9 +13,8 @@ export function useUpdateSetting() {
     },
     onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao editar as configurações",
+        err?.response?.data?.message ||
+          "Ocorreu um erro ao editar as configurações"
       ),
   });
 

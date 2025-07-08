@@ -8,16 +8,10 @@ export function useSettings() {
     queryFn: getSettings,
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao carregar as configurações",
+        err?.response?.data?.message || "Erro ao carregar as configurações"
       );
     },
   });
-
-  if (data?.error) {
-    toast.error(data.error);
-  }
 
   const settings = data?.resource || [];
 

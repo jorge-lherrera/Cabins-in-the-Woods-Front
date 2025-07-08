@@ -1,21 +1,27 @@
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import { useCreateSetting } from "../../hooks/settings/useCreateSetting";
 
 import settingValidationSchema from "../../validations/settingsValidations";
-
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FormRow from "../../ui/FormRow";
 
-function CreateSettingForm({ onCloseModal }) {
-  const { isCreating, createSetting } = useCreateSetting();
+function CreateSettingForm({ onCloseModal, onRequestClose }) {
+  const { isCreating, createSetting } = useCreateSetting(onCloseModal);
 
   const { register, handleSubmit, reset, formState } = useForm({
     resolver: yupResolver(settingValidationSchema),
+    mode: "onChange",
   });
   const { errors } = formState;
+
+  function handleCancel() {
+    if (onRequestClose) onRequestClose();
+  }
 
   function onSubmit(data) {
     createSetting(
@@ -30,17 +36,13 @@ function CreateSettingForm({ onCloseModal }) {
           reset();
           onCloseModal?.();
         },
-      },
+      }
     );
-  }
-
-  function onError(errors) {
-    console.log(errors);
   }
 
   return (
     <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow
@@ -94,8 +96,9 @@ function CreateSettingForm({ onCloseModal }) {
       <FormRow>
         <Button
           variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
+          type="button"
+          onClick={handleCancel}
+          disabled={isCreating}
         >
           Cancelar
         </Button>
@@ -104,5 +107,10 @@ function CreateSettingForm({ onCloseModal }) {
     </Form>
   );
 }
+
+CreateSettingForm.propTypes = {
+  onCloseModal: PropTypes.func,
+  onRequestClose: PropTypes.func,
+};
 
 export default CreateSettingForm;

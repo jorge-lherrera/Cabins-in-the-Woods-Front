@@ -13,9 +13,8 @@ export function useCreateSetting() {
     },
     onError: (err) =>
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao criar a configuração",
+        err?.response?.data?.message ||
+          "Ocorreu um erro ao criar a configuração"
       ),
   });
 
