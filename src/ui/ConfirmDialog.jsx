@@ -46,7 +46,6 @@ function ConfirmDialog({
   cancelLabel = "Cancelar",
   onConfirm,
   onCancel,
-  confirmVariant = "danger",
   disabled = false,
   children,
 }) {

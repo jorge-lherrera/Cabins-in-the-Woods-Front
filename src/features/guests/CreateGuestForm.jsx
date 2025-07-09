@@ -1,30 +1,34 @@
-import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { getNames } from "country-list";
+
 import { useCreateGuest } from "../../hooks/guests/useCreateGuest";
 import { useEditGuest } from "../../hooks/guests/useEditGuest";
+
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FormRow from "../../ui/FormRow";
 import guestsValidation from "../../validations/guestsValidations";
-import { getNames } from "country-list";
+import AsyncSelectStyled from "../../ui/AsyncSelectStyled";
 
-function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
-  const { isCreating, createGuest } = useCreateGuest();
-  const { isEditing, editGuest } = useEditGuest();
+function CreateGuestForm({ guestToEdit = {}, onCloseModal, onRequestClose }) {
+  const { isCreating, createGuest } = useCreateGuest(onCloseModal);
+  const { isEditing, editGuest } = useEditGuest(onCloseModal);
   const isWorking = isCreating || isEditing;
 
   const { id: editId, ...editValues } = guestToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: isEditSession ? editValues : {},
-    resolver: yupResolver(guestsValidation),
-  });
+  const { register, handleSubmit, reset, formState, setValue, watch } = useForm(
+    {
+      defaultValues: isEditSession ? editValues : {},
+      resolver: yupResolver(guestsValidation),
+      mode: "onChange",
+    }
+  );
   const { errors } = formState;
-
-  const countries = getNames();
 
   function onSubmit(data) {
     if (isEditSession) {
@@ -35,7 +39,7 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
             reset();
             onCloseModal?.();
           },
-        },
+        }
       );
     } else {
       createGuest(data, {
@@ -47,13 +51,25 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
     }
   }
 
-  function onError(errors) {
-    console.log(errors);
+  function handleCancel() {
+    if (onRequestClose) onRequestClose();
   }
+
+  const loadCountryOptions = (inputValue, callback) => {
+    const options = getNames()
+      .filter((country) =>
+        country.toLowerCase().includes(inputValue.toLowerCase())
+      )
+      .map((country) => ({
+        value: country,
+        label: country,
+      }));
+    callback(options);
+  };
 
   return (
     <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow label="Nome completo" error={errors?.fullName?.message}>
@@ -75,18 +91,29 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Nacionalidade" error={errors?.nationality?.message}>
-        <select
-          id="nationality"
-          disabled={isWorking}
-          {...register("nationality")}
-        >
-          <option value="">Selecione...</option>
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+        <AsyncSelectStyled
+          cacheOptions
+          defaultOptions={getNames().map((country) => ({
+            value: country,
+            label: country,
+          }))}
+          loadOptions={loadCountryOptions}
+          onChange={(option) =>
+            setValue("nationality", option ? option.value : "")
+          }
+          isClearable
+          placeholder="Selecione..."
+          isDisabled={isWorking}
+          value={
+            watch("nationality")
+              ? {
+                  value: watch("nationality"),
+                  label: watch("nationality"),
+                }
+              : null
+          }
+          instanceId="nationality-select"
+        />
       </FormRow>
 
       <FormRow
@@ -104,8 +131,9 @@ function CreateGuestForm({ guestToEdit = {}, onCloseModal }) {
       <FormRow>
         <Button
           variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
+          type="button"
+          onClick={handleCancel}
+          disabled={isWorking}
         >
           Cancelar
         </Button>
@@ -126,6 +154,7 @@ CreateGuestForm.propTypes = {
     nationalIdNumber: PropTypes.string,
   }),
   onCloseModal: PropTypes.func,
+  onRequestClose: PropTypes.func,
 };
 
 export default CreateGuestForm;

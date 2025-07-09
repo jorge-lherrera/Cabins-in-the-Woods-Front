@@ -1,4 +1,3 @@
-import AsyncSelect from "react-select/async";
 import { useSearchParams } from "react-router-dom";
 
 import { useGuestSearchNation } from "../../hooks/guests/useGuestSearchNation";
@@ -6,45 +5,7 @@ import { useGuestSearchNation } from "../../hooks/guests/useGuestSearchNation";
 import TableOperations from "../../ui/TableOperations";
 import SortBy from "../../ui/SortBy";
 import SpinnerMini from "../../ui/SpinnerMini";
-
-const customSelectStyles = {
-  container: (base) => ({
-    ...base,
-    minWidth: 220,
-  }),
-  control: (base) => ({
-    ...base,
-    backgroundColor: "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-    borderColor: "var(--color-grey-300)",
-  }),
-  input: (base) => ({
-    ...base,
-    color: "var(--color-grey-700)",
-  }),
-  placeholder: (base) => ({
-    ...base,
-    color: "var(--color-grey-500)",
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-  }),
-  option: (base, state) => ({
-    ...base,
-    backgroundColor: state.isFocused
-      ? document.documentElement.classList.contains("dark-mode")
-        ? "var(--color-brand-600)"
-        : "var(--color-brand-200)"
-      : "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-  }),
-  singleValue: (base) => ({
-    ...base,
-    color: "var(--color-grey-700)",
-  }),
-};
+import AsyncSelectStyled from "../../ui/AsyncSelectStyled";
 
 function GuestTableOperations() {
   const {
@@ -65,7 +26,7 @@ function GuestTableOperations() {
   }
   return (
     <TableOperations>
-      <AsyncSelect
+      <AsyncSelectStyled
         cacheOptions
         defaultOptions
         loadOptions={loadGuestOptions}
@@ -81,7 +42,7 @@ function GuestTableOperations() {
         components={{
           LoadingIndicator: SpinnerMini,
         }}
-        styles={customSelectStyles}
+        instanceId="guest-nation-filter"
       />
 
       <SortBy

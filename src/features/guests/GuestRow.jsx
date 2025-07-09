@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import ReactCountryFlag from "react-country-flag";
+import { useState } from "react";
 import { getCode } from "country-list";
 import { HiPencil, HiTrash } from "react-icons/hi2";
 
@@ -53,6 +54,22 @@ function GuestRow({ guest }) {
   const { id, fullName, email, nationality, nationalIdNumber } = guest;
   const countryCode = getCode(nationality);
 
+  // Estado para mostrar el confirm dialog de borrado
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  function handleDeleteClick() {
+    setShowConfirm(true);
+  }
+
+  function handleConfirmDelete() {
+    deleteGuest(id);
+    setShowConfirm(false);
+  }
+
+  function handleCancelDelete() {
+    setShowConfirm(false);
+  }
+
   return (
     <Table.Row>
       <FlagImg>
@@ -79,30 +96,29 @@ function GuestRow({ guest }) {
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
+              <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
+                Delete
+              </Menus.Button>
             </Menus.List>
 
             <Modal.Window name="edit">
               <CreateGuestForm guestToEdit={guest} />
             </Modal.Window>
-
-            <Modal.Window name="delete">
-              <ConfirmDialog
-                open={true}
-                title="Excluir hóspede"
-                message="Tem certeza que deseja excluir este hóspede?"
-                confirmLabel="Excluir"
-                cancelLabel="Cancelar"
-                onConfirm={() => deleteGuest(id)}
-                onCancel={() => {}}
-                confirmVariant="danger"
-                disabled={isDeleting}
-              />
-            </Modal.Window>
           </Menus.Menu>
         </Modal>
+        {showConfirm && (
+          <ConfirmDialog
+            open={showConfirm}
+            title="Excluir hóspede"
+            message="Tem certeza que deseja excluir este hóspede?"
+            confirmLabel="Excluir"
+            cancelLabel="Cancelar"
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+            confirmVariant="danger"
+            disabled={isDeleting}
+          />
+        )}
       </div>
     </Table.Row>
   );

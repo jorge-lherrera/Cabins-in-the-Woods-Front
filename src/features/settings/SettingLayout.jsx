@@ -1,113 +1,126 @@
-import { useState, useEffect } from "react";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useSettings } from "../../hooks/settings/useSettings";
 import { useUpdateSetting } from "../../hooks/settings/useUpdateSetting";
+import { makeAllFieldsOptional } from "../../utils/makeAllFieldsOptional";
+import settingValidationSchema from "../../validations/settingsValidations";
 
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
+import { useEffect } from "react";
 
 function SettingLayout() {
   const { isLoading, settings } = useSettings();
   const { isUpdating, updateSetting } = useUpdateSetting();
 
-  const [fields, setFields] = useState(null);
-  const [isChanged, setIsChanged] = useState(false);
+  const optionalSchema = makeAllFieldsOptional(settingValidationSchema);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, dirtyFields },
+
+    setError,
+  } = useForm({
+    resolver: yupResolver(optionalSchema),
+    defaultValues: settings
+      ? {
+          minBookingLength: settings.minBookingLength,
+          maxBookingLength: settings.maxBookingLength,
+          maxGuestsPerBooking: settings.maxGuestsPerBooking,
+          breakfastPrice: settings.breakfastPrice,
+        }
+      : {},
+    mode: "onChange",
+  });
 
   useEffect(() => {
     if (settings) {
-      setFields({
+      reset({
         minBookingLength: settings.minBookingLength,
         maxBookingLength: settings.maxBookingLength,
         maxGuestsPerBooking: settings.maxGuestsPerBooking,
         breakfastPrice: settings.breakfastPrice,
       });
-      setIsChanged(false);
     }
-  }, [settings]);
+  }, [settings, reset]);
 
-  if (isLoading || fields === null) return <Spinner />;
-
+  if (isLoading) return <Spinner />;
   if (isUpdating) return <Spinner />;
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    const newFields = { ...fields, [name]: value };
-    setFields(newFields);
+  const hasChanges = Object.keys(dirtyFields).length > 0;
 
-    const changed =
-      Number(newFields.minBookingLength) !==
-        Number(settings.minBookingLength) ||
-      Number(newFields.maxBookingLength) !==
-        Number(settings.maxBookingLength) ||
-      Number(newFields.maxGuestsPerBooking) !==
-        Number(settings.maxGuestsPerBooking) ||
-      Number(newFields.breakfastPrice) !== Number(settings.breakfastPrice);
-    setIsChanged(changed);
-  }
-
-  function handleUpdate(e) {
-    e.preventDefault();
-    updateSetting({
-      minBookingLength: Number(fields.minBookingLength),
-      maxBookingLength: Number(fields.maxBookingLength),
-      maxGuestsPerBooking: Number(fields.maxGuestsPerBooking),
-      breakfastPrice: Number(fields.breakfastPrice),
+  function onSubmit(data) {
+    const dataToSend = {};
+    Object.keys(dirtyFields).forEach((key) => {
+      dataToSend[key] = Number(data[key]);
     });
-    setIsChanged(false);
+
+    updateSetting(dataToSend, {
+      setError,
+      onSuccess: () => {
+        reset(data);
+      },
+    });
   }
 
   return (
-    <Form onSubmit={handleUpdate}>
-      <FormRow label="Minimum nights/booking">
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRow
+        label="Noites mínimas por reserva"
+        error={errors?.minBookingLength?.message}
+      >
         <Input
           type="number"
-          id="min-nights"
-          name="minBookingLength"
-          value={fields.minBookingLength}
+          id="minBookingLength"
+          {...register("minBookingLength")}
           disabled={isUpdating}
-          onChange={handleChange}
         />
       </FormRow>
 
-      <FormRow label="Maximum nights/booking">
+      <FormRow
+        label="Noites máximas por reserva"
+        error={errors?.maxBookingLength?.message}
+      >
         <Input
           type="number"
-          id="max-nights"
-          name="maxBookingLength"
-          value={fields.maxBookingLength}
+          id="maxBookingLength"
+          {...register("maxBookingLength")}
           disabled={isUpdating}
-          onChange={handleChange}
         />
       </FormRow>
 
-      <FormRow label="Maximum guests/booking">
+      <FormRow
+        label="Máximo de hóspedes por reserva"
+        error={errors?.maxGuestsPerBooking?.message}
+      >
         <Input
           type="number"
-          id="max-guests"
-          name="maxGuestsPerBooking"
-          value={fields.maxGuestsPerBooking}
+          id="maxGuestsPerBooking"
+          {...register("maxGuestsPerBooking")}
           disabled={isUpdating}
-          onChange={handleChange}
         />
       </FormRow>
 
-      <FormRow label="Breakfast price">
+      <FormRow
+        label="Preço do café da manhã"
+        error={errors?.breakfastPrice?.message}
+      >
         <Input
           type="number"
-          id="breakfast-price"
-          name="breakfastPrice"
-          value={fields.breakfastPrice}
+          id="breakfastPrice"
+          {...register("breakfastPrice")}
           disabled={isUpdating}
-          onChange={handleChange}
         />
       </FormRow>
       <div style={{ paddingTop: "1.2rem" }}>
         <Button
-          disabled={!isChanged || isUpdating}
-          title={!isChanged ? "Altere algum campo para ativar." : undefined}
+          disabled={!hasChanges || isUpdating}
+          title={!hasChanges ? "Altere algum campo para ativar." : undefined}
         >
           Update
         </Button>

@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import AsyncSelect from "react-select/async";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +14,7 @@ import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import bookingsValidationSchema from "../../validations/bookingsValidations";
 import SpinnerMini from "../../ui/SpinnerMini";
+import AsyncSelectStyled from "../../ui/AsyncSelectStyled";
 
 const StyledCheckboxLabel = styled.label`
   display: flex;
@@ -108,33 +108,6 @@ const StyledSelect = styled.select`
   }
 `;
 
-const customSelectStyles = {
-  control: (base) => ({
-    ...base,
-    backgroundColor: "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-    borderColor: "var(--color-grey-300)",
-  }),
-  menu: (base) => ({
-    ...base,
-    backgroundColor: "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-  }),
-  option: (base, state) => ({
-    ...base,
-    backgroundColor: state.isFocused
-      ? (document.documentElement.classList.contains("dark-mode")
-          ? "var(--color-brand-600)"
-          : "var(--color-brand-200)")
-      : "var(--color-grey-0)",
-    color: "var(--color-grey-700)",
-  }),
-  singleValue: (base) => ({
-    ...base,
-    color: "var(--color-grey-700)",
-  }),
-};
-
 function CreateBookingForm({ onCloseModal }) {
   const { isCreating, createBooking } = useCreateBooking();
 
@@ -195,7 +168,7 @@ function CreateBookingForm({ onCloseModal }) {
       type={onCloseModal ? "modal" : "regular"}
     >
       <FormRow label="Cabina" error={errors.cabinId?.message}>
-        <AsyncSelect
+        <AsyncSelectStyled
           cacheOptions
           defaultOptions
           loadOptions={loadCabinOptions}
@@ -211,12 +184,12 @@ function CreateBookingForm({ onCloseModal }) {
           components={{
             LoadingIndicator: SpinnerMini,
           }}
-          styles={customSelectStyles}
+          instanceId="cabin-select"
         />
       </FormRow>
 
       <FormRow label="Huésped" error={errors.guestId?.message}>
-        <AsyncSelect
+        <AsyncSelectStyled
           cacheOptions
           defaultOptions
           loadOptions={loadGuestOptions}
@@ -232,7 +205,7 @@ function CreateBookingForm({ onCloseModal }) {
           components={{
             LoadingIndicator: SpinnerMini,
           }}
-          styles={customSelectStyles}
+          instanceId="guest-select"
         />
       </FormRow>
 
