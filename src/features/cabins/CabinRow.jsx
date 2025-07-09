@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styled, { keyframes } from "styled-components";
 import { HiPencil, HiSquare2Stack, HiTrash, HiXMark } from "react-icons/hi2";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useCreateCabin } from "../../hooks/cabins/useCreateCabin";
 import { useDeleteCabin } from "../../hooks/cabins/useDeleteCabin";
@@ -130,6 +130,8 @@ function CabinRow({ cabin }) {
   const [showFullImage, setShowFullImage] = useState(false);
   const [closingAnimation, setClosingAnimation] = useState(false);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const {
     id: cabinId,
     name,
@@ -147,25 +149,6 @@ function CabinRow({ cabin }) {
     image.trim().toLowerCase() !== "undefined";
 
   const imageUrl = isValidImage ? image : "/image-unavailable.png";
-
-  useEffect(() => {
-    const handleClose = (event) => {
-      if (event.key === "Escape" || event.target === event.currentTarget) {
-        setClosingAnimation(true);
-        setTimeout(() => {
-          setShowFullImage(false);
-
-          setClosingAnimation(false);
-        }, 300);
-      }
-    };
-
-    window.addEventListener("keydown", handleClose);
-
-    return () => {
-      window.removeEventListener("keydown", handleClose);
-    };
-  }, []);
 
   const handleCloseImage = () => {
     setClosingAnimation(true);
@@ -197,6 +180,19 @@ function CabinRow({ cabin }) {
       image,
       description,
     });
+  }
+
+  function handleDeleteClick() {
+    setShowDeleteConfirm(true);
+  }
+
+  function handleConfirmDelete() {
+    deleteCabin(cabinId);
+    setShowDeleteConfirm(false);
+  }
+
+  function handleCancelDelete() {
+    setShowDeleteConfirm(false);
   }
 
   return (
@@ -236,30 +232,30 @@ function CabinRow({ cabin }) {
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-              </Modal.Open>
+              <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
+                Delete
+              </Menus.Button>
             </Menus.List>
 
             <Modal.Window name="edit">
               <CreateCabinForm cabinToEdit={cabin} />
             </Modal.Window>
-
-            <Modal.Window name="delete">
-              <ConfirmDialog
-                open={true}
-                title="Excluir cabana"
-                message="Tem certeza que deseja excluir esta cabana?"
-                confirmLabel="Excluir"
-                cancelLabel="Cancelar"
-                onConfirm={() => deleteCabin(cabinId)}
-                onCancel={() => {}}
-                confirmVariant="danger"
-                disabled={isDeleting}
-              />
-            </Modal.Window>
           </Menus.Menu>
         </Modal>
+        {/* ConfirmDialog fuera del sistema de Modal, igual que GuestRow */}
+        {showDeleteConfirm && (
+          <ConfirmDialog
+            open={showDeleteConfirm}
+            title="Excluir cabana"
+            message="Tem certeza que deseja excluir esta cabana?"
+            confirmLabel="Excluir"
+            cancelLabel="Cancelar"
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+            confirmVariant="danger"
+            disabled={isDeleting}
+          />
+        )}
         {showFullImage && (
           <ImageModal>
             <div className="image-modal-overlay" onClick={handleModalClick}>

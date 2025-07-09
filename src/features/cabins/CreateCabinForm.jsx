@@ -12,8 +12,9 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import cabinsValidationSchema from "../../validations/cabinsValidations";
+import Spinner from "../../ui/Spinner";
 
-function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal, onRequestClose }) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isEditing, editCabin } = useEditCabin();
   const isWorking = isCreating || isEditing;
@@ -21,7 +22,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, formState } = useForm({
+  const { register, handleSubmit, reset, formState, watch } = useForm({
     defaultValues: isEditSession
       ? {
           ...editValues,
@@ -31,46 +32,59 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         }
       : {},
     resolver: yupResolver(cabinsValidationSchema),
+    mode: "onChange",
   });
-  const { errors } = formState;
+  const { errors, dirtyFields } = formState;
 
   function onSubmit(data) {
-    const image = typeof data.image === "string" ? data.image : data.image[0];
-
-    const payload = {
-      name: data.name,
-      maxCapacity: data.maxCapacity ? Number(data.maxCapacity) : undefined,
-      regularPrice: data.regularPrice ? Number(data.regularPrice) : undefined,
-      discount: data.discount ? Number(data.discount) : 0,
-      description: data.description || "",
-      file: image,
-    };
-
     if (isEditSession) {
+      const dataToSend = {};
+      Object.keys(dirtyFields).forEach((key) => {
+        if (key === "image" && data.image && data.image.length > 0) {
+          dataToSend.file = data.image[0];
+        } else if (key !== "image") {
+          dataToSend[key] = data[key];
+        }
+      });
+
+      if ("maxCapacity" in dataToSend)
+        dataToSend.maxCapacity = Number(dataToSend.maxCapacity);
+      if ("regularPrice" in dataToSend)
+        dataToSend.regularPrice = Number(dataToSend.regularPrice);
+      if ("discount" in dataToSend)
+        dataToSend.discount = Number(dataToSend.discount);
+
       editCabin(
         {
           id: editId,
-          newCabinData: {
-            ...data,
-            maxCapacity: data.maxCapacity
-              ? Number(data.maxCapacity)
-              : undefined,
-            regularPrice: data.regularPrice
-              ? Number(data.regularPrice)
-              : undefined,
-            discount: data.discount ? Number(data.discount) : 0,
-            description: data.description || "",
-            file: image,
-          },
+          newCabinData: dataToSend,
         },
         {
           onSuccess: () => {
             reset();
             onCloseModal?.();
           },
-        },
+        }
       );
     } else {
+      let image = "";
+      if (typeof data.image === "string") {
+        image = data.image;
+      } else if (Array.isArray(data.image) && data.image.length > 0) {
+        image = data.image[0];
+      } else {
+        image = undefined;
+      }
+
+      const payload = {
+        name: data.name,
+        maxCapacity: data.maxCapacity ? Number(data.maxCapacity) : undefined,
+        regularPrice: data.regularPrice ? Number(data.regularPrice) : undefined,
+        discount: data.discount ? Number(data.discount) : 0,
+        description: data.description || "",
+        file: image,
+      };
+
       createCabin(payload, {
         onSuccess: () => {
           reset();
@@ -83,6 +97,12 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   function onError(errors) {
     console.log(errors);
   }
+
+  function handleCancel() {
+    if (onRequestClose) onRequestClose();
+  }
+
+  if (isWorking) return <Spinner />;
 
   return (
     <Form
@@ -142,8 +162,9 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       <FormRow>
         <Button
           variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
+          type="button"
+          onClick={handleCancel}
+          disabled={isWorking}
         >
           Cancelar
         </Button>
@@ -162,10 +183,10 @@ CreateCabinForm.propTypes = {
     maxCapacity: PropTypes.number,
     regularPrice: PropTypes.number,
     discount: PropTypes.number,
-
     description: PropTypes.string,
   }),
   onCloseModal: PropTypes.func,
+  onRequestClose: PropTypes.func,
 };
 
 export default CreateCabinForm;
