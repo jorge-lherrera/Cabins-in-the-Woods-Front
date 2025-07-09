@@ -23,13 +23,8 @@ export function useSignup(onCloseModal) {
       if (onCloseModal) onCloseModal();
       navigate("/dashboard", { replace: true });
     },
-    onError: (error) => {
-      const backendMsg =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        error.message;
-
-      toast.error(backendMsg || "Erro ao criar usuário.");
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Erro ao criar usuário.");
     },
   });
 

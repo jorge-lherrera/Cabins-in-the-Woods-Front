@@ -14,12 +14,9 @@ export function useLogout() {
       toast.success("Logout realizado com sucesso");
       navigate("/login", { replace: true });
     },
-    onError: (err) =>
-      toast.error(
-        err?.response?.data?.message ||
-        err?.message ||
-        "Ocorreu um erro ao sair"
-      ),
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Erro ao sair da conta");
+    },
   });
 
   return { logout, isLoading };

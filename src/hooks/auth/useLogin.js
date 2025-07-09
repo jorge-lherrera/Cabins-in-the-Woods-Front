@@ -20,12 +20,11 @@ export const useLogin = () => {
       toast.success("Login realizado com sucesso!");
       navigate("/dashboard", { replace: true });
     },
-    onError: (error) => {
-      if (error.response && error.response.status === 401) {
-        toast.error(error.response.data?.message || "Credenciais inválidas");
-      } else {
-        toast.error(error.response?.data?.message || "Erro no servidor");
-      }
+    onError: (err) => {
+      toast.error(
+        err?.response?.data?.message ||
+          "Erro ao realizar o login. Verifique suas credenciais."
+      );
     },
   });
 
