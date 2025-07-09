@@ -24,12 +24,11 @@ export function useCheckout() {
       queryClient.invalidateQueries({ queryKey: ["dashboard-bookings"] });
     },
 
-    onError: (err) =>
+    onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao finalizar o check-out"
-      ),
+        err?.response?.data?.message || "Erro ao realizar o check-out"
+      );
+    },
   });
 
   return { checkout, isCheckingOut };

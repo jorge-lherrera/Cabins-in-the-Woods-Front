@@ -35,9 +35,7 @@ export function useBookings() {
     queryFn: () => getBookings(filters),
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao carregar as reservas"
+        err?.response?.data?.message || "Erro ao carregar as reservas"
       );
     },
     keepPreviousData: true,

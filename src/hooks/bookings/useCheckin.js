@@ -20,7 +20,7 @@ export function useCheckin() {
       toast.success(
         booking
           ? `Booking #${booking.id} successfully checked in`
-          : "Check-in realizado com sucesso",
+          : "Check-in realizado com sucesso"
       );
 
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
@@ -31,9 +31,7 @@ export function useCheckin() {
 
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao realizar check-in",
+        err?.response?.data?.message || "Erro ao realizar o check-in"
       );
     },
   });

@@ -12,16 +12,13 @@ export function useDeleteBooking() {
       toast.success(
         booking
           ? `Reserva #${booking.id} excluída com sucesso`
-          : "Reserva excluída com sucesso",
+          : "Reserva excluída com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (err) =>
-      toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao excluir a reserva",
-      ),
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Erro ao excluir a reserva");
+    },
   });
 
   return { isDeleting, deleteBooking };

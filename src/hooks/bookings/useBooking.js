@@ -15,11 +15,7 @@ export function useBooking() {
     queryFn: () => getBooking(bookingId),
     retry: false,
     onError: (err) => {
-      toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Error al cargar la reserva"
-      );
+      toast.error(err?.response?.data?.message || "Error al cargar la reserva");
     },
   });
 

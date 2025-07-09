@@ -12,16 +12,13 @@ export function useEditBooking() {
       toast.success(
         booking?.name
           ? `Reserva "${booking.name}" editada com sucesso`
-          : "Reserva editada com sucesso",
+          : "Reserva editada com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (err) =>
-      toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao editar a reserva",
-      ),
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Erro ao editar as reservas");
+    },
   });
 
   return { isEditing, editBooking };

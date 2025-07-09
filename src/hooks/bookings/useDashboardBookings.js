@@ -9,9 +9,7 @@ export function useDashboardBookings({ days }) {
     queryFn: () => getBookingsDashboard({ days }),
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Erro ao carregar os dados do dashboard"
+        err?.response?.data?.message || "Erro ao carregar os dados do dashboard"
       );
     },
   });

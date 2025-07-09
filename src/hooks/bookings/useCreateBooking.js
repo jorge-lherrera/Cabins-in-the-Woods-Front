@@ -13,16 +13,13 @@ export function useCreateBooking() {
       toast.success(
         booking?.name
           ? `Reserva "${booking.name}" criada com sucesso`
-          : "Reserva criada com sucesso",
+          : "Reserva criada com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (err) =>
-      toast.error(
-        err?.response?.data?.error ||
-          err?.message ||
-          "Ocorreu um erro ao criar a reserva",
-      ),
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Erro ao criar a reserva");
+    },
   });
 
   return { isCreating, createBooking };
