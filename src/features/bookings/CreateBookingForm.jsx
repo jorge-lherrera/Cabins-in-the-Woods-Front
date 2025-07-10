@@ -108,8 +108,8 @@ const StyledSelect = styled.select`
   }
 `;
 
-function CreateBookingForm({ onCloseModal }) {
-  const { isCreating, createBooking } = useCreateBooking();
+function CreateBookingForm({ onCloseModal, onRequestClose }) {
+  const { isCreating, createBooking } = useCreateBooking(onCloseModal);
 
   const {
     loadGuestOptions,
@@ -142,6 +142,7 @@ function CreateBookingForm({ onCloseModal }) {
       isPaid: false,
       status: "unconfirmed",
     },
+    mode: "onChange",
   });
 
   function onSubmit(data) {
@@ -154,12 +155,16 @@ function CreateBookingForm({ onCloseModal }) {
       startDate: data.startDate || "",
       endDate: data.endDate || "",
     };
+    console.log("Creating booking with payload:", payload);
     createBooking(payload, {
       onSuccess: () => {
         reset();
-        onCloseModal?.();
       },
     });
+  }
+
+  function handleCancel() {
+    if (onRequestClose) onRequestClose();
   }
 
   return (
@@ -252,6 +257,14 @@ function CreateBookingForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow>
+        <Button
+          variation="secondary"
+          type="button"
+          onClick={handleCancel}
+          disabled={isCreating}
+        >
+          Cancelar
+        </Button>
         <Button variation="primary" size="medium" disabled={isCreating}>
           Crear reserva
         </Button>
@@ -262,6 +275,7 @@ function CreateBookingForm({ onCloseModal }) {
 
 CreateBookingForm.propTypes = {
   onCloseModal: PropTypes.func,
+  onRequestClose: PropTypes.func,
 };
 
 export default CreateBookingForm;

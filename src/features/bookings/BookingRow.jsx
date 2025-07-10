@@ -18,6 +18,7 @@ import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDialog from "../../ui/ConfirmDialog";
+import { useState } from "react";
 
 const Booking = styled.div`
   font-size: 1.6rem;
@@ -83,6 +84,21 @@ function BookingRow({ booking }) {
     stayText = `In ${daysUntilStart} day${daysUntilStart > 1 ? "s" : ""} \u2192 ${numNights} night${numNights > 1 ? "s" : ""} stay`;
   }
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  function handleDeleteClick() {
+    setShowDeleteConfirm(true);
+  }
+
+  function handleConfirmDelete() {
+    deleteBooking(bookingId);
+    setShowDeleteConfirm(false);
+  }
+
+  function handleCancelDelete() {
+    setShowDeleteConfirm(false);
+  }
+
   return (
     <Table.Row>
       <Booking>{cabinId}</Booking>
@@ -134,26 +150,26 @@ function BookingRow({ booking }) {
               </Menus.Button>
             )}
 
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete booking</Menus.Button>
-            </Modal.Open>
+            <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
+              Delete booking
+            </Menus.Button>
           </Menus.List>
         </Menus.Menu>
-
-        <Modal.Window name="delete">
-          <ConfirmDialog
-            open={true}
-            title="Excluir reserva"
-            message="Tem certeza que deseja excluir esta reserva?"
-            confirmLabel="Excluir"
-            cancelLabel="Cancelar"
-            onConfirm={() => deleteBooking(bookingId)}
-            onCancel={() => {}}
-            confirmVariant="danger"
-            disabled={isDeleting}
-          />
-        </Modal.Window>
       </Modal>
+
+      {showDeleteConfirm && (
+        <ConfirmDialog
+          open={showDeleteConfirm}
+          title="Excluir reserva"
+          message="Tem certeza que deseja excluir esta reserva?"
+          confirmLabel="Excluir"
+          cancelLabel="Cancelar"
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+          confirmVariant="danger"
+          disabled={isDeleting}
+        />
+      )}
     </Table.Row>
   );
 }
