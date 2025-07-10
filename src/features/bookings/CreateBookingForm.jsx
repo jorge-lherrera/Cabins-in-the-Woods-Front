@@ -109,7 +109,7 @@ const StyledSelect = styled.select`
 `;
 
 function CreateBookingForm({ onCloseModal, onRequestClose }) {
-  const { isCreating, createBooking } = useCreateBooking(onCloseModal);
+  const { isCreating, createBooking } = useCreateBooking();
 
   const {
     loadGuestOptions,
@@ -155,10 +155,11 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
       startDate: data.startDate || "",
       endDate: data.endDate || "",
     };
-    console.log("Creating booking with payload:", payload);
+
     createBooking(payload, {
       onSuccess: () => {
         reset();
+        if (onCloseModal) onCloseModal();
       },
     });
   }
