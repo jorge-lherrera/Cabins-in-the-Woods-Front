@@ -129,11 +129,11 @@ function BookingDataBox({ booking }) {
 
   let daysText = "";
   if (typeof daysUntilStart === "number") {
-    if (daysUntilStart === 0) daysText = "Today";
+    if (daysUntilStart === 0) daysText = "Hoje";
     else if (daysUntilStart > 0)
-      daysText = `in ${daysUntilStart} day${daysUntilStart > 1 ? "s" : ""}`;
+      daysText = `em ${daysUntilStart} dia${daysUntilStart > 1 ? "s" : ""}`;
     else
-      daysText = `${Math.abs(daysUntilStart)} day${Math.abs(daysUntilStart) > 1 ? "s" : ""} ago`;
+      daysText = `${Math.abs(daysUntilStart)} dia${Math.abs(daysUntilStart) > 1 ? "s" : ""} atrás`;
   }
 
   return (
@@ -163,38 +163,41 @@ function BookingDataBox({ booking }) {
           <span>&bull;</span>
           <p>{email}</p>
           <span>&bull;</span>
-          <p>National ID {nationalID}</p>
+          <p>Documento {nationalID}</p>
         </Guest>
 
         {observations && (
           <DataItem
             icon={<HiOutlineChatBubbleBottomCenterText />}
-            label="Observations"
+            label="Observações"
           >
             {observations}
           </DataItem>
         )}
 
-        <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {hasBreakfast ? "Yes" : "No"}
+        <DataItem
+          icon={<HiOutlineCheckCircle />}
+          label="Café da manhã incluso?"
+        >
+          {hasBreakfast ? "Sim" : "Não"}
         </DataItem>
 
         <Price isPaid={isPaid}>
-          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
+          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Preço total`}>
             {formatCurrency(totalPrice)}
 
             {hasBreakfast &&
-              ` (${formatCurrency(Number(cabinPrice))} cabin + ${formatCurrency(
+              ` (${formatCurrency(Number(cabinPrice))} cabana + ${formatCurrency(
                 Number(extrasPrice)
-              )} breakfast)`}
+              )} café da manhã)`}
           </DataItem>
 
-          <p>{isPaid ? "Paid" : "Will pay at property"}</p>
+          <p>{isPaid ? "Pago" : "Pagará na entrada"}</p>
         </Price>
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(createdAt), "EEE, MMM dd yyyy, p")}</p>
+        <p>Reservado em {format(new Date(createdAt), "EEE, MMM dd yyyy, p")}</p>
       </Footer>
     </StyledBookingDataBox>
   );

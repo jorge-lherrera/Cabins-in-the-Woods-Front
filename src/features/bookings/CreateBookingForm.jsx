@@ -173,19 +173,19 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
       onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="Cabina" error={errors.cabinId?.message}>
+      <FormRow label="Cabana" error={errors.cabinId?.message}>
         <AsyncSelectStyled
           cacheOptions
           defaultOptions
           loadOptions={loadCabinOptions}
           onChange={(option) => setValue("cabinId", option ? option.value : "")}
           isClearable
-          placeholder="Busca una cabina..."
+          placeholder="Busque uma cabana..."
           isLoading={isLoadingCabins}
           noOptionsMessage={() =>
             errorCabins
-              ? errorCabins.message || "Error al cargar las cabinas"
-              : "No se encontraron cabinas"
+              ? errorCabins.message || "Erro ao carregar as cabanas"
+              : "Nenhuma cabana encontrada"
           }
           components={{
             LoadingIndicator: SpinnerMini,
@@ -194,19 +194,19 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
         />
       </FormRow>
 
-      <FormRow label="Huésped" error={errors.guestId?.message}>
+      <FormRow label="Hóspede" error={errors.guestId?.message}>
         <AsyncSelectStyled
           cacheOptions
           defaultOptions
           loadOptions={loadGuestOptions}
           onChange={(option) => setValue("guestId", option ? option.value : "")}
           isClearable
-          placeholder="Busca un huésped..."
+          placeholder="Busque um hóspede..."
           isLoading={isLoadingGuests}
           noOptionsMessage={() =>
             errorGuests
-              ? errorGuests.message || "Error al cargar los huéspedes"
-              : "No se encontraron huéspedes"
+              ? errorGuests.message || "Erro ao carregar os hóspedes"
+              : "Nenhum hóspede encontrado"
           }
           components={{
             LoadingIndicator: SpinnerMini,
@@ -215,45 +215,48 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
         />
       </FormRow>
 
-      <FormRow label="Fecha de inicio" error={errors.startDate?.message}>
+      <FormRow label="Data de início" error={errors.startDate?.message}>
         <Input type="date" {...register("startDate")} required />
       </FormRow>
 
-      <FormRow label="Fecha de fin" error={errors.endDate?.message}>
+      <FormRow label="Data de término" error={errors.endDate?.message}>
         <Input type="date" {...register("endDate")} required />
       </FormRow>
 
-      <FormRow label="Número de huéspedes" error={errors.numGuests?.message}>
+      <FormRow label="Número de hóspedes" error={errors.numGuests?.message}>
         <Input type="number" min={1} {...register("numGuests")} required />
       </FormRow>
 
-      <FormRow label="Precio extras" error={errors.extrasPrice?.message}>
+      <FormRow label="Preço dos extras" error={errors.extrasPrice?.message}>
         <Input type="number" min={0} {...register("extrasPrice")} />
       </FormRow>
 
-      <FormRow label="¿Incluye desayuno?" error={errors.hasBreakfast?.message}>
+      <FormRow
+        label="Café da manhã incluso?"
+        error={errors.hasBreakfast?.message}
+      >
         <StyledCheckboxLabel>
           <StyledCheckbox {...register("hasBreakfast")} />
-          Incluye desayuno
+          Café da manhã incluso
         </StyledCheckboxLabel>
       </FormRow>
 
-      <FormRow label="Observaciones" error={errors.observations?.message}>
+      <FormRow label="Observações" error={errors.observations?.message}>
         <Textarea {...register("observations")} maxLength={255} />
       </FormRow>
 
-      <FormRow label="¿Pagado?" error={errors.isPaid?.message}>
+      <FormRow label="Pago?" error={errors.isPaid?.message}>
         <StyledCheckboxLabel>
           <StyledCheckbox {...register("isPaid")} />
-          Pagado
+          Pago
         </StyledCheckboxLabel>
       </FormRow>
 
-      <FormRow label="Estado" error={errors.status?.message}>
+      <FormRow label="Status" error={errors.status?.message}>
         <StyledSelect {...register("status")} required>
-          <option value="unconfirmed">Sin confirmar</option>
-          <option value="checked-in">Checked-in</option>
-          <option value="checked-out">Checked-out</option>
+          <option value="unconfirmed">Não confirmado</option>
+          <option value="checked-in">Check-in realizado</option>
+          <option value="checked-out">Check-out realizado</option>
         </StyledSelect>
       </FormRow>
 
@@ -267,7 +270,7 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
           Cancelar
         </Button>
         <Button variation="primary" size="medium" disabled={isCreating}>
-          Crear reserva
+          Criar reserva
         </Button>
       </FormRow>
     </Form>

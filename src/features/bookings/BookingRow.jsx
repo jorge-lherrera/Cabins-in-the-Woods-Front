@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { useState } from "react";
 
 import { formatCurrency } from "../../utils/helpers";
 import { useCheckout } from "../../hooks/bookings/useCheckout";
@@ -18,7 +19,6 @@ import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDialog from "../../ui/ConfirmDialog";
-import { useState } from "react";
 
 const Booking = styled.div`
   font-size: 1.6rem;
@@ -79,9 +79,9 @@ function BookingRow({ booking }) {
 
   let stayText;
   if (daysUntilStart === 0) {
-    stayText = `Today \u2192 ${numNights} night${numNights > 1 ? "s" : ""} stay`;
+    stayText = `Hoje \u2192 ${numNights} noite${numNights > 1 ? "s" : ""}`;
   } else {
-    stayText = `In ${daysUntilStart} day${daysUntilStart > 1 ? "s" : ""} \u2192 ${numNights} night${numNights > 1 ? "s" : ""} stay`;
+    stayText = `Em ${daysUntilStart} dia${daysUntilStart > 1 ? "s" : ""} \u2192 ${numNights} noite${numNights > 1 ? "s" : ""}`;
   }
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -128,7 +128,7 @@ function BookingRow({ booking }) {
               icon={<HiEye />}
               onClick={() => navigate(`/bookings/${bookingId}`)}
             >
-              See details
+              Ver detalhes
             </Menus.Button>
 
             {status === "unconfirmed" && (
@@ -136,7 +136,7 @@ function BookingRow({ booking }) {
                 icon={<HiArrowDownOnSquare />}
                 onClick={() => navigate(`/checkin/${bookingId}`)}
               >
-                Check in
+                Fazer check-in
               </Menus.Button>
             )}
 
@@ -146,12 +146,12 @@ function BookingRow({ booking }) {
                 onClick={() => checkout(bookingId)}
                 disabled={isCheckingOut}
               >
-                Check out
+                Fazer check-out
               </Menus.Button>
             )}
 
             <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
-              Delete booking
+              Excluir reserva
             </Menus.Button>
           </Menus.List>
         </Menus.Menu>

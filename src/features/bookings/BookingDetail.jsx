@@ -1,6 +1,6 @@
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { HiArrowUpOnSquare } from "react-icons/hi2";
-import styled from "styled-components";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "../../hooks/bookings/useBooking";
@@ -10,7 +10,6 @@ import { useDeleteBooking } from "../../hooks/bookings/useDeleteBooking";
 import BookingDataBox from "./BookingDataBox";
 import Button from "../../ui/Button";
 import ButtonGroup from "../../ui/ButtonGroup";
-import ButtonText from "../../ui/ButtonText";
 import ConfirmDialog from "../../ui/ConfirmDialog";
 import Empty from "../../ui/Empty";
 import Heading from "../../ui/Heading";
@@ -34,7 +33,7 @@ function BookingDetail() {
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
-  if (!booking) return <Empty resourceName="booking" />;
+  if (!booking) return <Empty resourceName="reserva" />;
 
   const { status, id: bookingId } = booking;
 
@@ -48,7 +47,7 @@ function BookingDetail() {
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #{bookingId}</Heading>
+          <Heading as="h1">Reserva #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
       </Row>
@@ -58,7 +57,7 @@ function BookingDetail() {
       <ButtonGroup>
         {status === "unconfirmed" && (
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
-            Check in
+            Fazer check-in
           </Button>
         )}
 
@@ -68,13 +67,13 @@ function BookingDetail() {
             onClick={() => checkout(bookingId)}
             disabled={isCheckingOut}
           >
-            Check out
+            Fazer check-out
           </Button>
         )}
 
         <Modal>
           <Modal.Open opens="delete">
-            <Button variation="danger">Delete booking</Button>
+            <Button variation="danger">Excluir reserva</Button>
           </Modal.Open>
 
           <Modal.Window name="delete">
@@ -97,7 +96,7 @@ function BookingDetail() {
         </Modal>
 
         <Button variation="secondary" onClick={moveBack}>
-          Back
+          Voltar
         </Button>
       </ButtonGroup>
     </>
