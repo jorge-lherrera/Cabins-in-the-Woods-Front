@@ -12,7 +12,7 @@ function GuestTable() {
 
   if (isLoading) return <Spinner />;
 
-  if (!guests.length) return <Empty resourceName="guests" />;
+  if (!guests.length) return <Empty resourceName="hóspedes" />;
 
   return (
     <Menus>

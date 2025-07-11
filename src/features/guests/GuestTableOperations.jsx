@@ -32,12 +32,12 @@ function GuestTableOperations() {
         loadOptions={loadGuestOptions}
         onChange={handleGuestChange}
         isClearable
-        placeholder="Filtrar por nacionalidad..."
+        placeholder="Filtrar por nacionalidade..."
         isLoading={isLoadingGuests}
         noOptionsMessage={() =>
           errorGuests
-            ? errorGuests.message || "Error al cargar las nacionalidades"
-            : "No se encontraron nacionalidades"
+            ? errorGuests.message || "Erro ao carregar as nacionalidades"
+            : "Nenhuma nacionalidade encontrada"
         }
         components={{
           LoadingIndicator: SpinnerMini,
@@ -47,10 +47,10 @@ function GuestTableOperations() {
 
       <SortBy
         options={[
-          { value: "name-asc", label: "Sort by name (A-Z)" },
-          { value: "name-desc", label: "Sort by name (Z-A)" },
-          { value: "email-asc", label: "Sort by email (A-Z)" },
-          { value: "email-desc", label: "Sort by email (Z-A)" },
+          { value: "name-asc", label: "Ordenar por nome (A-Z)" },
+          { value: "name-desc", label: "Ordenar por nome (Z-A)" },
+          { value: "email-asc", label: "Ordenar por email (A-Z)" },
+          { value: "email-desc", label: "Ordenar por email (Z-A)" },
         ]}
       />
     </TableOperations>

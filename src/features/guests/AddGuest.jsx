@@ -2,12 +2,12 @@ import Button from "../../ui/Button";
 import CreateGuestForm from "./CreateGuestForm";
 import Modal from "../../ui/Modal";
 
-function AddCabin() {
+function AddGuest() {
   return (
     <div>
       <Modal>
         <Modal.Open opens="guest-form">
-          <Button>Add new guest</Button>
+          <Button>Adicionar novo hóspede</Button>
         </Modal.Open>
         <Modal.Window name="guest-form">
           <CreateGuestForm />
@@ -17,4 +17,4 @@ function AddCabin() {
   );
 }
 
-export default AddCabin;
+export default AddGuest;

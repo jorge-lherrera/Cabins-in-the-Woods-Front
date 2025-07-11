@@ -93,11 +93,11 @@ function GuestRow({ guest }) {
 
             <Menus.List id={id}>
               <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                <Menus.Button icon={<HiPencil />}>Editar</Menus.Button>
               </Modal.Open>
 
               <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
-                Delete
+                Excluir
               </Menus.Button>
             </Menus.List>
 
