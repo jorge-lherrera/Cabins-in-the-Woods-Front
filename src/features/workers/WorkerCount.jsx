@@ -31,7 +31,7 @@ function WorkerCount() {
 
   return (
     <StyledUserAvatar>
-      <Avatar src={avatar} alt={`Avatar of ${name}`} />
+      <Avatar src={avatar} alt={`Avatar de ${name}`} />
       <span>{name}</span>
     </StyledUserAvatar>
   );
