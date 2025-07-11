@@ -12,17 +12,17 @@ function CabinTable() {
 
   if (isLoading) return <Spinner />;
 
-  if (!cabins.length) return <Empty resourceName="cabins" />;
+  if (!cabins.length) return <Empty resourceName="cabanas" />;
 
   return (
     <Menus>
       <Table columns="0.9fr 1.8fr 2.2fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
-          <div>Cabin</div>
-          <div>Capacity</div>
-          <div>Price</div>
-          <div>Discount</div>
+          <div>Cabana</div>
+          <div>Capacidade</div>
+          <div>Preço</div>
+          <div>Desconto</div>
           <div></div>
         </Table.Header>
 

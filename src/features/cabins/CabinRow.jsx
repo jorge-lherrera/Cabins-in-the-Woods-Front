@@ -207,7 +207,9 @@ function CabinRow({ cabin }) {
         }}
       />
       <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
+      <div>
+        Acomoda até {maxCapacity} hóspede{maxCapacity > 1 ? "s" : ""}
+      </div>
       <Price>{formatCurrency(regularPrice)}</Price>
       {discount ? (
         <Discount>{formatCurrency(discount)}</Discount>
@@ -225,15 +227,15 @@ function CabinRow({ cabin }) {
                 onClick={handleDuplicate}
                 disabled={isCreating}
               >
-                Duplicate
+                Duplicar
               </Menus.Button>
 
               <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                <Menus.Button icon={<HiPencil />}>Editar</Menus.Button>
               </Modal.Open>
 
               <Menus.Button icon={<HiTrash />} onClick={handleDeleteClick}>
-                Delete
+                Excluir
               </Menus.Button>
             </Menus.List>
 
@@ -242,7 +244,7 @@ function CabinRow({ cabin }) {
             </Modal.Window>
           </Menus.Menu>
         </Modal>
-        {/* ConfirmDialog fuera del sistema de Modal, igual que GuestRow */}
+
         {showDeleteConfirm && (
           <ConfirmDialog
             open={showDeleteConfirm}
@@ -265,7 +267,7 @@ function CabinRow({ cabin }) {
                 </button>
                 <AnimatedImage
                   src={imageUrl}
-                  alt={`Full size of ${name}`}
+                  alt={`Imagem completa de ${name}`}
                   closing={closingAnimation}
                 />
               </div>
