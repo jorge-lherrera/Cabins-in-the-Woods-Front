@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateBooking } from "../../services/apiBookings";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+
+import { updateBooking } from "../../services/apiBookings";
 
 export function useCheckin() {
   const queryClient = useQueryClient();
@@ -19,7 +20,7 @@ export function useCheckin() {
       const booking = data?.resource;
       toast.success(
         booking
-          ? `Booking #${booking.id} successfully checked in`
+          ? `Check-in da reserva #${booking.id} realizado com sucesso`
           : "Check-in realizado com sucesso"
       );
 

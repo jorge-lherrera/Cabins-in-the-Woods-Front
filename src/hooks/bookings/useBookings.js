@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+
+import { getBookings } from "../../services/apiBookings";
 
 export function useBookings() {
   const [searchParams] = useSearchParams();

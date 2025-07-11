@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+
 import { createBooking as createBookingApi } from "../../services/apiBookings";
 
 export function useCreateBooking() {
@@ -9,7 +10,7 @@ export function useCreateBooking() {
     mutationFn: createBookingApi,
     onSuccess: (data) => {
       const booking = data?.resource;
-      console.log("Booking created successfully:", booking);
+
       toast.success(
         booking?.name
           ? `Reserva "${booking.name}" criada com sucesso`
