@@ -12,7 +12,6 @@ import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
 import Checkbox from "../../ui/Checkbox";
 
@@ -68,7 +67,7 @@ function CheckinBooking() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Check in booking #{bookingId}</Heading>
+        <Heading as="h1">Fazer check-in da reserva #{bookingId}</Heading>
       </Row>
 
       <BookingDataBox booking={booking} />
@@ -83,7 +82,8 @@ function CheckinBooking() {
             }}
             id="breakfast"
           >
-            Want to add breakfast for {formatCurrency(optionalBreakfastPrice)}?
+            Deseja adicionar café da manhã por{" "}
+            {formatCurrency(optionalBreakfastPrice)}?
           </Checkbox>
         </Box>
       )}
@@ -95,8 +95,7 @@ function CheckinBooking() {
           disabled={confirmPaid || isCheckingIn}
           id="confirm"
         >
-          I confirm that {guest?.fullName || "the guest"} has paid the total
-          amount of{" "}
+          Confirmo que {guest?.fullName || "o hóspede"} pagou o valor total de{" "}
           {!addBreakfast
             ? formatCurrency(totalPrice)
             : `${formatCurrency(
@@ -109,10 +108,10 @@ function CheckinBooking() {
 
       <ButtonGroup>
         <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>
-          Check in booking #{bookingId}
+          Fazer check-in da reserva #{bookingId}
         </Button>
         <Button variation="secondary" onClick={moveBack}>
-          Back
+          Voltar
         </Button>
       </ButtonGroup>
     </>

@@ -11,7 +11,7 @@ function CheckoutButton({ bookingId }) {
       onClick={() => checkout(bookingId)}
       disabled={isCheckingOut}
     >
-      Check out
+      Fazer check-out
     </Button>
   );
 }

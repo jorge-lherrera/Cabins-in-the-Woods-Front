@@ -70,7 +70,7 @@ function TodayActivity({ bookingsToday }) {
   return (
     <StyledToday>
       <Row type="horizontal">
-        <Heading as="h2">Today</Heading>
+        <Heading as="h2">Hoje</Heading>
       </Row>
 
       {bookingsToday.length > 0 ? (
@@ -80,7 +80,7 @@ function TodayActivity({ bookingsToday }) {
           ))}
         </TodayList>
       ) : (
-        <NoActivity>No activity today...</NoActivity>
+        <NoActivity>Nenhuma atividade hoje...</NoActivity>
       )}
     </StyledToday>
   );
