@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSettings } from "../../services/apiSettings";
 import { toast } from "react-hot-toast";
+
+import { getSettings } from "../../services/apiSettings";
 
 export function useSettings() {
   const { isLoading, error, data } = useQuery({
