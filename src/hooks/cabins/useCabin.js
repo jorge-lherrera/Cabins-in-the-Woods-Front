@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCabin } from "../../services/apiCabins";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
+
+import { getCabin } from "../../services/apiCabins";
 
 export function useCabin() {
   const { cabinId } = useParams();
@@ -15,7 +16,7 @@ export function useCabin() {
     retry: false,
     onError: (err) => {
       toast.error(
-        err?.response?.data?.message || "Error al cargar las cabañas"
+        err?.response?.data?.message || "Erro ao carregar as cabanas"
       );
     },
   });
