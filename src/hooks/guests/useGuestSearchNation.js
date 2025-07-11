@@ -1,4 +1,5 @@
 import { api } from "../../services/apiUrl";
+import { toast } from "react-hot-toast";
 
 export function useGuestSearchNation() {
   const loadGuestOptions = async (inputValue) => {
@@ -19,7 +20,7 @@ export function useGuestSearchNation() {
         label: nation,
       }));
     } catch (error) {
-      console.error("Error loading nationalities:", error);
+      toast.error("Erro ao carregar as nacionalidades");
       return [];
     }
   };
