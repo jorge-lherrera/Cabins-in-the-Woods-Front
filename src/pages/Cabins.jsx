@@ -8,7 +8,7 @@ function Cabins() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Cabins</Heading>
+        <Heading as="h1">Cabanas</Heading>
         <CabinTableOperations />
       </Row>
 

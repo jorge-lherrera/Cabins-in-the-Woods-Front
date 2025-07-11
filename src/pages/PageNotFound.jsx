@@ -35,10 +35,10 @@ function PageNotFound() {
     <StyledPageNotFound>
       <Box>
         <Heading as="h1">
-          The page you are looking for could not be found 😢
+          A página que você está procurando não foi encontrada 😢
         </Heading>
         <button onClick={moveBack} size="large">
-          &larr; Go back
+          &larr; Voltar
         </button>
       </Box>
     </StyledPageNotFound>

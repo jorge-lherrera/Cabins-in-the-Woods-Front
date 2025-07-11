@@ -5,10 +5,10 @@ import Row from "../ui/Row";
 function Account() {
   return (
     <>
-      <Heading as="h1">Update your account</Heading>
+      <Heading as="h1">Atualize sua conta</Heading>
 
       <Row>
-        <Heading as="h3">Update user data</Heading>
+        <Heading as="h3">Atualizar dados do usuário</Heading>
         <UpdateWorkerForm />
       </Row>
     </>

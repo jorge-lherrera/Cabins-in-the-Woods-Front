@@ -12,7 +12,7 @@ function Settings() {
   return (
     <>
       <Row>
-        <Heading as="h1">Settings</Heading>
+        <Heading as="h1">Configurações</Heading>
       </Row>
 
       <Row>
