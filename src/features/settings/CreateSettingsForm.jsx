@@ -102,7 +102,7 @@ function CreateSettingForm({ onCloseModal, onRequestClose }) {
         >
           Cancelar
         </Button>
-        <Button disabled={isCreating}>Criar configuração</Button>
+        <Button disabled={isCreating}>Criar nova configuração</Button>
       </FormRow>
     </Form>
   );

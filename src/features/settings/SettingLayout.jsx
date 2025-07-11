@@ -122,7 +122,7 @@ function SettingLayout() {
           disabled={!hasChanges || isUpdating}
           title={!hasChanges ? "Altere algum campo para ativar." : undefined}
         >
-          Update
+          Atualizar
         </Button>
       </div>
     </Form>

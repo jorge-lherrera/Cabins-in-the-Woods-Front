@@ -7,7 +7,7 @@ function AddSetting() {
     <div>
       <Modal>
         <Modal.Open opens="setting-form">
-          <Button>Add new setting</Button>
+          <Button>Adicionar nova configuração</Button>
         </Modal.Open>
         <Modal.Window name="setting-form">
           <CreateSettingForm />
