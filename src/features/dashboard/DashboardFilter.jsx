@@ -5,9 +5,9 @@ function DashboardFilter() {
     <Filter
       filterField="last"
       options={[
-        { value: "7", label: "Last 7 days" },
-        { value: "30", label: "Last 30 days" },
-        { value: "90", label: "Last 90 days" },
+        { value: "7", label: "Últimos 7 dias" },
+        { value: "30", label: "Últimos 30 dias" },
+        { value: "90", label: "Últimos 90 dias" },
       ]}
     />
   );

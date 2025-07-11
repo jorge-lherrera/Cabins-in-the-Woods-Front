@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+
 import Heading from "../../ui/Heading";
 
 const ChartBox = styled.div`
@@ -32,17 +33,17 @@ const COLORS = ["#ef4444", "#f97316", "#14b8a6"];
 function DurationChart({ nightRanges }) {
   const data = [
     {
-      duration: "2-3 nights",
+      duration: "2-3 noites",
       value: nightRanges?.["2-3"] ?? 0,
       color: COLORS[0],
     },
     {
-      duration: "4-5 nights",
+      duration: "4-5 noites",
       value: nightRanges?.["4-5"] ?? 0,
       color: COLORS[1],
     },
     {
-      duration: "8-14 nights",
+      duration: "8-14 noites",
       value: nightRanges?.["8-14"] ?? 0,
       color: COLORS[2],
     },
@@ -50,7 +51,7 @@ function DurationChart({ nightRanges }) {
 
   return (
     <ChartBox>
-      <Heading as="h2">Stay duration summary</Heading>
+      <Heading as="h2">Resumo da duração da estadia</Heading>
       <ResponsiveContainer width="100%" height={240}>
         <PieChart>
           <Pie

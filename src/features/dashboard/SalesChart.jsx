@@ -47,7 +47,7 @@ function SalesChart({ salesChart, days }) {
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">{`Sales (last ${days} days)`}</Heading>
+      <Heading as="h2">{`Vendas (últimos ${days} dias)`}</Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
@@ -68,7 +68,7 @@ function SalesChart({ salesChart, days }) {
             stroke={colors.revenue.stroke}
             fill={colors.revenue.fill}
             strokeWidth={2}
-            name="Revenue"
+            name="Receita"
             unit="$"
           />
         </AreaChart>
