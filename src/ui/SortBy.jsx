@@ -1,6 +1,6 @@
-import { useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import Select from "./Select";
+import { useSearchParams } from "react-router-dom";
 
 function SortBy({ options }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,7 +31,7 @@ SortBy.propTypes = {
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         .isRequired,
       label: PropTypes.string.isRequired,
-    }),
+    })
   ).isRequired,
 };
 

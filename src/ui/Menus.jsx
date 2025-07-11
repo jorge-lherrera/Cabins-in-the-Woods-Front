@@ -1,8 +1,8 @@
+import styled from "styled-components";
+import PropTypes from "prop-types";
 import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
-import styled from "styled-components";
-import PropTypes from "prop-types";
 
 import { useOutsideClick } from "../hooks/useOutsideClick";
 
@@ -125,7 +125,7 @@ function List({ id, children }) {
     <StyledList position={position} ref={ref}>
       {children}
     </StyledList>,
-    document.body,
+    document.body
   );
 }
 

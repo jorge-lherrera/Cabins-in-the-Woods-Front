@@ -26,7 +26,7 @@ const FilterButton = styled.button`
   border-radius: var(--border-radius-sm);
   font-weight: 500;
   font-size: 1.4rem;
-  /* To give the same height as select */
+
   padding: 0.44rem 0.8rem;
   transition: all 0.3s;
 
@@ -68,7 +68,7 @@ Filter.propTypes = {
     PropTypes.shape({
       value: PropTypes.any.isRequired,
       label: PropTypes.node.isRequired,
-    }),
+    })
   ).isRequired,
 };
 

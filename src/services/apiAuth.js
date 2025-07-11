@@ -24,7 +24,9 @@ export async function login({ email, password }) {
   if (data.resource && data.resource.worker) {
     return { loggedIn: true, user: data.resource.worker };
   } else {
-    throw new Error("Erro ao fazer login.");
+    throw new Error(
+      "Erro ao fazer login. Verifique suas credenciais e tente novamente."
+    );
   }
 }
 

@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import PropTypes from "prop-types";
 
 import { useSession } from "../hooks/auth/useSession";
+
 import Spinner from "./Spinner";
 
 const FullPage = styled.div`

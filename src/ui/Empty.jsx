@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 function Empty({ resourceName }) {
-  return <p>No {resourceName} could be found.</p>;
+  return <p>Nenhum(a) {resourceName} foi encontrado(a).</p>;
 }
 
 Empty.propTypes = {
