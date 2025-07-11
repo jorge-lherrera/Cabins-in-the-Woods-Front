@@ -34,7 +34,10 @@ function LoginForm() {
   return (
     <Modal>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRowVertical label="Email address" error={errors.email?.message}>
+        <FormRowVertical
+          label="Endereço de e-mail"
+          error={errors.email?.message}
+        >
           <Input
             type="email"
             id="email"
@@ -44,7 +47,7 @@ function LoginForm() {
           />
         </FormRowVertical>
 
-        <FormRowVertical label="Password" error={errors.password?.message}>
+        <FormRowVertical label="Senha" error={errors.password?.message}>
           <Input
             type="password"
             id="password"
@@ -56,7 +59,7 @@ function LoginForm() {
 
         <FormRowVertical>
           <Button size="large" disabled={mutation.isLoading || isSubmitting}>
-            {!mutation.isLoading ? "Log in" : <SpinnerMini />}
+            {!mutation.isLoading ? "Entrar" : <SpinnerMini />}
           </Button>
         </FormRowVertical>
 

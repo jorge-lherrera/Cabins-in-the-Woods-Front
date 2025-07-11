@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { HiArrowRightOnRectangle } from "react-icons/hi2";
 
+import { useLogout } from "../../hooks/auth/useLogout";
+
 import SpinnerMini from "../../ui/SpinnerMini";
 import ButtonIcon from "../../ui/ButtonIcon";
-import { useLogout } from "../../hooks/auth/useLogout";
 import ConfirmDialog from "../../ui/ConfirmDialog";
 
 function Logout() {

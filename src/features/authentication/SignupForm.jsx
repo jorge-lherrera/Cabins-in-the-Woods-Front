@@ -73,7 +73,7 @@ function SignupForm({ onCloseModal, onRequestClose }) {
         />
       </FormRow>
 
-      <FormRow label="Avatar (opcional)" error={errors?.avatar?.message}>
+      <FormRow label="Avatar" error={errors?.avatar?.message}>
         <FileInput
           id="avatar"
           accept="image/*"
