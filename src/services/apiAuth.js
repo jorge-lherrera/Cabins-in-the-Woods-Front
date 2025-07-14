@@ -1,4 +1,4 @@
-import { api } from "./ApiUrl";
+import { api } from "./apiUrl";
 
 export async function signup({ name, email, password, avatar }) {
   const formData = new FormData();
