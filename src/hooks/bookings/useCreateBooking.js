@@ -17,6 +17,7 @@ export function useCreateBooking() {
           : "Reserva criada com sucesso"
       );
       queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard-bookings"] });
     },
     onError: (err) => {
       toast.error(err?.response?.data?.message || "Erro ao criar a reserva");
