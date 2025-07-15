@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { zonedTimeToUtc } from "date-fns-tz";
 
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
 import { useGuestSearch } from "../../hooks/guests/useGuestSearch";
@@ -146,14 +147,18 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
   });
 
   function onSubmit(data) {
+    const timeZone = "America/Sao_Paulo";
+    const startDateUtc = zonedTimeToUtc(data.startDate, timeZone);
+    const endDateUtc = zonedTimeToUtc(data.endDate, timeZone);
+
     const payload = {
       ...data,
       cabinId: Number(data.cabinId),
       guestId: Number(data.guestId),
       numGuests: Number(data.numGuests),
       extrasPrice: Number(data.extrasPrice),
-      startDate: data.startDate || "",
-      endDate: data.endDate || "",
+      startDate: startDateUtc.toISOString(),
+      endDate: endDateUtc.toISOString(),
     };
 
     createBooking(payload, {
