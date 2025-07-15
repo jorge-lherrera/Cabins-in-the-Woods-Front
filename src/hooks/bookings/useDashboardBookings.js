@@ -15,6 +15,6 @@ export function useDashboardBookings({ days }) {
   });
 
   const dashboardData = data?.resource || {};
-
+  console.log("Dashboard Data: useDashboardBookings", dashboardData);
   return { isLoading, error, dashboardData };
 }
