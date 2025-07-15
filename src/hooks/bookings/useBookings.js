@@ -10,7 +10,7 @@ export function useBookings() {
   const DEFAULTS = {
     page: 1,
     orderBy: "startDate",
-    order: "desc",
+    order: "DESC",
   };
 
   const status = searchParams.get("status") || "all";
