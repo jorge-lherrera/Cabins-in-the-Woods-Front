@@ -7,6 +7,8 @@ export async function getBookingsDashboard({ days } = {}) {
 
   const { data } = await api.get("/bookings/dashboard", { params });
 
+  console.log("getBookingsDashboard data: api", data);
+
   return data;
 }
 
