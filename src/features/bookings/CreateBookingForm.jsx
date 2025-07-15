@@ -145,12 +145,6 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
     mode: "onChange",
   });
 
-  function toUtcISOString(dateStr, offsetHours = -3) {
-    const date = new Date(dateStr + "T00:00:00");
-    const utcDate = new Date(date.getTime() - offsetHours * 60 * 60 * 1000);
-    return utcDate.toISOString();
-  }
-
   function onSubmit(data) {
     const payload = {
       ...data,
@@ -158,8 +152,8 @@ function CreateBookingForm({ onCloseModal, onRequestClose }) {
       guestId: Number(data.guestId),
       numGuests: Number(data.numGuests),
       extrasPrice: Number(data.extrasPrice),
-      startDate: data.startDate ? toUtcISOString(data.startDate) : "",
-      endDate: data.endDate ? toUtcISOString(data.endDate) : "",
+      startDate: data.startDate || "",
+      endDate: data.endDate || "",
     };
 
     createBooking(payload, {
