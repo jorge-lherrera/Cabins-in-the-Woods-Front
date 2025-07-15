@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import zonedTimeToUtc from "date-fns-tz";
+import zonedTimeToUtc from "date-fns-tz/zonedTimeToUtc";
 
 import { useCreateBooking } from "../../hooks/bookings/useCreateBooking";
 import { useGuestSearch } from "../../hooks/guests/useGuestSearch";
