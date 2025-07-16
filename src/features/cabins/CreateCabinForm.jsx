@@ -94,10 +94,6 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal, onRequestClose }) {
     }
   }
 
-  function onError(errors) {
-    console.log(errors);
-  }
-
   function handleCancel() {
     if (onRequestClose) onRequestClose();
   }

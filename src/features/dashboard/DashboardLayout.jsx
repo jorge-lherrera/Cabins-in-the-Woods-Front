@@ -22,8 +22,6 @@ function DashboardLayout() {
 
   const { isLoading, error, dashboardData } = useDashboardBookings({ days });
 
-  console.log("Dashboard Data: layout", dashboardData);
-
   if (isLoading) return <Spinner />;
   if (error) return <div>Erro ao carregar dados do dashboard</div>;
 
