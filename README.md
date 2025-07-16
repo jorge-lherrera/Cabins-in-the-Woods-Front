@@ -1,8 +1,80 @@
-# React + Vite
+# Cabins-in-the-Woods-Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend para gestão e administração de cabanas, hóspedes, reservas e funcionários. Interface moderna e conectada à API RESTful.
 
-Currently, two official plugins are available:
+## Para que serve?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Permite:
+
+- Visualizar e analisar reservas, ocupação e receitas em dashboards
+- Gerenciar reservas, hóspedes, cabanas e funcionários
+- Realizar login seguro e manter sessões autenticadas
+- Interagir com a API documentada do backend
+
+## Principais Tecnologias
+
+- React + Vite
+- React Router
+- React Query
+- Axios
+- Styled Components / CSS Modules
+- Yup (validações)
+- React Hot Toast (notificações)
+
+## Instalação Rápida
+
+1. Clone o repositório:
+   ```bash
+   git clone <repo-url>
+   cd Cabins-in-the-Woods-Front
+   ```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Configure o arquivo `.env` com a URL da API backend:
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+
+## Estrutura do Projeto
+
+```
+src/
+  App.jsx           # Componente principal
+  main.jsx          # Entry point
+  assets/           # Imagens e recursos
+  context/          # Contextos globais
+  features/         # Lógica de domínio (bookings, cabins, guests, workers)
+  hooks/            # Custom hooks (ex: useLogin, useDashboardBookings)
+  pages/            # Páginas principais (Dashboard, Bookings, etc)
+  services/         # Serviços de API (apiAuth, apiBookings, ...)
+  styles/           # Estilos globais
+  ui/               # Componentes reutilizáveis
+  utils/            # Utilidades
+  validations/      # Schemas Yup
+public/
+  ...               # Imagens públicas
+```
+
+## Funcionalidades
+
+- Login/logout de funcionários
+- Dashboard com KPIs de reservas, receitas, ocupação
+- CRUD de reservas, hóspedes, cabanas e funcionários
+- Validação de formulários
+- Notificações de sucesso/erro
+- Design responsivo
+
+## Requisitos
+
+- Node.js >= 18
+- Backend Cabins-in-the-Woods rodando e acessível
+
+## Licença
+
+MIT
